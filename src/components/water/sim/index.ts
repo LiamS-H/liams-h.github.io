@@ -5,6 +5,7 @@ import { PROGRAM } from "./shaders/compute";
 import { render_shader } from "./shaders/render";
 
 export class Simulator {
+    private time: number = 0;
     private initialized: boolean = false;
     private broken: boolean = false;
     // Initial values & constants
@@ -14,14 +15,16 @@ export class Simulator {
     //              x,      y,      w,      h,
     private maxBoxes: number = 10;
 
-    private grid_size: number = 512;
+    private grid_size: number = 1024;
     private width!: number;
     private height!: number;
     private numCells!: number;
     private diffusion: number = 0.999;
-    private pressureIterations: number = 20;
+    private pressureIterations: number = 10;
     // private dt: number = 0.03; // delta time
-    private dt: number = 0.015; // delta time
+    // private dt: number = 0.015; // delta time
+    private dt_mult: number = 2.0;
+    private dt: number = 0.0; // delta time
     private dx!: number;
     private rdx!: number;
     private vort: number = 0.2;
@@ -89,7 +92,7 @@ export class Simulator {
         console.log("initializing instance");
         this.initSizes();
         await this.initBuffers();
-        this.updateTextMatte("LiamS-H");
+        this.updateTextMatte("Liam");
         this.initComputePrograms();
         this.initRenderPipeline();
         this.initialized = true;
@@ -170,6 +173,36 @@ export class Simulator {
         this.context = context;
         this.device = device;
     }
+
+    private async updateUniforms() {
+        this.Ures.update([this.width, this.height]);
+        this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
+        this.Ures_dif.update([
+            this.width,
+            this.height,
+            this.diffusion,
+            0, //padding
+        ]);
+        this.Ures_dt.update([
+            this.width,
+            this.height,
+            this.dt,
+            this.dx,
+            this.rdx,
+            0, //padding
+        ]);
+        this.Ures_dt_vort.update([
+            this.width,
+            this.height,
+            this.dt,
+            this.dx,
+            this.rdx,
+            this.vort,
+        ]);
+        this.Ures_visc.update([this.width, this.height, this.visc, 0]);
+        await this.device.queue.onSubmittedWorkDone();
+    }
+
     private async initBuffers() {
         this.velocity = new Buffer(this.device, this.numCells, 2, "vel");
         this.velocity0 = new Buffer(this.device, this.numCells, 2, "vel0");
@@ -454,7 +487,13 @@ export class Simulator {
         if (this.text == text) {
             return;
         }
+        // await document.fonts.load('"Comfortaa" 40px');
         this.text = text;
+        const fontSize = this.width / 5;
+        const letterSpacing = 50;
+
+        await document.fonts.ready;
+        await document.fonts.load(`bold ${fontSize}px Comfortaa`);
 
         const canvas = document.createElement("canvas");
         canvas.width = this.width;
@@ -468,11 +507,29 @@ export class Simulator {
         // Set background transparent and draw centered text
         context.clearRect(0, 0, canvas.width, canvas.height);
         // context.font = "bold 400px futura";
-        context.font = `bold ${this.width / 5}px helvetica`;
-        context.textAlign = "center";
+        context.font = `bold ${fontSize}px comfortaa`;
         context.textBaseline = "middle";
         context.fillStyle = "black"; // Text color
-        context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+        let totalWidth = 0;
+        for (let i = 0; i < text.length; i++) {
+            totalWidth += context.measureText(text[i]).width;
+            if (i < text.length - 1) {
+                totalWidth += letterSpacing;
+            }
+        }
+        const startX = (canvas.width - totalWidth) / 2;
+        const y = canvas.height / 2;
+
+        // Draw each character with custom letter spacing
+        let x = startX;
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            context.fillText(char, x, y);
+            x += context.measureText(char).width + letterSpacing;
+        }
+
+        // context.fillText(text, canvas.width / 2, canvas.height / 2);
         // Get image data from the canvas
         const imageData = context.getImageData(
             0,
@@ -554,6 +611,16 @@ export class Simulator {
     }
 
     public async step() {
+        const now = Date.now();
+        const dt = (now - this.time) * this.dt_mult;
+        this.time = now;
+        if (dt < 1000) {
+            this.dt = dt / 1000;
+        }
+        if (this.dt === 0) {
+            return;
+        }
+        this.updateUniforms();
         // this.updateRectangles([[0.5, 0.5, 0.2, 0.2]]);
         // this.updateRectangles([
         //     [0.1, 0.4, 0.005, 0.2],
