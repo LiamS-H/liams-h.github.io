@@ -9,10 +9,11 @@ import {
 } from "react";
 import { FluidRect, FluidRectList } from "../types/fluid";
 
-type FluidRects = Map<string, FluidRect>;
+type FluidRects = Map<string, FluidRect | null>;
 
 interface FluidContext {
-    registerBound: (rect: FluidRect, id: string) => void;
+    registerBound: (rect: FluidRect | null, id: string) => void;
+    registerText: (text: string) => void;
 }
 
 const fluidContext = createContext<FluidContext | null>(null);
@@ -20,7 +21,9 @@ const fluidContext = createContext<FluidContext | null>(null);
 export function fluidContextHost(): {
     provider: (props: { children?: ReactNode }) => JSX.Element;
     rects: FluidRectList;
+    text: string;
 } {
+    const [text, setText] = useState<string>("");
     const [rectMap, setRectMap] = useState<FluidRects>(
         new Map<string, FluidRect>()
     );
@@ -28,13 +31,14 @@ export function fluidContextHost(): {
         const rectList: FluidRectList = [];
 
         rectMap.forEach((rect) => {
+            if (!rect) return;
             rectList.push([rect.x, rect.y, rect.w, rect.h]);
         });
         return rectList;
     }, [rectMap]);
 
     const registerBound = useCallback(
-        (rect: FluidRect, id: string) => {
+        (rect: FluidRect | null, id: string) => {
             setRectMap((old_rects) => {
                 const new_rects = new Map(old_rects);
                 new_rects.set(id, rect);
@@ -44,12 +48,19 @@ export function fluidContextHost(): {
         [setRectMap]
     );
 
+    const registerText = useCallback(
+        (text: string) => {
+            setText(text);
+        },
+        [setText]
+    );
+
     const provider = (props: { children?: ReactNode }) => (
-        <fluidContext.Provider value={{ registerBound }}>
+        <fluidContext.Provider value={{ registerBound, registerText }}>
             {props.children}
         </fluidContext.Provider>
     );
-    return { provider, rects };
+    return { provider, rects, text };
 }
 
 function useFluidContext(): FluidContext {
@@ -60,10 +71,10 @@ function useFluidContext(): FluidContext {
     return context;
 }
 
-export function useFluidRegister(bounds: DOMRect | undefined, id: string) {
+export function useFluidBoundRegister(bounds: DOMRect | undefined, id: string) {
     const { registerBound } = useFluidContext();
-    const rect: FluidRect = useMemo(() => {
-        if (!bounds) return { x: 0, y: 0, w: 0, h: 0 };
+    const rect: FluidRect | null = useMemo(() => {
+        if (!bounds) return null;
         return {
             x: bounds.x / window.innerWidth,
             y:
@@ -76,5 +87,18 @@ export function useFluidRegister(bounds: DOMRect | undefined, id: string) {
 
     useEffect(() => {
         registerBound(rect, id);
+        return () => {
+            registerBound(null, id);
+        };
     }, [rect]);
+}
+
+export function useFluidTextRegister(text: string) {
+    const { registerText } = useFluidContext();
+    useEffect(() => {
+        registerText(text);
+        return () => {
+            registerText("");
+        };
+    }, [text]);
 }

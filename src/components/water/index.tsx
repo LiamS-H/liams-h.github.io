@@ -8,15 +8,20 @@ export default function Water(props: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
     const [initialized, setInitialized] = useState(false);
-    const { provider, rects } = fluidContextHost();
+    const { provider, rects, text } = fluidContextHost();
     const focus = useWindowFocus();
-    console.log(focus);
 
     useEffect(() => {
         if (!sim.current) return;
         // console.log("updating rects:", rects);
         sim.current.updateRectangles(rects);
     }, [initialized, rects]);
+
+    useEffect(() => {
+        if (!sim.current) return;
+        // console.log("updating rects:", rects);
+        sim.current.updateTextMatte(text);
+    }, [initialized, text]);
 
     async function init(canvas: HTMLCanvasElement) {
         // Resize handling
@@ -38,8 +43,8 @@ export default function Water(props: { children: ReactNode }) {
         setInitialized(true);
     }
     function animate() {
-        if (!focus) return;
         requestAnimationFrame(animate);
+        if (!focus) return;
         if (!sim.current) return;
         if (!sim.current.isInitialized()) return;
 
@@ -48,14 +53,13 @@ export default function Water(props: { children: ReactNode }) {
 
     useEffect(() => {
         if (!focus) return;
-        animate();
+        requestAnimationFrame(animate);
     }, [focus]);
 
     useEffect(() => {
         if (initialized) return;
         if (!canvas.current) return;
         if (sim.current !== undefined) return;
-        console.log("initializing");
         sim.current = null;
 
         init(canvas.current);
@@ -68,14 +72,7 @@ export default function Water(props: { children: ReactNode }) {
 
     return (
         <>
-            <div
-                style={{
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    zIndex: -1,
-                }}
-            >
+            <div className="absolute top-0 left-0 -z-10">
                 <canvas ref={canvas} />
             </div>
 

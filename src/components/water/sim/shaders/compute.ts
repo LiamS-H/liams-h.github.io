@@ -232,8 +232,8 @@ export namespace PROGRAM {
                 pos.x += 1;
             }
             if (ST + SB + SR + SL == 0) {
-                scaleX = 0;
-                scaleY = 0;
+                scaleX = 0.0;
+                scaleY = 0.0;
             }
         }
         vel_write_x[index] = vel_read_x[idx(pos.x, pos.y)] * scaleX;
@@ -298,7 +298,9 @@ export namespace PROGRAM {
                 pos.x += 1;
             }
             if (ST + SB + SR + SL == 0) {
-                val_write_x[index] = 0;
+                // val_write_x[index] = val_read_x[idx(pos.x, pos.y)] * 0.9;
+                val_write_x[index] = 0.0;
+                return;
             }
         }
         val_write_x[index] = val_read_x[idx(pos.x, pos.y)];
