@@ -26,6 +26,7 @@ export default function NavBar() {
             <ul className="flex justify-around">
                 {routes.map((r) => (
                     <NavBarButton
+                        key={r.path}
                         path={r.path}
                         label={r.label}
                         active={location.pathname === r.path}
