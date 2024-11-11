@@ -4,6 +4,12 @@ import Home from "./Home";
 import About from "./About";
 import Projects from "./Projects";
 
+export const routes = [
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/projects", label: "Projects" },
+];
+
 export default function Router() {
     return (
         <BrowserRouter>
