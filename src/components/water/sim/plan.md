@@ -4,7 +4,7 @@
  - [X] release as open source
  - [X] look into the wierd splits at the start
  - [ ] Add text editting and or dragging
- - [ ] Add splat (even if just velocity drag)
+ - [ ] Add splat (even if just velocity drag) or Add solid to mouse
  - [ ] Make motion turned off use a saved render of the fluid to each page.
 
 #FIX
