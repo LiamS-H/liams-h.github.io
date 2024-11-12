@@ -1,3 +1,10 @@
+import Hitbox from "../../components/hitbox";
+
 export default function About() {
-    return <h1>About</h1>;
+    return (
+        <Hitbox id="About">
+            <h1>About</h1>
+        </Hitbox>
+    );
+    return;
 }
