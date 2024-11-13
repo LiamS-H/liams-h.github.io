@@ -15,7 +15,7 @@ export class Simulator {
     //              x,      y,      w,      h,
     private maxBoxes: number = 10;
 
-    private grid_size: number = 1024;
+    private grid_size: number = 512;
     private width!: number;
     private height!: number;
     private numCells!: number;
@@ -99,6 +99,43 @@ export class Simulator {
     }
     private initSizes() {
         const aspectRatio = window.innerWidth / window.innerHeight;
+        const limits = this.device.limits;
+        console.log(limits);
+
+        const HIGH_END_LIMITS = {
+            maxComputeInvocationsPerWorkgroup: 512,
+            maxStorageBufferBindingSize: 256_000_000, // 1GB
+            maxComputeWorkgroupStorageSize: 32_768, // 32 KB
+        };
+
+        const MID_RANGE_LIMITS = {
+            maxComputeInvocationsPerWorkgroup: 256,
+            maxStorageBufferBindingSize: 128_000_000, // 512 MB
+            maxComputeWorkgroupStorageSize: 16_384, // 16 KB
+        };
+
+        if (
+            limits.maxComputeInvocationsPerWorkgroup >=
+                HIGH_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
+            limits.maxStorageBufferBindingSize >=
+                HIGH_END_LIMITS.maxStorageBufferBindingSize &&
+            limits.maxComputeWorkgroupStorageSize >=
+                HIGH_END_LIMITS.maxComputeWorkgroupStorageSize
+        ) {
+            this.grid_size = 1024; // High-end
+        } else if (
+            limits.maxComputeInvocationsPerWorkgroup >=
+                MID_RANGE_LIMITS.maxComputeInvocationsPerWorkgroup &&
+            limits.maxStorageBufferBindingSize >=
+                MID_RANGE_LIMITS.maxStorageBufferBindingSize &&
+            limits.maxComputeWorkgroupStorageSize >=
+                MID_RANGE_LIMITS.maxComputeWorkgroupStorageSize
+        ) {
+            this.grid_size = 512; // Mid-range
+        } else {
+            this.grid_size = 256; // Low-end
+        }
+
         const maxBufferSize = this.device.limits.maxStorageBufferBindingSize;
         const maxCanvasSize = this.device.limits.maxTextureDimension2D;
 
@@ -530,7 +567,7 @@ export class Simulator {
                 context.clearRect(
                     x + w * 0.24,
                     y + w * 0.3,
-                    w * 0.556,
+                    w * 0.553,
                     w * 0.2
                 );
             }
@@ -622,7 +659,7 @@ export class Simulator {
         const now = Date.now();
         const dt = (now - this.time) * this.dt_mult;
         this.time = now;
-        if (dt < 1000) {
+        if (dt < 200) {
             this.dt = dt / 1000;
         }
         if (this.dt === 0) {
