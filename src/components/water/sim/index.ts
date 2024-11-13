@@ -121,7 +121,7 @@ export class Simulator {
 
             // Prevent buffer size overflow
             if (w * h * 4 >= maxBufferSize)
-                downRatio = Math.sqrt(maxBufferSize / (w * h * 4));
+                downRatio = Math.sqrt(maxBufferSize / (w * h * 3));
 
             // Prevent canvas size overflow
             if (w > maxCanvasSize) downRatio = maxCanvasSize / w;
@@ -487,13 +487,12 @@ export class Simulator {
         if (this.text == text) {
             return;
         }
-        // await document.fonts.load('"Comfortaa" 40px');
         this.text = text;
         const fontSize = this.width / 5;
         const letterSpacing = 50;
 
         await document.fonts.ready;
-        await document.fonts.load(`bold ${fontSize}px Comfortaa`);
+        await document.fonts.load(`bold ${fontSize}px Megrim`);
 
         const canvas = document.createElement("canvas");
         canvas.width = this.width;
@@ -507,9 +506,9 @@ export class Simulator {
         // Set background transparent and draw centered text
         context.clearRect(0, 0, canvas.width, canvas.height);
         // context.font = "bold 400px futura";
-        context.font = `bold ${fontSize}px comfortaa`;
         context.textBaseline = "middle";
         context.fillStyle = "black"; // Text color
+        context.font = `bold ${fontSize}px Megrim`;
 
         let totalWidth = 0;
         for (let i = 0; i < text.length; i++) {
@@ -526,6 +525,15 @@ export class Simulator {
         for (let i = 0; i < text.length; i++) {
             const char = text[i];
             context.fillText(char, x, y);
+            if (char == "m") {
+                const w = context.measureText(char).width;
+                context.clearRect(
+                    x + w * 0.24,
+                    y + w * 0.3,
+                    w * 0.556,
+                    w * 0.2
+                );
+            }
             x += context.measureText(char).width + letterSpacing;
         }
 
