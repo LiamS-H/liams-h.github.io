@@ -1,5 +1,6 @@
 import { HTMLProps } from "react";
 import Hitbox from "../../components/hitbox";
+import ExternalLink from "../../components/external-link";
 
 function Card(props: HTMLProps<HTMLDivElement> & { id: string }) {
     return (
@@ -21,20 +22,17 @@ export default function Projects() {
             <div className="h-fit flex flex-row justify-around align-middle flex-wrap">
                 <Card id="Scrycards">
                     <h1>Scrycards</h1>
-                    <a
-                        target="_blank"
-                        href="https://github.com/LiamS-H/react-scrycards"
-                    >
+                    <ExternalLink href="https://github.com/LiamS-H/react-scrycards">
                         Github
-                    </a>
-                    <a target="_blank" href="">
+                    </ExternalLink>
+                    <ExternalLink href="https://card-confluence.web.app/about">
                         Example site
-                    </a>
+                    </ExternalLink>
                     <p>
                         Wraps{" "}
-                        <a target="_blank" href="https://scryfall.com/docs/api">
+                        <ExternalLink href="https://scryfall.com/docs/api">
                             Scryfall API
-                        </a>
+                        </ExternalLink>{" "}
                         in a lightweight cache and provides react components for
                         rendering the returned data. Dependency injection allows
                         for using custom caches, or API wrappers / endpoints.
@@ -42,12 +40,9 @@ export default function Projects() {
                 </Card>
                 <Card id="FOOOD">
                     <h1>Food ML</h1>
-                    <a
-                        target="_blank"
-                        href="https://devpost.com/software/foooood"
-                    >
+                    <ExternalLink href="https://devpost.com/software/foooood">
                         Devpost
-                    </a>
+                    </ExternalLink>
                     <p>
                         A machine learning full stack project for estimating
                         caloric data from images. This project was a 1st place
