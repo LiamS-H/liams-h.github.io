@@ -17,7 +17,11 @@ export default function Router() {
                 <Route path="" Component={Root}>
                     <Route path="/" Component={Home} />
                     <Route path="/about" Component={About} />
-                    <Route path="/projects" Component={Projects} />
+                    <Route path="/projects" Component={Projects}>
+                        <Route path="projects/confluence" />
+                        <Route path="projects/food" />
+                        <Route path="projects/scrycards" />
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>
