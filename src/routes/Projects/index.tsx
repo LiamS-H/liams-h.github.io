@@ -7,7 +7,7 @@ function Card(props: HTMLProps<HTMLDivElement> & { id: string }) {
         <Hitbox
             {...props}
             className={
-                "w-1/12 aspect-square min-w-[300px] h-fit bg-black rounded p-4 m-4 flex-col flex"
+                "w-1/12 aspect-square min-w-[280px] bg-black rounded p-4 m-4 flex-col flex justify-between"
             }
             id={props.id}
         >
@@ -28,15 +28,11 @@ export default function Projects() {
                             Scryfall API
                         </ExternalLink>{" "}
                         in a lightweight cache and provides react components for
-                        rendering the returned data. Dependency injection allows
-                        for using custom caches, or API wrappers / endpoints.
+                        rendering the returned data.
                     </p>
                     <div className="flex justify-center flex-row space-x-4">
                         <ExternalLink href="https://github.com/LiamS-H/react-scrycards">
                             Github
-                        </ExternalLink>
-                        <ExternalLink href="https://card-confluence.web.app/about">
-                            Example site
                         </ExternalLink>
                     </div>
                 </Card>
@@ -47,9 +43,22 @@ export default function Projects() {
                         caloric data from images. This project was a 1st place
                         winner at HackMecedIX.
                     </p>
-                    <div className="flex justify-center flex-row space-x-4">
+                    <div className="flex align-middle justify-center flex-row space-x-4">
                         <ExternalLink href="https://devpost.com/software/foooood">
                             Devpost
+                        </ExternalLink>
+                    </div>
+                </Card>
+                <Card id="Confluence">
+                    <h1>Confluence</h1>
+                    <p>
+                        Provides visual tools for advanced Scryfall database
+                        queries. Custom "code completion" algorithm for
+                        resolving autocomplete.
+                    </p>
+                    <div className="flex align-middle justify-center flex-row space-x-4">
+                        <ExternalLink href="https://card-confluence.web.app/about">
+                            Vist Site
                         </ExternalLink>
                     </div>
                 </Card>
