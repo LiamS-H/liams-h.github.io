@@ -20,7 +20,7 @@ fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
     );
 
     output.position = vec4<f32>(vertices[vertexIndex], 0.0, 1.0);
-    output.texCoord.x = (vertices[vertexIndex].x + 2) * 0.5;
+    output.texCoord.x = (vertices[vertexIndex].x + 2.0) * 0.5;
     output.texCoord.y = (vertices[vertexIndex].y + 1.0) * 0.5;
     // output.texCoord = (vertices[vertexIndex]+1) * 0.5;
 
@@ -63,7 +63,7 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let vscale = 0.07;
 
     var out = vec4<f32>(smoke_color, 1.0);
-    if (out.r <=0.1 && out.g <=0.1 &&out.b <=0.1) {
+    if (out.r <=0.001 && out.g <=0.001 &&out.b <=0.001) {
         return out;
     }
     out.r += abs(v) * 5;
