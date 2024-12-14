@@ -19,7 +19,7 @@ interface FluidContext {
 
 const fluidContext = createContext<FluidContext | null>(null);
 
-export function fluidContextHost(): {
+export function useFluidContextHost(): {
     provider: (props: { children?: ReactNode }) => JSX.Element;
     rects: FluidRectList;
     text: string;

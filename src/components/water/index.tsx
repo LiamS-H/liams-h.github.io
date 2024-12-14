@@ -1,14 +1,14 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import "./water.css";
 import { Simulator } from "./sim";
-import { fluidContextHost } from "../../contexts/fluid";
+import { useFluidContextHost } from "../../contexts/fluid";
 import { useWindowFocus } from "../../contexts/focus";
 
 export default function Water(props: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
     const [initialized, setInitialized] = useState(false);
-    const { provider, rects, text, color } = fluidContextHost();
+    const { provider, rects, text, color } = useFluidContextHost();
     const focus = useWindowFocus();
 
     useEffect(() => {

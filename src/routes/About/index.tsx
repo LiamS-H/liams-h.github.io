@@ -1,4 +1,3 @@
-import React from "react";
 import { Code, Terminal } from "lucide-react";
 import Hitbox from "../../components/hitbox";
 import { useFluidContext } from "../../contexts/fluid";
@@ -18,7 +17,7 @@ function Language({
     colorNum: number;
 }) {
     const { changeColor } = useFluidContext();
-    const colorMap: { [key: number]: any } = {
+    const colorMap: { [key: number]: { bg: string; hover: string } } = {
         2: { bg: "bg-emerald-500", hover: "hover:text-emerald-500" },
         3: { bg: "bg-sky-500", hover: "hover:text-sky-500" },
         1: { bg: "bg-amber-500", hover: "hover:text-amber-500" },

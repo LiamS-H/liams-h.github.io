@@ -1,4 +1,4 @@
-import { HTMLProps, useState } from "react";
+import { HTMLProps } from "react";
 import Hitbox from "../../components/hitbox";
 import ExternalLink from "../../components/external-link";
 import { useFluidContext } from "../../contexts/fluid";
