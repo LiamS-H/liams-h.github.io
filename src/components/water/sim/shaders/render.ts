@@ -42,16 +42,14 @@ ${FUNCTION.idx}
 
 @fragment
 fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
-    let x = texCoord.x * (U.res.x)+1;
-    let y = texCoord.y * (U.res.y)+1;
+    let x = texCoord.x * (U.res.x);
+    let y = texCoord.y * (U.res.y)-1;
     // let index = idx(x, y);
     let index = u32((y * U.res.x) + x);
 
     let smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
     let s = solids[index];
     if (s == 0) {
-        // return vec4<f32>(0.5,0,0, 1.0);
-        // return vec4<f32>(1,1,1, 1.0);
         return vec4<f32>(0,0,0, 1.0);
     }
     let u = vel_x[index];
@@ -66,8 +64,8 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     if (out.r <=0.001 && out.g <=0.001 &&out.b <=0.001) {
         return out;
     }
-    out.r += abs(v) * 5;
-    out.b += abs(u) * 5;
+    out.r += abs(v) * 6;
+    out.b += abs(u) * 6;
     
     // out.g += abs(v) * abs(u) * 2.25;
     return out;

@@ -13,7 +13,8 @@ export class Simulator {
     private text?: string;
     private boxes: [number, number, number, number][] = [];
     //              x,      y,      w,      h,
-    private maxBoxes: number = 10;
+    private maxBoxes: number = 20;
+    private smoke_color: number = 0;
 
     private grid_size: number = 512;
     private width!: number;
@@ -218,7 +219,7 @@ export class Simulator {
             this.width,
             this.height,
             this.diffusion,
-            0, //padding
+            this.smoke_color,
         ]);
         this.Ures_dt.update([
             this.width,
@@ -274,7 +275,7 @@ export class Simulator {
             this.width,
             this.height,
             this.diffusion,
-            0, //padding
+            this.smoke_color,
         ]);
         this.Ures_dt = new Uniform(this.device, 6, "Ures_dt", [
             this.width,
@@ -591,6 +592,18 @@ export class Simulator {
         }
 
         this.solids0.write(matte);
+        return this.device.queue.onSubmittedWorkDone();
+    }
+
+    public async updateColor(color: number) {
+        console.log("updating color");
+        this.smoke_color = color;
+        this.Ures_dif.update([
+            this.width,
+            this.height,
+            this.diffusion,
+            this.smoke_color,
+        ]);
         return this.device.queue.onSubmittedWorkDone();
     }
 

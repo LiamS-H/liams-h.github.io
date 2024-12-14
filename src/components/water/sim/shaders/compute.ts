@@ -74,7 +74,7 @@ export namespace PROGRAM {
     struct Uniforms {
         res: vec2<f32>,
         diffusion: f32,
-        padding: f32,
+        color: f32,
     }
     ${UNIFORM.binding}
     @group(0) @binding(1) var<storage, read> smoke_read_r: array<f32>;
@@ -108,11 +108,48 @@ export namespace PROGRAM {
             //     smoke_write_r[index] = 0;
             //     return;
             // }
-            smoke_write_r[index] = 1;
-            // smoke_write_g[index] = 1;
-            smoke_write_g[index] = f32(pos.y / U.res.y);
-            smoke_write_b[index] = 1;
-            return;
+            if (U.color == 0) {
+                smoke_write_r[index] = 1;
+                smoke_write_g[index] = f32(pos.y / U.res.y);
+                smoke_write_b[index] = 1;
+                return;
+            }
+            if (U.color == 1) {
+                smoke_write_r[index] = 1;
+                smoke_write_g[index] = f32(pos.y / U.res.y);
+                smoke_write_b[index] = 0.5;
+                return;
+            }
+            if (U.color == 2) {
+                smoke_write_r[index] = f32(pos.y / U.res.y);
+                smoke_write_g[index] = 1;
+                smoke_write_b[index] = 0.5;
+                return;
+            }
+            if (U.color == 3) {
+                smoke_write_r[index] = f32(pos.y / U.res.y);
+                smoke_write_g[index] = 1;
+                smoke_write_b[index] = 1;
+                return;
+            }
+            if (U.color == 4) {
+                smoke_write_r[index] = 1;
+                smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
+                smoke_write_b[index] = f32(pos.y / U.res.y)*0.5;
+                return;
+            }
+            if (U.color == 5) {
+                smoke_write_r[index] = 1;
+                smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
+                smoke_write_b[index] = 0.7;
+                return;
+            }
+            if (U.color == 6) {
+                smoke_write_r[index] = 0.7;
+                smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
+                smoke_write_b[index] = 1;
+                return;
+            }
         }
         smoke_write_r[index] = smoke_read_r[index] * U.diffusion;
         smoke_write_g[index] = smoke_read_g[index] * U.diffusion;
@@ -186,6 +223,7 @@ export namespace PROGRAM {
     }
     `;
     export const velocityBoundary = /*wgsl*/ `
+    // TO DO: allow non binary solids
     ${FUNCTION.idx}
     ${UNIFORM.res}
     ${UNIFORM.binding}
@@ -232,8 +270,11 @@ export namespace PROGRAM {
                 pos.x += 1;
             }
             if (ST + SB + SR + SL == 0) {
-                scaleX = 0.0;
-                scaleY = 0.0;
+                // very fun for non 0 values
+                // scaleX = 1.01;
+                // scaleY = 1.01;
+                scaleX = 0.00;
+                scaleY = 0.00;
             }
         }
         vel_write_x[index] = vel_read_x[idx(pos.x, pos.y)] * scaleX;

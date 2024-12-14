@@ -14,6 +14,7 @@ type FluidRects = Map<string, FluidRect | null>;
 interface FluidContext {
     registerBound: (rect: FluidRect | null, id: string) => void;
     registerText: (text: string) => void;
+    changeColor: (color: number) => void;
 }
 
 const fluidContext = createContext<FluidContext | null>(null);
@@ -22,11 +23,16 @@ export function fluidContextHost(): {
     provider: (props: { children?: ReactNode }) => JSX.Element;
     rects: FluidRectList;
     text: string;
+    color: number;
 } {
+    const [color, setColor] = useState<number>(0);
+    const changeColor = useCallback(setColor, []);
+
     const [text, setText] = useState<string>("");
     const [rectMap, setRectMap] = useState<FluidRects>(
         new Map<string, FluidRect>()
     );
+
     const rects = useMemo<FluidRectList>(() => {
         const rectList: FluidRectList = [];
 
@@ -56,14 +62,16 @@ export function fluidContextHost(): {
     );
 
     const provider = (props: { children?: ReactNode }) => (
-        <fluidContext.Provider value={{ registerBound, registerText }}>
+        <fluidContext.Provider
+            value={{ registerBound, registerText, changeColor }}
+        >
             {props.children}
         </fluidContext.Provider>
     );
-    return { provider, rects, text };
+    return { provider, rects, text, color };
 }
 
-function useFluidContext(): FluidContext {
+export function useFluidContext(): FluidContext {
     const context = useContext(fluidContext);
     if (context === null) {
         throw Error("useFluidContext() must be called inside provider");

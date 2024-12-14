@@ -4,7 +4,10 @@ import Hitbox from "../hitbox";
 
 function NavBarButton(props: { path: string; label: string; active: boolean }) {
     return (
-        <NavLink to={props.path}>
+        <NavLink
+            to={props.path}
+            className={props.active ? "cursor-default" : undefined}
+        >
             <Hitbox
                 id={props.path}
                 className={`rounded p-4 mb-4 ${

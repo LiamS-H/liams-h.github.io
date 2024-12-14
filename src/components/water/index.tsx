@@ -8,7 +8,7 @@ export default function Water(props: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
     const [initialized, setInitialized] = useState(false);
-    const { provider, rects, text } = fluidContextHost();
+    const { provider, rects, text, color } = fluidContextHost();
     const focus = useWindowFocus();
 
     useEffect(() => {
@@ -22,6 +22,12 @@ export default function Water(props: { children: ReactNode }) {
         // console.log("updating rects:", rects);
         sim.current.updateTextMatte(text);
     }, [initialized, text]);
+
+    useEffect(() => {
+        if (!sim.current) return;
+        // console.log("updating rects:", rects);
+        sim.current.updateColor(color);
+    }, [initialized, color]);
 
     async function init(canvas: HTMLCanvasElement) {
         // Resize handling
