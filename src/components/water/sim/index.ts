@@ -172,7 +172,7 @@ export class Simulator {
         };
 
         // Calculate simulation buffer dimensions
-        let gridSize = getPreferredDimensions(this.grid_size);
+        const gridSize = getPreferredDimensions(this.grid_size);
         this.width = gridSize.w;
         this.height = gridSize.h;
 
