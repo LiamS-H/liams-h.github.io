@@ -70,29 +70,29 @@ export default function About() {
                 <div className="p-1 m-4 rounded-lg bg-black transition-all duration-300">
                     <Hitbox id={"about-desc"} className="flex">
                         <p className="text-lg leading-relaxed p-4">
-                            I am a{" "}
+                            Hi, I'm{" "}
                             <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold">
-                                Full-Stack Developer
-                            </span>{" "}
-                            with a knack for{" "}
+                                Liam
+                            </span>
+                            {/* with a knack for{" "}
                             <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-bold">
                                 Getting Things Done
-                            </span>
-                            . I graduated in 3 years with a{" "}
+                            </span> */}
+                            . <br />I have a{" "}
                             <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold">
                                 Software Engineering Degree
                             </span>{" "}
-                            and plenty of project experience to hit the ground
+                            and all the tools you need so I can hit the ground
                             running.
                         </p>
                     </Hitbox>
                 </div>
             </div>
 
-            <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
-                <div>
+            <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12">
+                <div className="min-w-56">
                     <h2 className="text-2xl font-bold mb-6 flex items-center">
-                        <Code className="mr-2 text-emerald-500" /> Programming
+                        <Code className="mr-2 text-emerald-500" />
                         Languages
                     </h2>
                     <div className="space-y-4">
@@ -107,7 +107,7 @@ export default function About() {
                     </div>
                 </div>
 
-                <div>
+                <div className="">
                     <h2 className="text-2xl font-bold mb-6 flex items-center">
                         <Terminal className="mr-2 text-sky-500" /> Technologies
                     </h2>
