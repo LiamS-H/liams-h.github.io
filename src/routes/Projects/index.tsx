@@ -41,7 +41,7 @@ function Card(
 export default function Projects() {
     return (
         <div className="h-full flex flex-col align-middle justify-center">
-            <div className="h-fit flex flex-row justify-around align-middle flex-wrap">
+            <div className="h-fit flex flex-col lg:flex-row justify-around items-center overflow-auto">
                 <Card id="Scrycards" colorNum={1}>
                     <h1 className="pb-1">Scrycards</h1>
                     <p>
