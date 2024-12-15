@@ -1,6 +1,7 @@
 import { HTMLProps, useRef } from "react";
 import { useFluidBoundRegister } from "../../contexts/fluid";
 
+// TO DO: add callback for updating hitbox
 export default function Hitbox(
     props: { id: string; innnerBounds?: boolean } & HTMLProps<HTMLDivElement>
 ) {
