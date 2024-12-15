@@ -158,7 +158,11 @@ export namespace PROGRAM {
     `;
     export const updateVelocity = /*wgsl*/ `
     ${FUNCTION.idx}
-    ${UNIFORM.res}
+    struct Uniforms {
+        res: vec2<f32>,
+        mouse_pos: vec2<f32>,
+        mouse_vel: vec2<f32> 
+    };
     ${UNIFORM.binding}
     @group(0) @binding(1) var<storage, read> vel_read_x: array<f32>;
     @group(0) @binding(2) var<storage, read> vel_read_y: array<f32>;
@@ -175,9 +179,26 @@ export namespace PROGRAM {
             vel_write_x[index] = 0.03;
             vel_write_y[index] = 0.0;
             return;
-        } else {
-            vel_write_x[index] = vel_read_x[index];
         }
+        if (U.mouse_vel.x != 0 || U.mouse_vel.y != 0) {
+            var mouse_pos = U.mouse_pos;
+            mouse_pos.x *= U.res.x;
+            mouse_pos.y *= U.res.y;
+
+            var distance = pos - mouse_pos;
+            distance.x *= U.res.x / U.res.y;
+            var vel = U.mouse_vel;
+            vel.x = U.res.x / U.res.y;
+
+            var motion = exp(-dot(distance,distance) / 50) * vel;
+            motion *= 0.01;
+
+            vel_write_x[index] = vel_read_x[index] + motion.x;
+            vel_write_y[index] = vel_read_y[index] + motion.y;
+            return;
+        }
+
+        vel_write_x[index] = vel_read_x[index];
         vel_write_y[index] = vel_read_y[index];
     }
     `;

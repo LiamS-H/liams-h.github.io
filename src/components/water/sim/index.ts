@@ -30,6 +30,12 @@ export class Simulator {
     private rdx!: number;
     private vort: number = 0.2;
     private visc: number = 1;
+    private mouseX: number = 0;
+    private mouseY: number = 0;
+    private prevMouseX: number | null = null;
+    private prevMouseY: number | null = null;
+    private mouseU: number = 0;
+    private mouseV: number = 0;
 
     // GPU Globals
     private canvas: HTMLCanvasElement;
@@ -55,6 +61,7 @@ export class Simulator {
     private solids0!: Buffer;
     // uniforms
     private Ures!: Uniform;
+    private Ures_mouse!: Uniform;
     private Ures_rect!: Uniform;
     private Ures_dif!: Uniform;
     private Ures_dt!: Uniform;
@@ -136,6 +143,8 @@ export class Simulator {
         } else {
             this.grid_size = 256; // Low-end
         }
+        // set to lower sim fidelity for testing
+        // this.grid_size = 256;
 
         const maxBufferSize = this.device.limits.maxStorageBufferBindingSize;
         const maxCanvasSize = this.device.limits.maxTextureDimension2D;
@@ -214,6 +223,14 @@ export class Simulator {
 
     private async updateUniforms() {
         this.Ures.update([this.width, this.height]);
+        this.Ures_mouse.update([
+            this.width,
+            this.height,
+            this.mouseX,
+            this.mouseY,
+            this.mouseV,
+            this.mouseU,
+        ]);
         this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
         this.Ures_dif.update([
             this.width,
@@ -264,6 +281,14 @@ export class Simulator {
         this.Ures = new Uniform(this.device, 2, "Ures", [
             this.width,
             this.height,
+        ]);
+        this.Ures_mouse = new Uniform(this.device, 6, "Ures_mouse", [
+            this.width,
+            this.height,
+            this.mouseX,
+            this.mouseY,
+            this.mouseV,
+            this.mouseU,
         ]);
         this.Ures_rect = new Uniform(this.device, 4, "Ures_rect", [
             this.width,
@@ -360,7 +385,7 @@ export class Simulator {
             PROGRAM.updateVelocity,
             [this.velocity],
             [this.velocity0],
-            [this.Ures],
+            [this.Ures_mouse],
             this.width,
             this.height,
             "updateVelocity"
@@ -596,7 +621,6 @@ export class Simulator {
     }
 
     public async updateColor(color: number) {
-        console.log("updating color");
         this.smoke_color = color;
         this.Ures_dif.update([
             this.width,
@@ -614,9 +638,16 @@ export class Simulator {
             return;
         }
         this.boxes = newBoxes;
-        this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
+        // this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
         this.rectangles.write(new Float32Array(this.boxes.flat()));
         return this.device.queue.onSubmittedWorkDone();
+    }
+
+    public async updateMouse(x: number, y: number) {
+        this.mouseX = x;
+        this.mouseY = 1 - y;
+
+        // console.log(this.mouseX, this.mouseY, this.mouseU, this.mouseV);
     }
 
     private async simulate() {
@@ -678,6 +709,21 @@ export class Simulator {
         if (this.dt === 0) {
             return;
         }
+
+        const prevX = this.prevMouseX;
+        const prevY = this.prevMouseY;
+        this.prevMouseX = this.mouseX;
+        this.prevMouseY = this.mouseY;
+
+        if (prevX == null || prevY == null) {
+            this.mouseU = 0;
+            this.mouseV = 0;
+        } else {
+            this.mouseU = this.mouseX - prevX;
+            this.mouseV = this.mouseY - prevY;
+        }
+        // console.log(this.mouseU, this.mouseV);
+
         this.updateUniforms();
         // this.updateRectangles([[0.5, 0.5, 0.2, 0.2]]);
         // this.updateRectangles([

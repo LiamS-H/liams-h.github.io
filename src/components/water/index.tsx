@@ -42,9 +42,18 @@ export default function Water(props: { children: ReactNode }) {
             setInitialized(true);
         }
 
+        async function mouseMove(e: MouseEvent) {
+            if (!sim.current) return;
+            sim.current.updateMouse(
+                e.clientX / window.innerWidth,
+                e.clientY / window.innerHeight
+            );
+        }
+
         sim.current = await Simulator.create(canvas);
 
         window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("mousemove", mouseMove);
 
         setInitialized(true);
     }
