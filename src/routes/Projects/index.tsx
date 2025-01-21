@@ -49,6 +49,12 @@ export default function Projects() {
             <div
                 ref={scrollable_ref}
                 className="h-fit py-8 gap-8 flex flex-row justify-around items-center overflow-auto"
+                style={{
+                    maskImage:
+                        "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+                    WebkitMaskImage:
+                        "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+                }}
             >
                 <ProjectCard
                     id="Scrycards"
