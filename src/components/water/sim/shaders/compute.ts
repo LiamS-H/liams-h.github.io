@@ -174,7 +174,7 @@ export namespace PROGRAM {
             var vel = U.mouse_vel;
             vel.x = U.res.x / U.res.y;
 
-            var motion = exp(-dot(distance,distance) / 50) * vel;
+            var motion = exp(-dot(distance,distance) / 200) * vel;
             motion *= 0.01;
 
             vel_write_x[index] = vel_read_x[index] + motion.x;
