@@ -34,7 +34,7 @@ function Language({
             onMouseEnter={() => changeColor(colorNum)}
             onMouseLeave={() => changeColor(0)}
         >
-            <Hitbox id={name} innnerBounds={true}>
+            <Hitbox id={name} innerBounds={true}>
                 <div className={`w-3 h-3 mr-3 ${bg}`}></div>
             </Hitbox>
             <span className="font-medium">{name}</span>
@@ -62,6 +62,8 @@ export default function About() {
         { name: "Firebase", type: ["CICD"] },
         { name: "Firestore", type: ["Database"] },
         { name: "Cloudflare", type: ["CICD"] },
+        { name: "Docker", type: ["CICD"] },
+        { name: "GCloud", type: ["CICD"] },
     ];
 
     return (
@@ -70,15 +72,18 @@ export default function About() {
                 <div className="p-1 m-4 rounded-lg bg-black transition-all duration-300">
                     <Hitbox id={"about-desc"} className="flex">
                         <p className="text-lg leading-relaxed p-4">
-                            Hi, I'm{" "}
-                            <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold">
-                                Liam
+                            <span className="text-4xl">
+                                Hi, I'm{" "}
+                                <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold">
+                                    Liam
+                                </span>
+                                .<br />
                             </span>
                             {/* with a knack for{" "}
                             <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-bold">
                                 Getting Things Done
                             </span> */}
-                            . <br />I have a{" "}
+                            I have a{" "}
                             <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold">
                                 Software Engineering Degree
                             </span>{" "}

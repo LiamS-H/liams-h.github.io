@@ -88,32 +88,16 @@ export namespace PROGRAM {
     fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
         ${COMPUTE_HEADER}
 
-        // if ((pos.x <= 3) ) {
-        //     if (pos.y < 0.6 * U.res.y && pos.y > 0.4 * U.res.y) {
-        //         smoke_write_g[index] = f32(pos.y / U.res.y);
-        //         smoke_write_r[index] = 1;
-        //         // smoke_write_g[index] = 1;
-        //         smoke_write_b[index] = 1;
-        //     } else {
-        //         // smoke_write_r[index] = 0.1;
-        //         // // smoke_write_g[index] = 1;
-        //         // smoke_write_b[index] = 0.1;
-        //     }
-        //     return;
-        // }
         if (pos.x <= 4) {
-            // if (pos.y % 50 > 40) {
-            //     smoke_write_g[index] = 0;
-            //     smoke_write_b[index] = 0;
-            //     smoke_write_r[index] = 0;
-            //     return;
-            // }
             if (U.color == 0) {
                 smoke_write_r[index] = 1;
                 smoke_write_g[index] = f32(pos.y / U.res.y);
                 smoke_write_b[index] = 1;
                 return;
             }
+            // if (U.color == 0 || (pos.y > 0.6 * U.res.y || pos.y < 0.4 * U.res.y )) {
+            //     return;
+            // }
             if (U.color == 1) {
                 smoke_write_r[index] = 1;
                 smoke_write_g[index] = f32(pos.y / U.res.y);

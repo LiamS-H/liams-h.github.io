@@ -1,10 +1,14 @@
-import { HTMLProps } from "react";
+import { HTMLProps, MutableRefObject, useRef } from "react";
 import Hitbox from "../../components/hitbox";
 import ExternalLink from "../../components/external-link";
 import { useFluidContext } from "../../contexts/fluid";
 
-function Card(
-    props: HTMLProps<HTMLDivElement> & { id: string; colorNum: number }
+function ProjectCard(
+    props: HTMLProps<HTMLDivElement> & {
+        id: string;
+        colorNum: number;
+        parent: MutableRefObject<HTMLDivElement | null>;
+    }
 ) {
     const { changeColor } = useFluidContext();
     let textColor: string;
@@ -26,12 +30,12 @@ function Card(
 
     return (
         <Hitbox
-            {...props}
-            className={`w-1/12 aspect-square min-w-[320px] rounded p-8 m-4 flex-col flex justify-between transition-all ${textColor}`}
+            className={`h-60 w-60 mx-4 p-4 flex-col flex justify-between transition-all ${textColor}`}
             // className={`w-1/12 aspect-square min-w-[320px] rounded p-8 m-4 flex-col flex justify-between hover:text-cyan-400 `}
             id={props.id}
             onMouseEnter={() => changeColor(props.colorNum)}
             onMouseLeave={() => changeColor(0)}
+            parent={props.parent}
         >
             {props.children}
         </Hitbox>
@@ -39,11 +43,19 @@ function Card(
 }
 
 export default function Projects() {
+    const scrollable_ref = useRef<HTMLDivElement | null>(null);
     return (
-        <div className="h-full flex flex-col align-middle justify-center">
-            <div className="h-fit flex flex-col lg:flex-row justify-around items-center overflow-auto">
-                <Card id="Scrycards" colorNum={1}>
-                    <h1 className="pb-1">Scrycards</h1>
+        <div className="h-full px-16 md:px-32 flex flex-col justify-center">
+            <div
+                ref={scrollable_ref}
+                className="h-fit py-8 gap-8 flex flex-row justify-around items-center overflow-auto"
+            >
+                <ProjectCard
+                    id="Scrycards"
+                    colorNum={1}
+                    parent={scrollable_ref}
+                >
+                    <h1 className="text-5xl">Scrycards</h1>
                     <p>
                         A react component library that wraps{" "}
                         <ExternalLink href="https://scryfall.com/docs/api">
@@ -56,9 +68,9 @@ export default function Projects() {
                             Github
                         </ExternalLink>
                     </div>
-                </Card>
-                <Card id="FOOOD" colorNum={2}>
-                    <h1>Food ML</h1>
+                </ProjectCard>
+                <ProjectCard id="FOOOD" colorNum={2} parent={scrollable_ref}>
+                    <h1 className="text-5xl">FoodML</h1>
                     <p>
                         A machine learning full stack project for estimating
                         caloric data from images.
@@ -70,9 +82,13 @@ export default function Projects() {
                             Devpost
                         </ExternalLink>
                     </div>
-                </Card>
-                <Card id="Confluence" colorNum={3}>
-                    <h1>Confluence</h1>
+                </ProjectCard>
+                <ProjectCard
+                    id="Confluence"
+                    colorNum={3}
+                    parent={scrollable_ref}
+                >
+                    <h1 className="text-4xl">Confluence</h1>
                     <p>
                         Public website with visual tools and syntax for advanced
                         Scryfall database queries.
@@ -82,7 +98,7 @@ export default function Projects() {
                             Vist Site
                         </ExternalLink>
                     </div>
-                </Card>
+                </ProjectCard>
             </div>
         </div>
     );

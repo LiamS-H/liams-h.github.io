@@ -21,7 +21,7 @@ export class Simulator {
     private height!: number;
     private numCells!: number;
     private diffusion: number = 0.999;
-    private pressureIterations: number = 10;
+    private pressureIterations: number = 5;
     // private dt: number = 0.03; // delta time
     // private dt: number = 0.015; // delta time
     private dt_mult: number = 2.0;
@@ -184,6 +184,8 @@ export class Simulator {
         const gridSize = getPreferredDimensions(this.grid_size);
         this.width = gridSize.w;
         this.height = gridSize.h;
+
+        this.pressureIterations = Math.floor(this.width / 250);
 
         // Useful values for the simulation
         this.rdx = this.grid_size * 4;
@@ -591,9 +593,9 @@ export class Simulator {
             if (char == "m") {
                 const w = context.measureText(char).width;
                 context.clearRect(
-                    x + w * 0.24,
+                    x + w * 0.22,
                     y + w * 0.3,
-                    w * 0.553,
+                    w * 0.573,
                     w * 0.2
                 );
             }

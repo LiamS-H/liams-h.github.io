@@ -1,25 +1,53 @@
-import { HTMLProps, useRef } from "react";
+import {
+    HTMLProps,
+    MutableRefObject,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { useFluidBoundRegister } from "../../contexts/fluid";
 
 // TO DO: add callback for updating hitbox
 export default function Hitbox(
-    props: { id: string; innnerBounds?: boolean } & HTMLProps<HTMLDivElement>
+    props: {
+        id: string;
+        innerBounds?: boolean;
+        parent?: MutableRefObject<HTMLDivElement | null>;
+    } & HTMLProps<HTMLDivElement>
 ) {
-    const { innnerBounds, id, ...divprops } = props;
+    const { innerBounds, id, parent, ...divprops } = props;
     const boundRef = useRef<HTMLDivElement | null>(null);
-    // const boundRect = useMemo(
-    //     () => boundRef.current?.getBoundingClientRect(),
-    //     [boundRef.current]
-    // );
-    let boundRect = boundRef.current?.getBoundingClientRect();
-    if (boundRef.current && innnerBounds) {
-        const range = document.createRange();
-        range.selectNodeContents(boundRef.current);
-        boundRect = range.getBoundingClientRect();
-        range.detach();
+    const [bounds, setBounds] = useState<DOMRect | undefined>();
+
+    useFluidBoundRegister(bounds, id);
+    function calcBounds() {
+        if (!boundRef.current) return;
+        let rect = boundRef.current.getBoundingClientRect();
+        if (parent?.current) {
+            const pRect = parent.current.getBoundingClientRect();
+            const new_x = Math.max(pRect.x, rect.x);
+            rect.width += rect.x - new_x;
+            rect.x = new_x;
+            rect.width =
+                Math.min(pRect.x + pRect.width, rect.x + rect.width) - rect.x;
+        }
+        if (innerBounds) {
+            const range = document.createRange();
+            range.selectNodeContents(boundRef.current);
+            rect = range.getBoundingClientRect();
+            range.detach();
+        }
+        setBounds(rect);
     }
 
-    useFluidBoundRegister(boundRect, id);
+    useEffect(() => {
+        if (!boundRef.current) return;
+        const observer = new ResizeObserver(calcBounds);
+        observer.observe(boundRef.current);
+        if (!parent?.current) return;
+        parent.current.addEventListener("scroll", calcBounds);
+        window.addEventListener("resize", calcBounds);
+    }, []);
 
-    return <div className="w-fit h-fit" {...divprops} ref={boundRef} />;
+    return <div {...divprops} ref={boundRef} />;
 }
