@@ -35,27 +35,29 @@ export default function Water(props: { children: ReactNode }) {
             const minW = 400;
             const minH = 400;
 
-            canvas.width = Math.max(window.innerWidth, minW);
-            canvas.height = Math.max(window.innerHeight, minH);
+            const vw = window.visualViewport?.width || window.innerWidth;
+            const vh = window.visualViewport?.height || window.innerHeight;
+
+            canvas.width = Math.max(vw, minW);
+            canvas.height = Math.max(vh, minH);
             setInitialized(false);
             await sim.current?.resize();
             setInitialized(true);
         }
 
         function mouseMove(e: MouseEvent) {
+            const vh = window.visualViewport?.height || window.innerHeight;
+            const vw = window.visualViewport?.width || window.innerWidth;
+
             if (!sim.current) return;
-            sim.current.updateMouse(
-                e.clientX / window.innerWidth,
-                e.clientY / window.innerHeight
-            );
+            sim.current.updateMouse(e.clientX / vw, e.clientY / vh);
         }
         function touchMove(e: TouchEvent) {
+            const vw = window.visualViewport?.width || window.innerWidth;
+            const vh = window.visualViewport?.height || window.innerHeight;
             if (!sim.current) return;
             const touch = e.touches[0];
-            sim.current.updateMouse(
-                touch.clientX / window.innerWidth,
-                touch.clientY / window.innerHeight
-            );
+            sim.current.updateMouse(touch.clientX / vw, touch.clientY / vh);
         }
         sim.current = await Simulator.create(canvas);
 

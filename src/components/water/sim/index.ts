@@ -106,7 +106,10 @@ export class Simulator {
         this.initialized = true;
     }
     private initSizes() {
-        const aspectRatio = window.innerWidth / window.innerHeight;
+        const vw = window.visualViewport?.width || window.innerWidth;
+        const vh = window.visualViewport?.height || window.innerHeight;
+
+        const aspectRatio = vw / vh;
         const limits = this.device.limits;
         console.log(limits);
 
@@ -152,7 +155,7 @@ export class Simulator {
         const getPreferredDimensions = (size: number) => {
             let w, h;
 
-            if (window.innerHeight < window.innerWidth) {
+            if (vh < vw) {
                 w = Math.floor(size * aspectRatio);
                 h = size;
             } else {
