@@ -41,7 +41,7 @@ function Language({
                 <div className={`w-3 h-3 mr-3 ${bg}`}></div>
             </Hitbox>
             <span className="font-medium">{name}</span>
-            <span className="ml-auto text-gray-400 text-sm">{years} years</span>
+            <span className="ml-auto text-gray-300 text-sm">{years} years</span>
         </div>
     );
 }
