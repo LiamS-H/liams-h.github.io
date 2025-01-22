@@ -1,6 +1,7 @@
 import { Code, Terminal } from "lucide-react";
 import Hitbox from "../../components/hitbox";
 import { useFluidContext } from "../../contexts/fluid";
+import { MutableRefObject, useRef } from "react";
 
 interface Technology {
     name: string;
@@ -11,10 +12,12 @@ function Language({
     name,
     years,
     colorNum,
+    scrollable_ref,
 }: {
     name: string;
     years: string;
     colorNum: number;
+    scrollable_ref: MutableRefObject<HTMLDivElement | null>;
 }) {
     const { changeColor } = useFluidContext();
     const colorMap: { [key: number]: { bg: string; hover: string } } = {
@@ -34,7 +37,7 @@ function Language({
             onMouseEnter={() => changeColor(colorNum)}
             onMouseLeave={() => changeColor(0)}
         >
-            <Hitbox id={name} innerBounds={true}>
+            <Hitbox id={name} innerBounds={true} parent={scrollable_ref}>
                 <div className={`w-3 h-3 mr-3 ${bg}`}></div>
             </Hitbox>
             <span className="font-medium">{name}</span>
@@ -66,11 +69,20 @@ export default function About() {
         { name: "GCloud", type: ["CICD"] },
     ];
 
+    const scrollable_ref = useRef<HTMLDivElement | null>(null);
+
     return (
-        <div className="min-h-screen text-white p-10 space-y-12">
+        <div
+            ref={scrollable_ref}
+            className="h-[90%] text-white p-10 space-y-12 overflow-y-auto"
+        >
             <div className="max-w-4xl mx-auto">
                 <div className="p-1 m-4 rounded-lg bg-black transition-all duration-300">
-                    <Hitbox id={"about-desc"} className="flex">
+                    <Hitbox
+                        id={"about-desc"}
+                        className="flex"
+                        parent={scrollable_ref}
+                    >
                         <p className="text-lg leading-relaxed p-4">
                             <span className="text-4xl">
                                 Hi, I'm{" "}
@@ -107,6 +119,7 @@ export default function About() {
                                 name={lang.name}
                                 years={lang.years}
                                 colorNum={lang.colorNum}
+                                scrollable_ref={scrollable_ref}
                             />
                         ))}
                     </div>
@@ -118,7 +131,11 @@ export default function About() {
                     </h2>
                     <div className="flex flex-wrap gap-3">
                         {technologies.map((tech) => (
-                            <Hitbox id={tech.name} key={tech.name}>
+                            <Hitbox
+                                id={tech.name}
+                                key={tech.name}
+                                parent={scrollable_ref}
+                            >
                                 <span
                                     className="px-3 py-1 text-sm 
                   bg-gradient-to-r from-white to-purple-500 

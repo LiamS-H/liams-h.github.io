@@ -83,13 +83,13 @@ export function useFluidBoundRegister(bounds: DOMRect | undefined, id: string) {
     const { registerBound } = useFluidContext();
     const rect: FluidRect | null = useMemo(() => {
         if (!bounds) return null;
+        const vw = window.visualViewport?.width || window.innerWidth;
+        const vh = window.visualViewport?.height || window.innerHeight;
         return {
-            x: bounds.x / window.innerWidth,
-            y:
-                (window.innerHeight - bounds.height - bounds.y) /
-                window.innerHeight,
-            w: bounds.width / window.innerWidth,
-            h: bounds.height / window.innerHeight,
+            x: bounds.x / vw,
+            y: (vh - bounds.height - bounds.y) / vh,
+            w: bounds.width / vw,
+            h: bounds.height / vh,
         };
     }, [bounds?.x, bounds?.y, bounds?.width, bounds?.height]);
 
