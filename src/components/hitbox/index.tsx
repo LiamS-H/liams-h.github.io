@@ -51,8 +51,18 @@ export default function Hitbox(
         if (!boundRef.current) return;
         const observer = new ResizeObserver(calcBounds);
         observer.observe(boundRef.current);
-        if (!parent?.current) return;
-        parent.current.addEventListener("scroll", calcBounds);
+        const controller = new AbortController();
+        window.addEventListener("resize", calcBounds, {
+            signal: controller.signal,
+        });
+        if (parent?.current) {
+            parent.current.addEventListener("scroll", calcBounds, {
+                signal: controller.signal,
+            });
+        }
+        return () => {
+            controller.abort();
+        };
     }, []);
 
     return <div {...divprops} ref={boundRef} />;

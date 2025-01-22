@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import "./water.css";
 import { Simulator } from "./sim";
 import { useFluidContextHost } from "../../contexts/fluid";
 import { useWindowFocus } from "../../contexts/focus";
@@ -10,6 +9,12 @@ export default function Water(props: { children: ReactNode }) {
     const [initialized, setInitialized] = useState(false);
     const { provider, rects, text, color } = useFluidContextHost();
     const focus = useWindowFocus();
+    const [canvasW, setCanvasW] = useState(
+        window.visualViewport?.width || window.innerWidth
+    );
+    const [canvasH, setCanvasH] = useState(
+        window.visualViewport?.height || window.innerHeight
+    );
 
     useEffect(() => {
         if (!sim.current) return;
@@ -32,11 +37,13 @@ export default function Water(props: { children: ReactNode }) {
     async function init(canvas: HTMLCanvasElement) {
         // Resize handling
         async function resizeCanvas() {
-            const minW = 400;
-            const minH = 400;
+            const minW = 4;
+            const minH = 4;
 
             const vw = window.visualViewport?.width || window.innerWidth;
             const vh = window.visualViewport?.height || window.innerHeight;
+            setCanvasH(vh);
+            setCanvasW(vw);
 
             canvas.width = Math.max(vw, minW);
             canvas.height = Math.max(vh, minH);
@@ -115,7 +122,13 @@ export default function Water(props: { children: ReactNode }) {
     return (
         <>
             <div className="absolute top-0 left-0 -z-10">
-                <canvas ref={canvas} />
+                <canvas
+                    ref={canvas}
+                    style={{
+                        width: `${canvasW}px`,
+                        height: `${canvasH}px`,
+                    }}
+                />
             </div>
 
             {provider({ ...props })}

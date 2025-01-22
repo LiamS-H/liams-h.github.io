@@ -75,6 +75,12 @@ export default function About() {
         <div
             ref={scrollable_ref}
             className="h-[90%] text-white p-10 space-y-12 overflow-y-auto"
+            style={{
+                maskImage:
+                    "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
+                WebkitMaskImage:
+                    "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
+            }}
         >
             <div className="max-w-4xl mx-auto">
                 <div className="p-1 m-4 rounded-lg bg-black transition-all duration-300">
