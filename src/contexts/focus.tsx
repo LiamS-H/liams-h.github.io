@@ -17,22 +17,30 @@ export function WindowFocusProvider(props: { children: ReactNode }) {
         const handleFocusChange = (focused: boolean) =>
             setIsWindowFocused(focused);
 
-        const onFocus = () => handleFocusChange(true);
-        const onBlur = () => handleFocusChange(false);
-        const onVisibilityChange = () =>
-            handleFocusChange(document.visibilityState === "visible");
+        const controller = new AbortController();
 
-        window.addEventListener("focus", onFocus);
-        window.addEventListener("blur", onBlur);
-        document.addEventListener("visibilitychange", onVisibilityChange);
+        window.addEventListener("focus", () => handleFocusChange(true), {
+            signal: controller.signal,
+        });
+        window.addEventListener("blur", () => handleFocusChange(false), {
+            signal: controller.signal,
+        });
+        window.addEventListener("pagehide", () => handleFocusChange(false), {
+            signal: controller.signal,
+        });
+        window.addEventListener("pageshow", () => handleFocusChange(false), {
+            signal: controller.signal,
+        });
+        document.addEventListener(
+            "visibilitychange",
+            () => handleFocusChange(document.visibilityState === "visible"),
+            {
+                signal: controller.signal,
+            }
+        );
 
         return () => {
-            window.removeEventListener("focus", onFocus);
-            window.removeEventListener("blur", onBlur);
-            document.removeEventListener(
-                "visibilitychange",
-                onVisibilityChange
-            );
+            controller.abort();
         };
     }, []);
 
@@ -46,7 +54,7 @@ export function WindowFocusProvider(props: { children: ReactNode }) {
 export function useWindowFocus(): boolean {
     const context = useContext(WindowFocusContext);
     if (context === null) {
-        throw Error("useWindowFocus() must be calle in context");
+        throw Error("useWindowFocus() must be called in context");
     }
     return context;
 }
