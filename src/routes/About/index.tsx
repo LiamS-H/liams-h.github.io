@@ -67,6 +67,8 @@ export default function About() {
         { name: "Cloudflare", type: ["CICD"] },
         { name: "Docker", type: ["CICD"] },
         { name: "GCloud", type: ["CICD"] },
+        { name: "Dnd-Kit", type: ["Library"] },
+        { name: "ReactQuery", type: ["Library"] },
     ];
 
     const scrollable_ref = useRef<HTMLDivElement | null>(null);
