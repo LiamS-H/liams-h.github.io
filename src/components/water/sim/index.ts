@@ -13,7 +13,7 @@ export class Simulator {
     private text?: string;
     private boxes: [number, number, number, number][] = [];
     //              x,      y,      w,      h,
-    private maxBoxes: number = 20;
+    private maxBoxes: number = 50;
     private smoke_color: number = 0;
 
     private grid_size: number = 512;
