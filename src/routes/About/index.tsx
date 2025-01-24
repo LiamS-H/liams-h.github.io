@@ -33,7 +33,7 @@ function Language({
 
     return (
         <div
-            className={`flex items-center group transition-all duration-300 ${hover}`}
+            className={`flex items-center max-w-md group transition-all duration-300 ${hover}`}
             onMouseEnter={() => changeColor(colorNum)}
             onMouseLeave={() => changeColor(0)}
         >
@@ -114,7 +114,7 @@ export default function About() {
                 </div>
             </div>
 
-            <div className="max-w-4xl mx-auto flex flex-col lg:flex-row gap-12">
+            <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12">
                 <div className="min-w-56">
                     <h2 className="text-2xl font-bold mb-6 flex items-center">
                         <Code className="mr-2 text-emerald-500" />
@@ -157,6 +157,7 @@ export default function About() {
                     </div>
                 </div>
             </div>
+            <div className="min-h-[45%] sm:min-h-0" />
         </div>
     );
 }
