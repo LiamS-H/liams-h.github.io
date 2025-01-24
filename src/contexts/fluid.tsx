@@ -26,7 +26,6 @@ export function useFluidContextHost(): {
     color: number;
 } {
     const [color, setColor] = useState<number>(0);
-    const changeColor = useCallback(setColor, []);
 
     const [text, setText] = useState<string>("");
     const [rectMap, setRectMap] = useState<FluidRects>(
@@ -63,7 +62,7 @@ export function useFluidContextHost(): {
 
     const provider = (props: { children?: ReactNode }) => (
         <fluidContext.Provider
-            value={{ registerBound, registerText, changeColor }}
+            value={{ registerBound, registerText, changeColor: setColor }}
         >
             {props.children}
         </fluidContext.Provider>
@@ -99,7 +98,7 @@ export function useFluidBoundRegister(bounds: DOMRect | undefined, id: string) {
         return () => {
             registerBound(null, id);
         };
-    }, [rect]);
+    }, [rect, id, registerBound]);
 }
 
 export function useFluidTextRegister(text: string) {
@@ -109,5 +108,5 @@ export function useFluidTextRegister(text: string) {
         return () => {
             registerText("");
         };
-    }, [text]);
+    }, [text, registerText]);
 }

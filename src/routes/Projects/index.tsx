@@ -7,9 +7,12 @@ import { FOOODCard } from "./FOOOD";
 import { ConfluenceCard } from "./Confluence";
 import { ShahrazadCard } from "./Shahrazad";
 
-function debounce<F extends (...args: any[]) => any>(func: F, delay: number) {
+function debounce<F extends (...args: unknown[]) => unknown>(
+    func: F,
+    delay: number
+) {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
-    return function (this: any, ...args: Parameters<F>) {
+    return function (this: unknown, ...args: Parameters<F>) {
         if (timeoutId !== null) {
             clearTimeout(timeoutId);
         }

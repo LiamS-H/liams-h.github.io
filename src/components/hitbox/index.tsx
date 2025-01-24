@@ -1,6 +1,7 @@
 import {
     HTMLProps,
     MutableRefObject,
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -20,32 +21,37 @@ export default function Hitbox(
     const [bounds, setBounds] = useState<DOMRect | undefined>();
 
     useFluidBoundRegister(bounds, id);
-    function calcBounds() {
-        if (!boundRef.current) return;
-        let rect = boundRef.current.getBoundingClientRect();
-        if (innerBounds) {
-            const range = document.createRange();
-            range.selectNodeContents(boundRef.current);
-            rect = range.getBoundingClientRect();
-            range.detach();
-        }
-        if (parent?.current) {
-            const pRect = parent.current.getBoundingClientRect();
+    const calcBounds = useCallback(
+        function () {
+            if (!boundRef.current) return;
+            let rect = boundRef.current.getBoundingClientRect();
+            if (innerBounds) {
+                const range = document.createRange();
+                range.selectNodeContents(boundRef.current);
+                rect = range.getBoundingClientRect();
+                range.detach();
+            }
+            if (parent?.current) {
+                const pRect = parent.current.getBoundingClientRect();
 
-            const new_x = Math.max(pRect.x, rect.x);
-            rect.width += rect.x - new_x;
-            rect.x = new_x;
-            rect.width =
-                Math.min(pRect.x + pRect.width, rect.x + rect.width) - rect.x;
+                const new_x = Math.max(pRect.x, rect.x);
+                rect.width += rect.x - new_x;
+                rect.x = new_x;
+                rect.width =
+                    Math.min(pRect.x + pRect.width, rect.x + rect.width) -
+                    rect.x;
 
-            const new_y = Math.max(pRect.y, rect.y);
-            rect.height += rect.y - new_y;
-            rect.y = new_y;
-            rect.height =
-                Math.min(pRect.y + pRect.height, rect.y + rect.height) - rect.y;
-        }
-        setBounds(rect);
-    }
+                const new_y = Math.max(pRect.y, rect.y);
+                rect.height += rect.y - new_y;
+                rect.y = new_y;
+                rect.height =
+                    Math.min(pRect.y + pRect.height, rect.y + rect.height) -
+                    rect.y;
+            }
+            setBounds(rect);
+        },
+        [innerBounds, parent]
+    );
 
     useEffect(() => {
         if (!boundRef.current) return;
@@ -63,7 +69,7 @@ export default function Hitbox(
         return () => {
             controller.abort();
         };
-    }, []);
+    }, [calcBounds, parent]);
 
     return <div {...divprops} ref={boundRef} />;
 }

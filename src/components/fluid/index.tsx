@@ -83,16 +83,16 @@ export default function Water(props: { children: ReactNode }) {
         setInitialized(true);
         return () => controller.abort();
     }
-    function animate() {
-        requestAnimationFrame(animate);
-        if (!focus) return;
-        if (!sim.current) return;
-        if (!sim.current.isInitialized()) return;
-
-        sim.current.step();
-    }
 
     useEffect(() => {
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!focus) return;
+            if (!sim.current) return;
+            if (!sim.current.isInitialized()) return;
+
+            sim.current.step();
+        }
         if (!focus) return;
         requestAnimationFrame(animate);
     }, [focus]);
@@ -112,7 +112,7 @@ export default function Water(props: { children: ReactNode }) {
         return () => {
             cleanup();
         };
-    }, []);
+    }, [initialized]);
 
     if (sim.current?.isBroken()) {
         console.error("sim is broken");
