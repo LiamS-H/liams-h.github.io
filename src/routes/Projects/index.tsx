@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-import ExternalLink from "../../components/external-link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ProjectCard } from "./card";
 import { ScrycardsCard } from "./Scrycards";
