@@ -15,6 +15,7 @@ export default function Water(props: { children: ReactNode }) {
     const [canvasH, setCanvasH] = useState(
         window.visualViewport?.height || window.innerHeight
     );
+    const controller_ref = useRef(new AbortController());
 
     useEffect(() => {
         if (!sim.current) return;
@@ -72,7 +73,7 @@ export default function Water(props: { children: ReactNode }) {
         }
         sim.current = await Simulator.create(canvas);
 
-        const controller = new AbortController();
+        const controller = controller_ref.current;
 
         window.addEventListener("resize", resizeCanvas, {
             signal: controller.signal,
@@ -85,7 +86,6 @@ export default function Water(props: { children: ReactNode }) {
         });
 
         setInitialized(true);
-        return () => controller.abort();
     }
 
     useEffect(() => {
@@ -102,20 +102,15 @@ export default function Water(props: { children: ReactNode }) {
     }, [focus]);
 
     useEffect(() => {
-        if (initialized) return;
+        if (initialized) {
+            return () => {
+                controller_ref.current.abort();
+            };
+        }
         if (!canvas.current) return;
         if (sim.current !== undefined) return;
         sim.current = null;
-        const abortPromise = init(canvas.current);
-        const cleanup = async () => {
-            if (!sim.current) return;
-            const abort = await abortPromise;
-            abort();
-        };
-
-        return () => {
-            cleanup();
-        };
+        init(canvas.current);
     }, [initialized]);
 
     if (sim.current?.isBroken()) {
