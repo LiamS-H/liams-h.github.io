@@ -604,7 +604,7 @@ export class Simulator {
             }
             if (char == "a") {
                 const w = context.measureText(char).width;
-                context.clearRect(x + w * 0.22, y + w * 0.4, w * 0.1, w * 0.2);
+                context.clearRect(x + w * 0.2, y + w * 0.45, w * 0.1, w * 0.2);
             }
             x += context.measureText(char).width + letterSpacing;
         }
