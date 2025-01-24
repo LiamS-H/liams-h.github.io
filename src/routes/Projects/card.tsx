@@ -8,6 +8,7 @@ export function ProjectCard(
         parent: MutableRefObject<HTMLDivElement | null>;
     }
 ) {
+    const { id, colorNum, parent, ...divProps } = props;
     const { changeColor } = useFluidContext();
     let textColor: string;
     switch (props.colorNum) {
@@ -33,10 +34,18 @@ export function ProjectCard(
         <Hitbox
             className={`h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all ${textColor}`}
             // className={`w-1/12 aspect-square min-w-[320px] rounded p-8 m-4 flex-col flex justify-between hover:text-cyan-400 `}
-            id={props.id}
-            onMouseEnter={() => changeColor(props.colorNum)}
+            id={id}
+            onMouseEnter={() => changeColor(colorNum)}
             onMouseLeave={() => changeColor(0)}
-            parent={props.parent}
+            onClick={(e) =>
+                e.currentTarget.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "center",
+                })
+            }
+            parent={parent}
+            {...divProps}
         >
             {props.children}
         </Hitbox>
