@@ -24,8 +24,8 @@ function Language({
         2: { bg: "bg-emerald-500", hover: "hover:text-emerald-500" },
         3: { bg: "bg-sky-500", hover: "hover:text-sky-500" },
         1: { bg: "bg-amber-500", hover: "hover:text-amber-500" },
-        4: { bg: "bg-rose-500", hover: "hover:text-rose-500" },
-        5: { bg: "bg-pink-500", hover: "hover:text-pink-500" },
+        4: { bg: "bg-rose-700", hover: "hover:text-rose-700" },
+        5: { bg: "bg-pink-600", hover: "hover:text-pink-600" },
         6: { bg: "bg-indigo-500", hover: "hover:text-indigo-500" },
     };
 
@@ -79,7 +79,7 @@ export default function About() {
             className="h-[90%] text-white p-10 space-y-12 overflow-y-auto"
             style={{
                 maskImage:
-                    "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
+                    "linear-gradient(to top, transparent, black 10%, black 80%, transparent)",
                 WebkitMaskImage:
                     "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
             }}
