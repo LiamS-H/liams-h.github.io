@@ -64,7 +64,11 @@ export default function Water(props: { children: ReactNode }) {
             const vh = window.visualViewport?.height || window.innerHeight;
             if (!sim.current) return;
             const touch = e.touches[0];
-            sim.current.updateMouse(touch.clientX / vw, touch.clientY / vh);
+            sim.current.updateMouse(
+                touch.clientX / vw,
+                touch.clientY / vh,
+                true
+            );
         }
         sim.current = await Simulator.create(canvas);
 

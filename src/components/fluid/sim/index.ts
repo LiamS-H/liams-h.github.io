@@ -36,6 +36,7 @@ export class Simulator {
     private prevMouseY: number | null = null;
     private mouseU: number = 0;
     private mouseV: number = 0;
+    private touch: boolean = false;
 
     // GPU Globals
     private canvas: HTMLCanvasElement;
@@ -652,11 +653,10 @@ export class Simulator {
         return this.device.queue.onSubmittedWorkDone();
     }
 
-    public async updateMouse(x: number, y: number) {
+    public async updateMouse(x: number, y: number, touch?: true) {
         this.mouseX = x;
         this.mouseY = 1 - y;
-
-        // console.log(this.mouseX, this.mouseY, this.mouseU, this.mouseV);
+        this.touch = touch || false;
     }
 
     private async simulate() {
@@ -730,6 +730,10 @@ export class Simulator {
         } else {
             this.mouseU = this.mouseX - prevX;
             this.mouseV = this.mouseY - prevY;
+            if (this.touch) {
+                this.mouseU *= 3;
+                this.mouseV *= 3;
+            }
         }
         // console.log(this.mouseU, this.mouseV);
 
