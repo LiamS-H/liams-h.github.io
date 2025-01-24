@@ -80,9 +80,11 @@ export namespace PROGRAM {
     @group(0) @binding(1) var<storage, read> smoke_read_r: array<f32>;
     @group(0) @binding(2) var<storage, read> smoke_read_g: array<f32>;
     @group(0) @binding(3) var<storage, read> smoke_read_b: array<f32>;
-    @group(0) @binding(4) var<storage, read_write> smoke_write_r: array<f32>;
-    @group(0) @binding(5) var<storage, read_write> smoke_write_g: array<f32>;
-    @group(0) @binding(6) var<storage, read_write> smoke_write_b: array<f32>;
+    @group(0) @binding(4) var<storage, read_write> solids_read: array<f32>;
+    @group(0) @binding(5) var<storage, read_write> smoke_write_r: array<f32>;
+    @group(0) @binding(6) var<storage, read_write> smoke_write_g: array<f32>;
+    @group(0) @binding(7) var<storage, read_write> smoke_write_b: array<f32>;
+
 
     @compute @workgroup_size(8, 8)
     fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
@@ -135,6 +137,13 @@ export namespace PROGRAM {
                 return;
             }
         }
+        if (solids_read[index] == 0) {
+            smoke_write_r[index] = smoke_read_r[index] * U.diffusion * 0.5;
+            smoke_write_g[index] = smoke_read_g[index] * U.diffusion * 0.5;
+            smoke_write_b[index] = smoke_read_b[index] * U.diffusion * 0.5;
+            return;
+        }
+
         smoke_write_r[index] = smoke_read_r[index] * U.diffusion;
         smoke_write_g[index] = smoke_read_g[index] * U.diffusion;
         smoke_write_b[index] = smoke_read_b[index] * U.diffusion;
@@ -534,6 +543,8 @@ export namespace PROGRAM {
     @compute @workgroup_size(8, 8)
     fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
         ${COMPUTE_HEADER}
+
+        
 
         let V = vel_bilerp(pos.x, pos.y);
 

@@ -398,7 +398,7 @@ export class Simulator {
         this.updateSmoke = new ComputeProgram(
             this.device,
             PROGRAM.updateSmoke,
-            [this.smoke],
+            [this.smoke, this.solids],
             [this.smoke0],
             [this.Ures_dif],
             this.width,
