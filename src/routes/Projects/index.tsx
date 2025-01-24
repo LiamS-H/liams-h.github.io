@@ -1,14 +1,12 @@
-import {
-    HTMLProps,
-    MutableRefObject,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
-import Hitbox from "../../components/hitbox";
+import { useEffect, useRef, useState } from "react";
+
 import ExternalLink from "../../components/external-link";
-import { useFluidContext } from "../../contexts/fluid";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ProjectCard } from "./card";
+import { ScrycardsCard } from "./Scrycards";
+import { FOOODCard } from "./FOOOD";
+import { ConfluenceCard } from "./Confluence";
+import { ShahrazadCard } from "./Shahrazad";
 
 function debounce<F extends (...args: any[]) => any>(func: F, delay: number) {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -20,45 +18,6 @@ function debounce<F extends (...args: any[]) => any>(func: F, delay: number) {
             func.apply(this, args);
         }, delay);
     };
-}
-
-function ProjectCard(
-    props: HTMLProps<HTMLDivElement> & {
-        id: string;
-        colorNum: number;
-        parent: MutableRefObject<HTMLDivElement | null>;
-    }
-) {
-    const { changeColor } = useFluidContext();
-    let textColor: string;
-    switch (props.colorNum) {
-        case 1:
-            textColor =
-                // "hover:text-gradient-to-r hover:from-pink-500 hover:to-orange-500";
-                "hover:text-orange-300";
-            break;
-        case 2:
-            textColor = "hover:text-green-400";
-            break;
-        case 3:
-            textColor = "hover:text-cyan-300";
-            break;
-        default:
-            textColor = "text-white";
-    }
-
-    return (
-        <Hitbox
-            className={`h-60 w-60 mx-4 p-4 flex-col flex justify-between transition-all ${textColor}`}
-            // className={`w-1/12 aspect-square min-w-[320px] rounded p-8 m-4 flex-col flex justify-between hover:text-cyan-400 `}
-            id={props.id}
-            onMouseEnter={() => changeColor(props.colorNum)}
-            onMouseLeave={() => changeColor(0)}
-            parent={props.parent}
-        >
-            {props.children}
-        </Hitbox>
-    );
 }
 
 export default function Projects() {
@@ -161,12 +120,10 @@ export default function Projects() {
 
                 <div
                     ref={scrollable_ref}
-                    className="h-fit gap-8 flex flex-row justify-around items-center overflow-auto"
+                    className="h-fit gap-8 flex flex-row justify-around items-center overflow-auto
+                    [mask-image:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)] 
+                    [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)]"
                     style={{
-                        maskImage:
-                            "linear-gradient(to right, transparent, black 20%, black 60%, transparent)",
-                        WebkitMaskImage:
-                            "linear-gradient(to right, transparent, black 20%, black 60%, transparent)",
                         scrollbarWidth: "none",
                     }}
                 >
@@ -176,55 +133,30 @@ export default function Projects() {
                         colorNum={1}
                         parent={scrollable_ref}
                     >
-                        <h1 className="text-5xl">Scrycards</h1>
-                        <p>
-                            A react component library that wraps{" "}
-                            <ExternalLink href="https://scryfall.com/docs/api">
-                                Scryfall API
-                            </ExternalLink>{" "}
-                            and provides a lightweight cache.
-                        </p>
-                        <div className="flex justify-center flex-row space-x-4">
-                            <ExternalLink href="https://github.com/LiamS-H/react-scrycards">
-                                Github
-                            </ExternalLink>
-                        </div>
+                        <ScrycardsCard />
                     </ProjectCard>
                     <ProjectCard
                         id="FOOOD"
                         colorNum={2}
                         parent={scrollable_ref}
                     >
-                        <h1 className="text-5xl">FoodML</h1>
-                        <p>
-                            A machine learning full stack project for estimating
-                            caloric data from images.
-                            <br />
-                            <i>1st place HackMecedIX.</i>
-                        </p>
-                        <div className="flex align-middle justify-center flex-row space-x-4">
-                            <ExternalLink href="https://devpost.com/software/foooood">
-                                Devpost
-                            </ExternalLink>
-                        </div>
+                        <FOOODCard />
                     </ProjectCard>
                     <ProjectCard
                         id="Confluence"
                         colorNum={3}
                         parent={scrollable_ref}
                     >
-                        <h1 className="text-4xl">Confluence</h1>
-                        <p>
-                            Public website with visual tools and syntax for
-                            advanced Scryfall database queries.
-                        </p>
-                        <div className="flex align-middle justify-center flex-row space-x-4">
-                            <ExternalLink href="https://card-confluence.web.app/about">
-                                Vist Site
-                            </ExternalLink>
-                        </div>
+                        <ConfluenceCard />
                     </ProjectCard>
-                    <div className="min-w-[500px]" />
+                    <ProjectCard
+                        id="Shahrazad"
+                        colorNum={4}
+                        parent={scrollable_ref}
+                    >
+                        <ShahrazadCard />
+                    </ProjectCard>
+                    <div className="min-w-[45%]" />
                 </div>
             </div>
         </div>
