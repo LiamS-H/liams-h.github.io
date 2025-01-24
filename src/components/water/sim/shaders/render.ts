@@ -58,14 +58,17 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let vel = sqrt(u*u+v*v);
 
     let d = divergence[index];
-    let vscale = 0.07;
+    let vscale = 10.0;
 
     var out = vec4<f32>(smoke_color, 1.0);
-    if (out.r <=0.001 && out.g <=0.001 &&out.b <=0.001) {
-        return out;
-    }
-    out.r += abs(v) * 6;
-    out.b += abs(u) * 6;
+    // if (out.r <=0.001 && out.g <=0.001 &&out.b <=0.001) {
+    //     return out;
+    // }
+    out.r *= 1 + abs(v) * vscale;
+    out.b *= 1 + abs(u) * vscale;
+
+    // out.r += abs(v) * 6;
+    // out.b += abs(u) * 6;
     
     // out.g += abs(v) * abs(u) * 2.25;
     return out;
