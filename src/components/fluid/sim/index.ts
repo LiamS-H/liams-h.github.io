@@ -602,6 +602,10 @@ export class Simulator {
                     w * 0.2
                 );
             }
+            if (char == "a") {
+                const w = context.measureText(char).width;
+                context.clearRect(x + w * 0.22, y + w * 0.4, w * 0.1, w * 0.2);
+            }
             x += context.measureText(char).width + letterSpacing;
         }
 

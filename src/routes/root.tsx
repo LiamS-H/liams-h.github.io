@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Water from "../components/water";
+import Water from "../components/fluid";
 import { WindowFocusProvider } from "../contexts/focus";
 import NavBar from "../components/navbar";
 
