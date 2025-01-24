@@ -102,6 +102,7 @@ export default function Projects() {
                             onClick={() => navigateProject("left")}
                             disabled={currentIndex === 1}
                             className=" p-2 rounded-full disabled:opacity-50"
+                            aria-label="previous project"
                         >
                             <ArrowLeft />
                         </button>
@@ -111,6 +112,7 @@ export default function Projects() {
                             onClick={() => navigateProject("right")}
                             disabled={currentIndex === totalChildren - 2}
                             className="p-2 rounded-full disabled:opacity-50"
+                            aria-label="next project"
                         >
                             <ArrowRight />
                         </button>
