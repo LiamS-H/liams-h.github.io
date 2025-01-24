@@ -119,7 +119,7 @@ export default function Projects() {
 
                 <div
                     ref={scrollable_ref}
-                    className="h-fit gap-8 flex flex-row justify-around items-center overflow-auto
+                    className="h-fit gap-8 md:gap-24 flex flex-row justify-around items-center overflow-auto
                     [mask-image:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)] 
                     [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)]"
                     style={{

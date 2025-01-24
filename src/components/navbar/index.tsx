@@ -25,7 +25,7 @@ function NavBarButton(props: { path: string; label: string; active: boolean }) {
 export default function NavBar() {
     const location = useLocation();
     return (
-        <nav className="fixed bottom-0 w-full">
+        <nav className="fixed bottom-0 w-full md:px-[20%]">
             <ul className="flex justify-around">
                 {routes.map((r) => (
                     <NavBarButton
