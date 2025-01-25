@@ -106,7 +106,7 @@ export default function About() {
                     </div>
                 </div>
 
-                <div className="w-full">
+                <div className="w-full min-h-[400px]">
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-2xl font-bold flex items-center">
                             <Terminal className="mr-2 text-sky-500" />{" "}
@@ -125,7 +125,7 @@ export default function About() {
                     <div className="flex flex-wrap gap-3">
                         {technologies.map((tech) => (
                             <Technology
-                                key={tech.name}
+                                key={sort + tech.name}
                                 tech={tech}
                                 scrollable_ref={scrollable_ref}
                             />
@@ -133,7 +133,7 @@ export default function About() {
                     </div>
                 </div>
             </div>
-            <div className="min-h-[45%] md:min-h-0" />
+            <div className=" min-h-[20%] md:min-h-0" />
         </div>
     );
 }
