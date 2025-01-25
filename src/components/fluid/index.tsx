@@ -2,11 +2,13 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { Simulator } from "./sim";
 import { useFluidContextHost } from "../../contexts/fluid";
 import { useWindowFocus } from "../../contexts/focus";
+import NoGPUModal from "./nogpupage";
 
 export default function Water(props: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
     const [initialized, setInitialized] = useState(false);
+    const [error, setError] = useState(false);
     const { provider, rects, text, color } = useFluidContextHost();
     const focus = useWindowFocus();
     const [canvasW, setCanvasW] = useState(
@@ -72,6 +74,10 @@ export default function Water(props: { children: ReactNode }) {
             );
         }
         sim.current = await Simulator.create(canvas);
+        if (sim.current === null) {
+            setError(true);
+            return;
+        }
 
         const controller = controller_ref.current;
 
@@ -113,9 +119,13 @@ export default function Water(props: { children: ReactNode }) {
         init(canvas.current);
     }, [initialized]);
 
-    if (sim.current?.isBroken()) {
-        console.error("sim is broken");
-        return null;
+    if (error) {
+        return (
+            <>
+                {provider({ ...props })}
+                <NoGPUModal text={text} />
+            </>
+        );
     }
 
     return (

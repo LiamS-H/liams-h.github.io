@@ -24,7 +24,7 @@ export function ProjectCard(
             textColor = "hover:text-cyan-300";
             break;
         case 4:
-            textColor = "hover:text-red-600";
+            textColor = "hover:text-rose-500";
             break;
         default:
             textColor = "text-white";
@@ -32,7 +32,7 @@ export function ProjectCard(
 
     return (
         <Hitbox
-            className={`h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all ${textColor}`}
+            className={`bg-black h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all ${textColor}`}
             // className={`w-1/12 aspect-square min-w-[320px] rounded p-8 m-4 flex-col flex justify-between hover:text-cyan-400 `}
             id={id}
             onMouseEnter={() => changeColor(colorNum)}

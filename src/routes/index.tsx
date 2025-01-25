@@ -3,6 +3,7 @@ import Root from "./root";
 import Home from "./Home";
 import About from "./About";
 import Projects from "./Projects";
+import WebGPU from "./WebGPU";
 
 export const routes = [
     { path: "/", label: "Home" },
@@ -17,6 +18,7 @@ export default function Router() {
                 <Route path="" Component={Root}>
                     <Route path="/" Component={Home} />
                     <Route path="/about" Component={About} />
+                    <Route path="/webgpu" Component={WebGPU} />
                     <Route path="/projects" Component={Projects}>
                         <Route path="projects/confluence" />
                         <Route path="projects/food" />

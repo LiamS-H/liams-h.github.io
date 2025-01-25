@@ -89,11 +89,14 @@ export class Simulator {
     private constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
     }
-    public static async create(canvas: HTMLCanvasElement): Promise<Simulator> {
+    public static async create(
+        canvas: HTMLCanvasElement
+    ): Promise<Simulator | null> {
         console.log("creating new instance");
         const instance = new Simulator(canvas);
         instance.canvas = canvas;
-        await instance.initGPU();
+        const success = await instance.initGPU();
+        if (!success) return null;
         await instance.init();
         return instance;
     }
@@ -208,14 +211,14 @@ export class Simulator {
         if (!adapter) {
             console.error("Missing adapter");
             this.broken = true;
-            return;
+            return false;
         }
         const device = await adapter.requestDevice();
         const context = this.canvas.getContext("webgpu");
         if (!context) {
             console.error("Missing context");
             this.broken = true;
-            return;
+            return false;
         }
         const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
         context.configure({
@@ -225,6 +228,7 @@ export class Simulator {
 
         this.context = context;
         this.device = device;
+        return true;
     }
 
     private async updateUniforms() {
