@@ -108,9 +108,10 @@ export default function Water(props: { children: ReactNode }) {
     }, [focus]);
 
     useEffect(() => {
+        const controller = controller_ref;
         if (initialized) {
             return () => {
-                controller_ref.current.abort();
+                controller.current.abort();
             };
         }
         if (!canvas.current) return;
