@@ -14,3 +14,4 @@
  - [X] simulation runs at drastically different speeds depending on window size
  - [X] simulation doesn't run at certain aspect ratios (ie 1024 1568 grid ratio)
  - [ ] Add timeout to reset sim when tabbed out. (so we don't hog vram)
+ - [ ] Speed up fluidRegister
