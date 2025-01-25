@@ -735,8 +735,8 @@ export class Simulator {
             this.mouseU = this.mouseX - prevX;
             this.mouseV = this.mouseY - prevY;
             if (this.touch) {
-                this.mouseU *= 3;
-                this.mouseV *= 3;
+                this.mouseU *= 5;
+                this.mouseV *= 5;
             }
         }
         // console.log(this.mouseU, this.mouseV);
