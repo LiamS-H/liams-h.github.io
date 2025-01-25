@@ -10,10 +10,10 @@ function NavBarButton(props: { path: string; label: string; active: boolean }) {
         >
             <Hitbox
                 id={props.path}
-                className={`rounded p-4 mb-4 ${
+                className={`bg-black p-4 mb-4 ${
                     props.active
-                        ? "bg-black text-purple-600"
-                        : "bg-black text-white hover:text-pink-500"
+                        ? " text-purple-600"
+                        : " text-white hover:text-pink-500"
                 }`}
             >
                 <li key={props.path}>{props.label}</li>
