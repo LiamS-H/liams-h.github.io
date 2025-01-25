@@ -124,7 +124,7 @@ export default function Projects() {
 
                 <div
                     ref={scrollable_ref}
-                    className="h-fit gap-8 md:gap-24 flex flex-row justify-around items-center overflow-auto
+                    className="h-fit gap-8 md:gap-24 flex flex-row justify-around items-center overflow-x-auto relative
                     [mask-image:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)] 
                     [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)]"
                     style={{
@@ -133,11 +133,11 @@ export default function Projects() {
                 >
                     <div className="min-w-[45%]" />
                     <ProjectCard
-                        id="Scrycards"
-                        colorNum={1}
+                        id="Shahrazad"
+                        colorNum={4}
                         parent={scrollable_ref}
                     >
-                        <ScrycardsCard />
+                        <ShahrazadCard />
                     </ProjectCard>
                     <ProjectCard
                         id="FOOOD"
@@ -147,19 +147,20 @@ export default function Projects() {
                         <FOOODCard />
                     </ProjectCard>
                     <ProjectCard
+                        id="Scrycards"
+                        colorNum={1}
+                        parent={scrollable_ref}
+                    >
+                        <ScrycardsCard />
+                    </ProjectCard>
+                    <ProjectCard
                         id="Confluence"
                         colorNum={3}
                         parent={scrollable_ref}
                     >
                         <ConfluenceCard />
                     </ProjectCard>
-                    <ProjectCard
-                        id="Shahrazad"
-                        colorNum={4}
-                        parent={scrollable_ref}
-                    >
-                        <ShahrazadCard />
-                    </ProjectCard>
+
                     <div className="min-w-[45%]" />
                 </div>
             </div>
