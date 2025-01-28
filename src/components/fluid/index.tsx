@@ -38,8 +38,33 @@ export default function Water(props: { children: ReactNode }) {
     }, [initialized, color]);
 
     async function init(canvas: HTMLCanvasElement) {
-        // Resize handling
+        sim.current = await Simulator.create(canvas);
+        if (sim.current === null) {
+            setError(true);
+            return;
+        }
+
+        setInitialized(true);
+    }
+
+    useEffect(() => {
+        function animate() {
+            requestAnimationFrame(animate);
+            if (!focus) return;
+            if (!sim.current) return;
+            if (!sim.current.isInitialized()) return;
+
+            sim.current.step();
+        }
+        if (!focus) return;
+        requestAnimationFrame(animate);
+    }, [focus]);
+
+    useEffect(() => {
+        if (!initialized) return;
         async function resizeCanvas() {
+            if (!canvas.current) return;
+            console.log("resizing");
             const minW = 4;
             const minH = 4;
 
@@ -48,8 +73,8 @@ export default function Water(props: { children: ReactNode }) {
             setCanvasH(vh);
             setCanvasW(vw);
 
-            canvas.width = Math.max(vw, minW);
-            canvas.height = Math.max(vh, minH);
+            canvas.current.width = Math.max(vw, minW);
+            canvas.current.height = Math.max(vh, minH);
             setInitialized(false);
             await sim.current?.resize();
             setInitialized(true);
@@ -73,13 +98,8 @@ export default function Water(props: { children: ReactNode }) {
                 true
             );
         }
-        sim.current = await Simulator.create(canvas);
-        if (sim.current === null) {
-            setError(true);
-            return;
-        }
 
-        const controller = controller_ref.current;
+        const controller = new AbortController();
 
         window.addEventListener("resize", resizeCanvas, {
             signal: controller.signal,
@@ -90,28 +110,17 @@ export default function Water(props: { children: ReactNode }) {
         window.addEventListener("touchmove", touchMove, {
             signal: controller.signal,
         });
-
-        setInitialized(true);
-    }
-
-    useEffect(() => {
-        function animate() {
-            requestAnimationFrame(animate);
-            if (!focus) return;
-            if (!sim.current) return;
-            if (!sim.current.isInitialized()) return;
-
-            sim.current.step();
-        }
-        if (!focus) return;
-        requestAnimationFrame(animate);
-    }, [focus]);
+        return () => {
+            controller.abort();
+        };
+    }, [initialized]);
 
     useEffect(() => {
-        const controller = controller_ref;
+        const controller = controller_ref.current;
         if (initialized) {
             return () => {
-                controller.current.abort();
+                console.log("aborting");
+                controller.abort();
             };
         }
         if (!canvas.current) return;
