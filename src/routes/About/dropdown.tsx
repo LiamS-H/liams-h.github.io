@@ -42,7 +42,7 @@ export function Dropdown({ options, onSelect }: DropdownProps) {
         <div className="relative inline-block w-36" ref={dropdownRef}>
             <button
                 onClick={toggleDropdown}
-                className="py-2 px-4 rounded flex justify-between w-full h-full shadow-lg text-left transition-colors duration-300 hover:bg-white/5 active:bg-purple-700/20"
+                className="py-2 px-4 rounded flex justify-between w-full h-full text-left shadow-lg transition-colors duration-300 hover:bg-white/5 active:bg-purple-700/20"
                 type="button"
             >
                 {selectedOption || "All"}
