@@ -1,15 +1,15 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Simulator } from "./sim";
-import { useFluidContextHost } from "../../contexts/fluid";
+import { FluidContextHost } from "../../contexts/fluid";
 import { useWindowFocus } from "../../contexts/focus";
 import NoGPUModal from "./nogpupage";
 
 export default function Water(props: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
+    const { FluidProvider, rectMap } = FluidContextHost(sim);
     const [initialized, setInitialized] = useState(false);
     const [error, setError] = useState(false);
-    const { provider, rects, text, color } = useFluidContextHost();
     const focus = useWindowFocus();
     const [canvasW, setCanvasW] = useState(
         window.visualViewport?.width || window.innerWidth
@@ -19,26 +19,8 @@ export default function Water(props: { children: ReactNode }) {
     );
     const controller_ref = useRef(new AbortController());
 
-    useEffect(() => {
-        if (!sim.current) return;
-        // console.log("updating rects:", rects);
-        sim.current.updateRectangles(rects);
-    }, [initialized, rects]);
-
-    useEffect(() => {
-        if (!sim.current) return;
-        // console.log("updating rects:", rects);
-        sim.current.updateTextMatte(text);
-    }, [initialized, text]);
-
-    useEffect(() => {
-        if (!sim.current) return;
-        // console.log("updating rects:", rects);
-        sim.current.updateColor(color);
-    }, [initialized, color]);
-
     async function init(canvas: HTMLCanvasElement) {
-        sim.current = await Simulator.create(canvas);
+        sim.current = await Simulator.create(canvas, rectMap);
         if (sim.current === null) {
             setError(true);
             return;
@@ -131,10 +113,10 @@ export default function Water(props: { children: ReactNode }) {
 
     if (error) {
         return (
-            <>
-                {provider({ ...props })}
-                <NoGPUModal text={text} />
-            </>
+            <FluidProvider>
+                {props.children}
+                <NoGPUModal />
+            </FluidProvider>
         );
     }
 
@@ -150,7 +132,7 @@ export default function Water(props: { children: ReactNode }) {
                 />
             </div>
 
-            {provider({ ...props })}
+            <FluidProvider>{props.children}</FluidProvider>
         </>
     );
 }

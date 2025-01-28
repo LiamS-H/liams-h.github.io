@@ -1,73 +1,85 @@
 import {
     createContext,
-    ReactNode,
+    type ReactNode,
+    type RefObject,
     useCallback,
     useContext,
     useEffect,
-    useMemo,
+    useRef,
     useState,
 } from "react";
-import { FluidRect, FluidRectList } from "../types/fluid";
-
-type FluidRects = Map<string, FluidRect | null>;
+import { FluidRect, FluidRects } from "@/types/fluid";
+import { Simulator } from "@/components/fluid/sim";
 
 interface FluidContext {
-    registerBound: (rect: FluidRect | null, id: string) => void;
+    registerBound: (bounds: DOMRect | null, id: string) => void;
     registerText: (text: string) => void;
     changeColor: (color: number) => void;
+    text: string;
 }
 
 const fluidContext = createContext<FluidContext | null>(null);
 
-export function useFluidContextHost(): {
-    provider: (props: { children?: ReactNode }) => JSX.Element;
-    rects: FluidRectList;
-    text: string;
-    color: number;
-} {
-    const [color, setColor] = useState<number>(0);
+export function FluidContextHost(sim: RefObject<Simulator | null | undefined>) {
+    const color = useRef<number>(0);
 
-    const [text, setText] = useState<string>("");
-    const [rectMap, setRectMap] = useState<FluidRects>(
-        new Map<string, FluidRect>()
-    );
-
-    const rects = useMemo<FluidRectList>(() => {
-        const rectList: FluidRectList = [];
-
-        rectMap.forEach((rect) => {
-            if (!rect) return;
-            rectList.push([rect.x, rect.y, rect.w, rect.h]);
-        });
-        return rectList;
-    }, [rectMap]);
+    const text = useRef<string>("");
+    const [displayText, setDisplayText] = useState("");
+    const rectMap = useRef<FluidRects>(new Map<string, FluidRect>());
 
     const registerBound = useCallback(
-        (rect: FluidRect | null, id: string) => {
-            setRectMap((old_rects) => {
-                const new_rects = new Map(old_rects);
-                new_rects.set(id, rect);
-                return new_rects;
-            });
+        (bounds: DOMRect | null, id: string) => {
+            if (!bounds) {
+                rectMap.current.delete(id);
+                return;
+            }
+            const vh = window.visualViewport?.height || window.innerHeight;
+            const vw = window.visualViewport?.width || window.innerWidth;
+
+            const rect: FluidRect = {
+                x: bounds.x / vw,
+                y: (vh - bounds.height - bounds.y) / vh,
+                w: bounds.width / vw,
+                h: bounds.height / vh,
+            };
+
+            rectMap.current.set(id, rect);
         },
-        [setRectMap]
+        [sim]
     );
 
     const registerText = useCallback(
-        (text: string) => {
-            setText(text);
+        (new_text: string) => {
+            if (new_text === text.current) return;
+            text.current = new_text;
+            sim.current?.updateTextMatte(new_text);
+            setDisplayText(new_text);
         },
-        [setText]
+        [text, sim]
     );
 
-    const provider = (props: { children?: ReactNode }) => (
+    const changeColor = useCallback(
+        (new_color: number) => {
+            if (new_color === color.current) return;
+            color.current = new_color;
+            sim.current?.updateColor(new_color);
+        },
+        [color, sim]
+    );
+
+    const FluidProvider = (props: { children: ReactNode }) => (
         <fluidContext.Provider
-            value={{ registerBound, registerText, changeColor: setColor }}
+            value={{
+                registerBound,
+                registerText,
+                changeColor,
+                text: displayText,
+            }}
         >
             {props.children}
         </fluidContext.Provider>
     );
-    return { provider, rects, text, color };
+    return { FluidProvider, rectMap };
 }
 
 export function useFluidContext(): FluidContext {
@@ -80,25 +92,12 @@ export function useFluidContext(): FluidContext {
 
 export function useFluidBoundRegister(bounds: DOMRect | undefined, id: string) {
     const { registerBound } = useFluidContext();
-    const rect: FluidRect | null = useMemo(() => {
-        if (!bounds) return null;
-        const vh = window.visualViewport?.height || window.innerHeight;
-        const vw = window.visualViewport?.width || window.innerWidth;
-
-        return {
-            x: bounds.x / vw,
-            y: (vh - bounds.height - bounds.y) / vh,
-            w: bounds.width / vw,
-            h: bounds.height / vh,
-        };
-    }, [bounds]);
-
     useEffect(() => {
-        registerBound(rect, id);
+        registerBound(bounds || null, id);
         return () => {
             registerBound(null, id);
         };
-    }, [rect, id, registerBound]);
+    }, [id, registerBound]);
 }
 
 export function useFluidTextRegister(text: string) {

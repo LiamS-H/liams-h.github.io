@@ -5,3 +5,5 @@ export interface FluidRect {
     h: number;
 }
 export type FluidRectList = [number, number, number, number][];
+
+export type FluidRects = Map<string, FluidRect | null>;

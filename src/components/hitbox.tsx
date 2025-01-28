@@ -4,9 +4,8 @@ import {
     useCallback,
     useEffect,
     useRef,
-    useState,
 } from "react";
-import { useFluidBoundRegister } from "../contexts/fluid";
+import { useFluidContext } from "../contexts/fluid";
 
 // TO DO: add callback for updating hitbox
 export default function Hitbox(
@@ -18,12 +17,14 @@ export default function Hitbox(
 ) {
     const { innerBounds, id, parent, ...divprops } = props;
     const boundRef = useRef<HTMLDivElement | null>(null);
-    const [bounds, setBounds] = useState<DOMRect | undefined>();
+    const { registerBound } = useFluidContext();
 
-    useFluidBoundRegister(bounds, id);
     const calcBounds = useCallback(
         function () {
-            if (!boundRef.current) return;
+            if (!boundRef.current) {
+                registerBound(null, id);
+                return;
+            }
             let rect = boundRef.current.getBoundingClientRect();
             if (innerBounds) {
                 const range = document.createRange();
@@ -48,13 +49,14 @@ export default function Hitbox(
                     Math.min(pRect.y + pRect.height, rect.y + rect.height) -
                     rect.y;
             }
-            setBounds(rect);
+            registerBound(rect, id);
         },
         [innerBounds, parent]
     );
 
     useEffect(() => {
         if (!boundRef.current) return;
+        calcBounds();
         const observer = new ResizeObserver(calcBounds);
         observer.observe(boundRef.current);
         const controller = new AbortController();
@@ -67,6 +69,8 @@ export default function Hitbox(
             });
         }
         return () => {
+            registerBound(null, id);
+            // console.log("deleting:", id);
             controller.abort();
         };
     }, [calcBounds, parent]);

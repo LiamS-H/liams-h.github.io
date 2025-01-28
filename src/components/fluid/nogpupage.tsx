@@ -1,7 +1,9 @@
+import { useFluidContext } from "@/contexts/fluid";
 import { Link, useLocation } from "react-router-dom";
 
-export default function NoGPUModal({ text }: { text: string }) {
+export default function NoGPUModal() {
     const { pathname } = useLocation();
+    const { text } = useFluidContext();
     return (
         <>
             {pathname !== "/webgpu" && (

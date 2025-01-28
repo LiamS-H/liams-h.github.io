@@ -1,8 +1,10 @@
 /// <reference types="@webgpu/types" />
 
+import { FluidRectList, FluidRects } from "@/types/fluid";
 import { Uniform, ComputeProgram, Buffer } from "./primitives";
 import { PROGRAM } from "./shaders/compute";
 import { render_shader } from "./shaders/render";
+import { type RefObject } from "react";
 
 export class Simulator {
     private time: number = 0;
@@ -11,7 +13,8 @@ export class Simulator {
     // Initial values & constants
 
     private text?: string;
-    private boxes: [number, number, number, number][] = [];
+    private rectMap!: RefObject<FluidRects>;
+    private boxes: FluidRectList = [];
     //              x,      y,      w,      h,
     private maxBoxes: number = 50;
     private smoke_color: number = 0;
@@ -90,11 +93,13 @@ export class Simulator {
         this.canvas = canvas;
     }
     public static async create(
-        canvas: HTMLCanvasElement
+        canvas: HTMLCanvasElement,
+        rectMap: RefObject<FluidRects>
     ): Promise<Simulator | null> {
         console.log("creating new instance");
         const instance = new Simulator(canvas);
         instance.canvas = canvas;
+        instance.rectMap = rectMap;
         const success = await instance.initGPU();
         if (!success) return null;
         await instance.init();
@@ -104,7 +109,7 @@ export class Simulator {
         console.log("initializing instance");
         this.initSizes();
         await this.initBuffers();
-        this.updateTextMatte("Liam");
+        this.updateTextMatte("");
         this.initComputePrograms();
         this.initRenderPipeline();
         this.initialized = true;
@@ -645,14 +650,23 @@ export class Simulator {
         return this.device.queue.onSubmittedWorkDone();
     }
 
-    public async updateRectangles(
-        newBoxes: [number, number, number, number][]
-    ) {
-        if (this.isBoxSame(newBoxes)) {
+    private async updateRectangles() {
+        const new_boxes: FluidRectList = [];
+        if (!this.rectMap.current) {
             return;
         }
-        this.boxes = newBoxes;
-        // this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
+
+        for (const [_, rect] of this.rectMap.current) {
+            if (!rect) return;
+            new_boxes.push([rect.x, rect.y, rect.w, rect.h]);
+        }
+
+        if (this.isBoxSame(new_boxes)) {
+            return;
+        }
+
+        this.boxes = new_boxes;
+        this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
         this.rectangles.write(new Float32Array(this.boxes.flat()));
         return this.device.queue.onSubmittedWorkDone();
     }
@@ -739,6 +753,8 @@ export class Simulator {
                 this.mouseV *= 5;
             }
         }
+        this.updateRectangles();
+
         // console.log(this.mouseU, this.mouseV);
 
         this.updateUniforms();
