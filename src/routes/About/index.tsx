@@ -4,8 +4,10 @@ import Technology, { ITechnology, TechType } from "./technology";
 import { Language } from "./language";
 import { useRef, useState } from "react";
 import Dropdown from "@/routes/About/dropdown";
+import { LinkedInIcon, GithubIcon } from "@/components/icons";
 
 export default function About() {
+    const [bioOpen, setBioOpen] = useState(false);
     const languages = [
         { name: "Python", years: "5+", colorNum: 2 },
         { name: "TypeScript", years: "3+", colorNum: 3 },
@@ -23,7 +25,7 @@ export default function About() {
         { name: "Express", type: ["Framework"] },
         { name: "Axum", type: ["Framework"] },
         { name: "Git/Github", type: ["CICD"] },
-        { name: "AWS Hosting", type: ["CICD", "Database"] },
+        { name: "AWS", type: ["CICD"] },
         { name: "Vercel", type: ["CICD"] },
         { name: "Firebase", type: ["CICD"] },
         { name: "Firestore", type: ["Database"] },
@@ -57,83 +59,159 @@ export default function About() {
                     "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
             }}
         >
-            <div className="max-w-4xl mx-auto">
-                <div className="p-1 m-4 rounded-lg bg-black transition-all duration-300">
-                    <Hitbox
-                        id={"about-desc"}
-                        className="flex"
-                        parent={scrollable_ref}
+            {/* <div className=""> */}
+            <div className="max-w-4xl mx-auto p-4">
+                <Hitbox
+                    id={"about-desc"}
+                    className="flex flex-col p-4 m-1"
+                    parent={scrollable_ref}
+                >
+                    <p className="text-lg leading-relaxed">
+                        <span className="text-4xl">
+                            Hi, I'm{" "}
+                            <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold">
+                                Liam
+                            </span>
+                            .
+                            <br />
+                        </span>
+                        {/* with a knack for{" "}
+                         */}
+                        I have a{" "}
+                        <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold">
+                            Software Engineering Degree
+                        </span>{" "}
+                        and all the tools you need so I can{" "}
+                        <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-bold">
+                            hit the ground running.
+                        </span>
+                    </p>
+                    <button
+                        className="mx-auto mt-2 py-1 px-2 rounded-md shadow-lg  w-fit h-fit transition-all duration-500 shadow-cyan-300 text-cyan-100 hover:text-cyan-400 hover:shadow-cyan-600"
+                        onClick={() => setBioOpen((o) => !o)}
                     >
-                        <p className="text-lg leading-relaxed p-4">
-                            <span className="text-4xl">
-                                Hi, I'm{" "}
-                                <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold">
-                                    Liam
-                                </span>
-                                .<br />
-                            </span>
-                            {/* with a knack for{" "}
-                             */}
-                            I have a{" "}
-                            <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold">
-                                Software Engineering Degree
-                            </span>{" "}
-                            and all the tools you need so I can{" "}
-                            <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-bold">
-                                hit the ground running.
-                            </span>
-                        </p>
-                    </Hitbox>
+                        {bioOpen ? "Read Less" : "Read More"}
+                    </button>
+                </Hitbox>
+                <div className="flex gap-3">
+                    <GithubIcon to="https://github.com/LiamS-H" />
+                    <LinkedInIcon to="https://www.linkedin.com/in/lstelly-hawkes/" />
                 </div>
-            </div>
+                {bioOpen && (
+                    <div className="max-w-4xl mx-auto pt-4">
+                        <div className="flex flex-col gap-8">
+                            <Hitbox
+                                className="p-4 ml-auto max-w-2xl"
+                                id="bio-1"
+                                parent={scrollable_ref}
+                            >
+                                I specialize in Typescript and React but the
+                                last 3 years I've also been chasing my other
+                                passion working as a whitewater rafting and
+                                outdoor guide. I love rivers and nature and that
+                                was definitely a big inspiration for this
+                                website. It brings me great joy to see eddies
+                                and vortices wrap around the HTML elements on
+                                this page. I had never considered hydrodynamics
+                                when working on a site layout, but here we are!
+                            </Hitbox>
 
-            <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12">
-                <div className="min-w-56">
-                    <h2 className="text-2xl font-bold mb-6 flex items-center">
-                        <Code className="mr-2 text-emerald-500" />
-                        Languages
-                    </h2>
-                    <div className="space-y-4">
-                        {languages.map((lang) => (
-                            <Language
-                                key={lang.name}
-                                name={lang.name}
-                                years={lang.years}
-                                colorNum={lang.colorNum}
-                                scrollable_ref={scrollable_ref}
-                            />
-                        ))}
-                    </div>
-                </div>
+                            <Hitbox
+                                className="p-4 mr-auto max-w-2xl"
+                                id="bio-2"
+                                parent={scrollable_ref}
+                            >
+                                My personal projects over the last few years
+                                have all followed a similar suit, being mostly
+                                practical and related to things I'm interested
+                                in at the time. My recent fixation has been a
+                                little ecosystem of projects related to Magic
+                                The Gathering; this culminated in a table-top
+                                simulator that I use to play Magic with my
+                                friends a few night a week.
+                            </Hitbox>
+                            <Hitbox
+                                className="p-4 ml-auto max-w-2xl"
+                                id="bio-3"
+                                parent={scrollable_ref}
+                            >
+                                While I currently live near Sacramento, CA I'm
+                                happy to relocate.
+                            </Hitbox>
 
-                <div className="w-full min-h-[400px]">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold flex items-center">
-                            <Terminal className="mr-2 text-sky-500" />{" "}
-                            Technologies
-                        </h2>
-                        <Dropdown
-                            options={[
-                                "CICD",
-                                "Database",
-                                "Framework",
-                                "Library",
-                            ]}
-                            onSelect={(s) => setSort(s)}
-                        />
+                            {/* <Hitbox
+                                className="p-4 mr-auto max-w-2xl"
+                                id="bio-3"
+                                parent={scrollable_ref}
+                            >
+                                I fell in love with programming in the sixth
+                                grade starting with visual languages like
+                                Scratch and EV3-G (a lego coding language),
+                                before a friend showed me python in middle
+                                school. Throughout middle and highschool I
+                                created dozens of small video game projects.
+                                While it's mostly inapplicable to anything I do
+                                now, they got me thinking algorithmically. When
+                                I retire I want to teach kids and get them that
+                                same experience I'm so grateful for.
+                            </Hitbox> */}
+                        </div>
                     </div>
-                    <div className="flex flex-wrap gap-3">
-                        {technologies.map((tech) => (
-                            <Technology
-                                key={sort + tech.name}
-                                tech={tech}
-                                scrollable_ref={scrollable_ref}
-                            />
-                        ))}
-                    </div>
-                </div>
+                )}
             </div>
-            <div className=" min-h-[20%] md:min-h-0" />
+            {/* </div> */}
+
+            {!bioOpen && (
+                <>
+                    <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12">
+                        <div className="min-w-56">
+                            <h2 className="text-2xl font-bold mb-6 flex items-center">
+                                <Code className="mr-2 text-emerald-500" />
+                                Languages
+                            </h2>
+                            <div className="space-y-4">
+                                {languages.map((lang) => (
+                                    <Language
+                                        key={lang.name}
+                                        name={lang.name}
+                                        years={lang.years}
+                                        colorNum={lang.colorNum}
+                                        scrollable_ref={scrollable_ref}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="w-full min-h-[400px]">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-2xl font-bold flex items-center">
+                                    <Terminal className="mr-2 text-sky-500" />{" "}
+                                    Technologies
+                                </h2>
+                                <Dropdown
+                                    options={[
+                                        "CICD",
+                                        "Database",
+                                        "Framework",
+                                        "Library",
+                                    ]}
+                                    onSelect={(s) => setSort(s)}
+                                />
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                {technologies.map((tech) => (
+                                    <Technology
+                                        key={sort + tech.name}
+                                        tech={tech}
+                                        scrollable_ref={scrollable_ref}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+            <div className="min-h-[20%] md:absolute" />
         </div>
     );
 }
