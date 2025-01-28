@@ -108,12 +108,11 @@ export default function About() {
                                 I specialize in Typescript and React but the
                                 last 3 years I've also been chasing my other
                                 passion working as a whitewater rafting and
-                                outdoor guide. I love rivers and nature and that
-                                was definitely a big inspiration for this
-                                website. It brings me great joy to see eddies
-                                and vortices wrap around the HTML elements on
-                                this page. I had never considered hydrodynamics
-                                when working on a site layout, but here we are!
+                                outdoor guide. A river is a special place and it
+                                brings me great joy to see eddies and vortices
+                                wrap around the elements on this page.
+                                Hydrodynamics is not usually a concern when
+                                working on a site layout, but here we are!
                             </Hitbox>
 
                             <Hitbox
@@ -128,7 +127,7 @@ export default function About() {
                                 little ecosystem of projects related to Magic
                                 The Gathering; this culminated in a table-top
                                 simulator that I use to play Magic with my
-                                friends a few night a week.
+                                friends a few nights a week.
                             </Hitbox>
                             <Hitbox
                                 className="p-4 ml-auto max-w-2xl"
