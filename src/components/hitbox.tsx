@@ -6,7 +6,7 @@ import {
     useRef,
     useState,
 } from "react";
-import { useFluidBoundRegister } from "../../contexts/fluid";
+import { useFluidBoundRegister } from "../contexts/fluid";
 
 // TO DO: add callback for updating hitbox
 export default function Hitbox(

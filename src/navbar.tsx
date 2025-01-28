@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { routes } from "../../routes";
-import Hitbox from "../hitbox";
+import { routes } from "./routes";
+import Hitbox from "./components/hitbox";
 
 function NavBarButton(props: { path: string; label: string; active: boolean }) {
     return (
