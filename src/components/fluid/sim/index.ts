@@ -656,7 +656,7 @@ export class Simulator {
             return;
         }
 
-        for (const [_, rect] of this.rectMap.current) {
+        for (const [, rect] of this.rectMap.current) {
             if (!rect) return;
             new_boxes.push([rect.x, rect.y, rect.w, rect.h]);
         }

@@ -51,7 +51,7 @@ export default function Hitbox(
             }
             registerBound(rect, id);
         },
-        [innerBounds, parent]
+        [innerBounds, parent, id, registerBound]
     );
 
     useEffect(() => {
@@ -73,7 +73,7 @@ export default function Hitbox(
             // console.log("deleting:", id);
             controller.abort();
         };
-    }, [calcBounds, parent]);
+    }, [calcBounds, parent, id, registerBound]);
 
     return <div {...divprops} ref={boundRef} />;
 }

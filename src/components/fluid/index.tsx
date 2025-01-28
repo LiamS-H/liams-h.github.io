@@ -25,7 +25,6 @@ export default function Water(props: { children: ReactNode }) {
             setError(true);
             return;
         }
-
         setInitialized(true);
     }
 
@@ -109,7 +108,7 @@ export default function Water(props: { children: ReactNode }) {
         if (sim.current !== undefined) return;
         sim.current = null;
         init(canvas.current);
-    }, [initialized]);
+    }, [initialized]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (error) {
         return (

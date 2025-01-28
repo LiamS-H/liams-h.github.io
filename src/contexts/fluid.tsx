@@ -27,26 +27,23 @@ export function FluidContextHost(sim: RefObject<Simulator | null | undefined>) {
     const [displayText, setDisplayText] = useState("");
     const rectMap = useRef<FluidRects>(new Map<string, FluidRect>());
 
-    const registerBound = useCallback(
-        (bounds: DOMRect | null, id: string) => {
-            if (!bounds) {
-                rectMap.current.delete(id);
-                return;
-            }
-            const vh = window.visualViewport?.height || window.innerHeight;
-            const vw = window.visualViewport?.width || window.innerWidth;
+    const registerBound = useCallback((bounds: DOMRect | null, id: string) => {
+        if (!bounds) {
+            rectMap.current.delete(id);
+            return;
+        }
+        const vh = window.visualViewport?.height || window.innerHeight;
+        const vw = window.visualViewport?.width || window.innerWidth;
 
-            const rect: FluidRect = {
-                x: bounds.x / vw,
-                y: (vh - bounds.height - bounds.y) / vh,
-                w: bounds.width / vw,
-                h: bounds.height / vh,
-            };
+        const rect: FluidRect = {
+            x: bounds.x / vw,
+            y: (vh - bounds.height - bounds.y) / vh,
+            w: bounds.width / vw,
+            h: bounds.height / vh,
+        };
 
-            rectMap.current.set(id, rect);
-        },
-        [sim]
-    );
+        rectMap.current.set(id, rect);
+    }, []);
 
     const registerText = useCallback(
         (new_text: string) => {
@@ -97,7 +94,7 @@ export function useFluidBoundRegister(bounds: DOMRect | undefined, id: string) {
         return () => {
             registerBound(null, id);
         };
-    }, [id, registerBound]);
+    }, [id, registerBound, bounds]);
 }
 
 export function useFluidTextRegister(text: string) {
