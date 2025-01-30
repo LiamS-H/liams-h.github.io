@@ -1,10 +1,10 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Simulator } from "./sim";
 import { FluidContextHost } from "../../contexts/fluid";
 import { useWindowFocus } from "../../contexts/focus";
 import NoGPUModal from "./nogpupage";
 
-export default function Water(props: { children: ReactNode }) {
+export default function Water({ children }: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
     const { FluidProvider, rectMap } = FluidContextHost(sim);
@@ -113,7 +113,7 @@ export default function Water(props: { children: ReactNode }) {
     if (error) {
         return (
             <FluidProvider>
-                {props.children}
+                {children}
                 <NoGPUModal />
             </FluidProvider>
         );
@@ -131,7 +131,7 @@ export default function Water(props: { children: ReactNode }) {
                 />
             </div>
 
-            <FluidProvider>{props.children}</FluidProvider>
+            <FluidProvider>{children}</FluidProvider>
         </>
     );
 }
