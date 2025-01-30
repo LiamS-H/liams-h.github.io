@@ -20,7 +20,10 @@ interface FluidContext {
 
 const fluidContext = createContext<FluidContext | null>(null);
 
-export function FluidContextHost(sim: RefObject<Simulator | null | undefined>) {
+export function FluidContextHost(
+    sim: RefObject<Simulator | null | undefined>,
+    initialized: boolean
+) {
     const color = useRef<number>(0);
 
     const text = useRef<string>("");
@@ -49,11 +52,18 @@ export function FluidContextHost(sim: RefObject<Simulator | null | undefined>) {
         (new_text: string) => {
             if (new_text === text.current) return;
             text.current = new_text;
-            sim.current?.updateTextMatte(new_text);
             setDisplayText(new_text);
+            sim.current?.updateTextMatte(new_text);
         },
         [text, sim]
     );
+
+    useEffect(() => {
+        if (initialized) {
+            sim.current?.updateTextMatte(text.current);
+            sim.current?.updateColor(color.current);
+        }
+    }, [initialized, sim]);
 
     const changeColor = useCallback(
         (new_color: number) => {

@@ -7,8 +7,8 @@ import NoGPUModal from "./nogpupage";
 export default function Water({ children }: { children: ReactNode }) {
     const canvas = useRef<HTMLCanvasElement>(null);
     const sim = useRef<Simulator | null | undefined>(undefined);
-    const { FluidProvider, rectMap } = FluidContextHost(sim);
     const [initialized, setInitialized] = useState(false);
+    const { FluidProvider, rectMap } = FluidContextHost(sim, initialized);
     const [error, setError] = useState(false);
     const focus = useWindowFocus();
     const [canvasW, setCanvasW] = useState(
