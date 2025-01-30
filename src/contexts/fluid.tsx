@@ -64,17 +64,20 @@ export function FluidContextHost(sim: RefObject<Simulator | null | undefined>) {
         [color, sim]
     );
 
-    const FluidProvider = (props: { children: ReactNode }) => (
-        <fluidContext.Provider
-            value={{
-                registerBound,
-                registerText,
-                changeColor,
-                text: displayText,
-            }}
-        >
-            {props.children}
-        </fluidContext.Provider>
+    const FluidProvider = useCallback(
+        (props: { children: ReactNode }) => (
+            <fluidContext.Provider
+                value={{
+                    registerBound,
+                    registerText,
+                    changeColor,
+                    text: displayText,
+                }}
+            >
+                {props.children}
+            </fluidContext.Provider>
+        ),
+        [registerBound, registerText, changeColor, displayText]
     );
     return { FluidProvider, rectMap };
 }
