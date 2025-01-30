@@ -87,16 +87,6 @@ export function useFluidContext(): FluidContext {
     return context;
 }
 
-export function useFluidBoundRegister(bounds: DOMRect | undefined, id: string) {
-    const { registerBound } = useFluidContext();
-    useEffect(() => {
-        registerBound(bounds || null, id);
-        return () => {
-            registerBound(null, id);
-        };
-    }, [id, registerBound, bounds]);
-}
-
 export function useFluidTextRegister(text: string) {
     const { registerText } = useFluidContext();
     useEffect(() => {
@@ -105,4 +95,14 @@ export function useFluidTextRegister(text: string) {
             registerText("");
         };
     }, [text, registerText]);
+}
+
+export function useFluidColorRegister(color: number) {
+    const { changeColor } = useFluidContext();
+    useEffect(() => {
+        changeColor(color);
+        return () => {
+            changeColor(0);
+        };
+    }, [color, changeColor]);
 }

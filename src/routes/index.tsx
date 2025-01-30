@@ -4,6 +4,11 @@ import Home from "./Home";
 import About from "./About";
 import Projects from "./Projects";
 import WebGPU from "./WebGPU";
+import Shahrazad from "./Projects/Shahrazad";
+import NotFound from "./not-found";
+import Confluence from "./Projects/Confluence";
+import FOOD from "./Projects/FOOOD";
+import Scrycards from "./Projects/Scrycards";
 
 export const routes = [
     { path: "/", label: "Home" },
@@ -19,11 +24,12 @@ export default function Router() {
                     <Route path="/" Component={Home} />
                     <Route path="/about" Component={About} />
                     <Route path="/webgpu" Component={WebGPU} />
-                    <Route path="/projects" Component={Projects}>
-                        <Route path="projects/confluence" />
-                        <Route path="projects/food" />
-                        <Route path="projects/scrycards" />
-                    </Route>
+                    <Route path="/projects" Component={Projects}></Route>
+                    <Route path="/projects/shahrazad" Component={Shahrazad} />
+                    <Route path="/projects/confluence" Component={Confluence} />
+                    <Route path="/projects/food" Component={FOOD} />
+                    <Route path="/projects/scrycards" Component={Scrycards} />
+                    <Route path="*" Component={NotFound} />
                 </Route>
             </Routes>
         </BrowserRouter>

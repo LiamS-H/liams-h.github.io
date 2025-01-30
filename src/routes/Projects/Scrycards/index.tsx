@@ -1,8 +1,15 @@
 import ExternalLink from "@/components/external-link";
+import type { MutableRefObject } from "react";
+import { ProjectCard } from "../card";
+import { useFluidColorRegister } from "@/contexts/fluid";
 
-export function ScrycardsCard() {
+export function ScrycardsCard({
+    scrollable_ref,
+}: {
+    scrollable_ref: MutableRefObject<HTMLDivElement | null>;
+}) {
     return (
-        <>
+        <ProjectCard id="Scrycards" colorNum={1} parent={scrollable_ref}>
             <h1 className="text-5xl">Scrycards</h1>
             <p>
                 A react component library that wraps a{" "}
@@ -16,6 +23,10 @@ export function ScrycardsCard() {
                     Github
                 </ExternalLink>
             </div>
-        </>
+        </ProjectCard>
     );
+}
+export default function Scrycards() {
+    useFluidColorRegister(1);
+    return <>Shahrazad</>;
 }

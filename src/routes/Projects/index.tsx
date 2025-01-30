@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { ProjectCard } from "./card";
 import { ScrycardsCard } from "./Scrycards";
 import { FOOODCard } from "./FOOOD";
 import { ConfluenceCard } from "./Confluence";
@@ -74,6 +73,7 @@ export default function Projects() {
         container.addEventListener("scroll", debouncedHandleScroll);
 
         return () => {
+            console.log("handling scroll");
             container.removeEventListener("scroll", debouncedHandleScroll);
         };
     }, []);
@@ -132,34 +132,14 @@ export default function Projects() {
                     }}
                 >
                     <div className="min-w-[45%]" />
-                    <ProjectCard
-                        id="Shahrazad"
-                        colorNum={4}
-                        parent={scrollable_ref}
-                    >
-                        <ShahrazadCard />
-                    </ProjectCard>
-                    <ProjectCard
-                        id="FOOOD"
-                        colorNum={2}
-                        parent={scrollable_ref}
-                    >
-                        <FOOODCard />
-                    </ProjectCard>
-                    <ProjectCard
-                        id="Scrycards"
-                        colorNum={1}
-                        parent={scrollable_ref}
-                    >
-                        <ScrycardsCard />
-                    </ProjectCard>
-                    <ProjectCard
-                        id="Confluence"
-                        colorNum={3}
-                        parent={scrollable_ref}
-                    >
-                        <ConfluenceCard />
-                    </ProjectCard>
+
+                    <ShahrazadCard scrollable_ref={scrollable_ref} />
+
+                    <FOOODCard scrollable_ref={scrollable_ref} />
+
+                    <ScrycardsCard scrollable_ref={scrollable_ref} />
+
+                    <ConfluenceCard scrollable_ref={scrollable_ref} />
 
                     <div className="min-w-[45%]" />
                 </div>
