@@ -68,12 +68,11 @@ export default function Projects() {
         };
         handleScroll();
 
-        const debouncedHandleScroll = debounce(handleScroll, 100);
+        const debouncedHandleScroll = debounce(handleScroll, 50);
 
         container.addEventListener("scroll", debouncedHandleScroll);
 
         return () => {
-            console.log("handling scroll");
             container.removeEventListener("scroll", debouncedHandleScroll);
         };
     }, []);
