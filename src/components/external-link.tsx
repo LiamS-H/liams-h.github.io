@@ -8,7 +8,7 @@ export default function ExternalLink(props: {
         <a
             target="_blank"
             href={props.href}
-            className="bg-gradient-to-r from-pink-500 to-purple-500 bg-[length:200%_100%] bg-left hover:bg-right transition-all duration-300 text-transparent bg-clip-text"
+            className="bg-gradient-to-r from-pink-500 to-purple-600 bg-[length:200%_200%] bg-left hover:bg-right transition-all duration-300 text-transparent bg-clip-text"
             rel="noopener noreferrer"
         >
             {props.children}
