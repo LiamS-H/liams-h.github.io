@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { routes } from "./routes";
-import Hitbox from "./components/hitbox";
+import { routes } from ".";
+import Hitbox from "../components/hitbox";
 
 function NavBarButton(props: { path: string; label: string; active: boolean }) {
     return (
@@ -10,7 +10,7 @@ function NavBarButton(props: { path: string; label: string; active: boolean }) {
         >
             <Hitbox
                 id={props.path}
-                className={`bg-black p-4 mb-4 ${
+                className={`bg-black p-4 mb-4 transition-colors ${
                     props.active
                         ? " text-purple-600"
                         : " text-white hover:text-pink-500"
