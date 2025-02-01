@@ -29,22 +29,24 @@ export function ProjectCard(
     }
 
     return (
-        <Hitbox
-            className={`bg-black h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all bg-clip-text hover:text-transparent animate-gradient-swirl bg-gradient-to-r ${textColor}`}
-            id={id}
-            onMouseEnter={() => changeColor(colorNum)}
-            onMouseLeave={() => changeColor(0)}
-            onClick={(e) =>
-                e.currentTarget.scrollIntoView({
-                    behavior: "smooth",
-                    block: "nearest",
-                    inline: "center",
-                })
-            }
-            parent={parent}
-            {...divProps}
-        >
-            {props.children}
-        </Hitbox>
+        <div className="bg-black">
+            <Hitbox
+                className={`h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all bg-clip-text hover:text-transparent animate-gradient-swirl bg-gradient-to-r ${textColor}`}
+                id={id}
+                onMouseEnter={() => changeColor(colorNum)}
+                onMouseLeave={() => changeColor(0)}
+                onClick={(e) =>
+                    e.currentTarget.scrollIntoView({
+                        behavior: "smooth",
+                        block: "nearest",
+                        inline: "center",
+                    })
+                }
+                parent={parent}
+                {...divProps}
+            >
+                {props.children}
+            </Hitbox>
+        </div>
     );
 }

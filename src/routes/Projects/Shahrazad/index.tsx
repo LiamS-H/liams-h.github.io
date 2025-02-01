@@ -72,7 +72,7 @@ export default function Shahrazad() {
                 </div>
                 <Hitbox
                     id={"shahrazad-desc-1"}
-                    className="p-4 w-fit"
+                    className="p-4 w-fit bg-black"
                     parent={scrollable_ref}
                 >
                     A table top simulator named after the MTG card and character{" "}
@@ -85,7 +85,7 @@ export default function Shahrazad() {
                     <div className="flex flex-col gap-4">
                         <Hitbox
                             id={"shahrazad-desc-2"}
-                            className="p-4 w-fit"
+                            className="p-4 w-fit bg-black"
                             parent={scrollable_ref}
                         >
                             The state machine to handle the game logic is
@@ -96,7 +96,7 @@ export default function Shahrazad() {
                         </Hitbox>
                         <Hitbox
                             id={"shahrazad-desc-3"}
-                            className="p-4 w-fit"
+                            className="p-4 w-fit bg-black"
                             parent={scrollable_ref}
                         >
                             State transformations are handled in wasm and

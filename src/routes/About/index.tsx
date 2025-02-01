@@ -67,7 +67,7 @@ export default function About() {
             <div className="max-w-4xl mx-auto p-4">
                 <Hitbox
                     id={"about-desc"}
-                    className="flex flex-col p-4 m-1"
+                    className="flex flex-col p-4 m-1 bg-black"
                     parent={scrollable_ref}
                 >
                     <p className="text-lg leading-relaxed">
@@ -111,7 +111,7 @@ export default function About() {
                     <div className="max-w-4xl mx-auto pt-4">
                         <div className="flex flex-col gap-8">
                             <Hitbox
-                                className="p-4 ml-auto max-w-2xl"
+                                className="p-4 ml-auto max-w-2xl bg-black"
                                 id="bio-1"
                                 parent={scrollable_ref}
                             >
@@ -126,7 +126,7 @@ export default function About() {
                             </Hitbox>
 
                             <Hitbox
-                                className="p-4 mr-auto max-w-2xl"
+                                className="p-4 mr-auto max-w-2xl bg-black"
                                 id="bio-2"
                                 parent={scrollable_ref}
                             >
@@ -143,7 +143,7 @@ export default function About() {
                                 nights a week.
                             </Hitbox>
                             <Hitbox
-                                className="p-4 ml-auto max-w-2xl"
+                                className="p-4 ml-auto max-w-2xl bg-black"
                                 id="bio-3"
                                 parent={scrollable_ref}
                             >
