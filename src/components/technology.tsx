@@ -9,21 +9,21 @@ export interface ITechnology {
 }
 
 export default function Technology({
-    tech,
+    name,
     scrollable_ref,
 }: {
-    tech: ITechnology;
+    name: string;
     scrollable_ref: MutableRefObject<HTMLDivElement | null>;
 }) {
     return (
-        <Hitbox id={tech.name} key={tech.name} parent={scrollable_ref}>
+        <Hitbox id={name} key={name} parent={scrollable_ref}>
             <span
                 className="px-3 py-1 text-sm 
                   bg-gradient-to-r from-white to-purple-500 
                   bg-[length:300%_150%] bg-left hover:bg-right 
                   transition-all duration-300 text-transparent bg-clip-text"
             >
-                {tech.name}
+                {name}
             </span>
         </Hitbox>
     );

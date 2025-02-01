@@ -13,27 +13,24 @@ export function ProjectCard(
     let textColor: string;
     switch (props.colorNum) {
         case 1:
-            textColor =
-                // "hover:text-gradient-to-r hover:from-pink-500 hover:to-orange-500";
-                "hover:text-orange-300";
+            textColor = "from-pink-500 via-orange-500 to-pink-500";
             break;
         case 2:
-            textColor = "hover:text-green-400";
+            textColor = "from-emerald-600 via-lime-300 to-emerald-600";
             break;
         case 3:
-            textColor = "hover:text-cyan-300";
+            textColor = "from-cyan-400 via-blue-500 to-cyan-400";
             break;
         case 4:
-            textColor = "hover:text-rose-500";
+            textColor = "from-pink-400 via-rose-800 to-pink-400";
             break;
         default:
-            textColor = "text-white";
+            textColor = "";
     }
 
     return (
         <Hitbox
-            className={`bg-black h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all ${textColor}`}
-            // className={`w-1/12 aspect-square min-w-[320px] rounded p-8 m-4 flex-col flex justify-between hover:text-cyan-400 `}
+            className={`bg-black h-60 min-h-60 w-60 min-w-60 mx-4 p-4 flex-col flex justify-between transition-all bg-clip-text hover:text-transparent animate-gradient-swirl bg-gradient-to-r ${textColor}`}
             id={id}
             onMouseEnter={() => changeColor(colorNum)}
             onMouseLeave={() => changeColor(0)}

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { TechType } from "./technology";
+import { TechType } from "../../components/technology";
 import { ChevronDown } from "lucide-react";
 
 interface DropdownProps {

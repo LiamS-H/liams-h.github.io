@@ -1,13 +1,15 @@
 import { Code, Terminal } from "lucide-react";
 import Hitbox from "../../components/hitbox";
-import Technology, { ITechnology, TechType } from "./technology";
+import Technology, { ITechnology, TechType } from "../../components/technology";
 import { Language } from "./language";
 import { useRef, useState } from "react";
 import Dropdown from "@/routes/About/dropdown";
 import { LinkedInIcon, GithubIcon } from "@/components/icons";
+import { useFluidContext } from "@/contexts/fluid";
 
 export default function About() {
     const [bioOpen, setBioOpen] = useState(false);
+    const { changeColor } = useFluidContext();
     const languages = [
         { name: "Python", years: "5+", colorNum: 2 },
         { name: "TypeScript", years: "3+", colorNum: 3 },
@@ -88,7 +90,13 @@ export default function About() {
                     </p>
                     <button
                         className="mx-auto mt-2 py-1 px-2 rounded-md shadow-lg  w-fit h-fit transition-all duration-500 shadow-cyan-300 text-cyan-100 hover:text-cyan-400 hover:shadow-cyan-600"
-                        onClick={() => setBioOpen((o) => !o)}
+                        onClick={() =>
+                            setBioOpen((o) => {
+                                if (o) changeColor(0);
+                                else changeColor(3);
+                                return !o;
+                            })
+                        }
                     >
                         {bioOpen ? "Read Less" : "Read More"}
                     </button>
@@ -201,7 +209,7 @@ export default function About() {
                                 {technologies.map((tech) => (
                                     <Technology
                                         key={sort + tech.name}
-                                        tech={tech}
+                                        name={tech.name}
                                         scrollable_ref={scrollable_ref}
                                     />
                                 ))}
