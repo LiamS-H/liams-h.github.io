@@ -109,7 +109,7 @@ export default function Shahrazad() {
                             reconnecting or resolving race conditions.
                         </Hitbox>
                     </div>
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-grow flex-col gap-4">
                         <Hitbox
                             id={"shahrazad-img-1"}
                             className="w-fit"

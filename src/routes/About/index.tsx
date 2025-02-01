@@ -5,11 +5,13 @@ import { Language } from "./language";
 import { useRef, useState } from "react";
 import Dropdown from "@/routes/About/dropdown";
 import { LinkedInIcon, GithubIcon } from "@/components/icons";
-import { useFluidContext } from "@/contexts/fluid";
+import { useFluidColorRegister, useFluidContext } from "@/contexts/fluid";
+import InternalLink from "@/components/internal-link";
 
 export default function About() {
     const [bioOpen, setBioOpen] = useState(false);
     const { changeColor } = useFluidContext();
+    useFluidColorRegister(0);
     const languages = [
         { name: "Python", years: "5+", colorNum: 2 },
         { name: "TypeScript", years: "3+", colorNum: 3 },
@@ -133,9 +135,12 @@ export default function About() {
                                 practical and related to things I'm interested
                                 in at the time. My recent fixation has been a
                                 little ecosystem of projects related to Magic
-                                The Gathering; this culminated in a table-top
-                                simulator that I use to play Magic with my
-                                friends a few nights a week.
+                                The Gathering; this culminated in a{" "}
+                                <InternalLink to="/projects/shahrazad">
+                                    table-top simulator
+                                </InternalLink>{" "}
+                                that I use to play Magic with my friends a few
+                                nights a week.
                             </Hitbox>
                             <Hitbox
                                 className="p-4 ml-auto max-w-2xl"
