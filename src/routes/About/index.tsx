@@ -4,7 +4,7 @@ import Technology, { ITechnology, TechType } from "../../components/technology";
 import { Language } from "./language";
 import { useRef, useState } from "react";
 import Dropdown from "@/routes/About/dropdown";
-import { LinkedInIcon, GithubIcon } from "@/components/icons";
+import { LinkedInIcon, GithubIcon, IconButton } from "@/components/icons";
 import { useFluidColorRegister, useFluidContext } from "@/contexts/fluid";
 import InternalLink from "@/components/internal-link";
 
@@ -104,8 +104,12 @@ export default function About() {
                     </button>
                 </Hitbox>
                 <div className="flex gap-3">
-                    <GithubIcon to="https://github.com/LiamS-H" />
-                    <LinkedInIcon to="https://www.linkedin.com/in/lstelly-hawkes/" />
+                    <IconButton to="https://github.com/LiamS-H">
+                        <GithubIcon />
+                    </IconButton>
+                    <IconButton to="https://www.linkedin.com/in/lstelly-hawkes/">
+                        <LinkedInIcon />
+                    </IconButton>
                 </div>
                 {bioOpen && (
                     <div className="max-w-4xl mx-auto pt-4">

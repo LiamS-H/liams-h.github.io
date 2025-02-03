@@ -10,7 +10,7 @@ export function ConfluenceCard({
 }) {
     return (
         <ProjectCard id="Confluence" colorNum={3} parent={scrollable_ref}>
-            <h1 className="text-4xl">Confluence</h1>
+            <h1 className="text-4xl pt-2">Confluence</h1>
             <p>
                 Public website with visual tools and syntax for advanced
                 Scryfall database queries.

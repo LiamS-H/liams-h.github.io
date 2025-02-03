@@ -5,10 +5,11 @@ import { ProjectCard } from "../card";
 import { useFluidColorRegister } from "@/contexts/fluid";
 import Hitbox from "@/components/hitbox";
 import Technology from "@/components/technology";
-import { GithubIcon } from "@/components/icons";
+import { GithubIcon, IconButton } from "@/components/icons";
 
 import LandingImg from "@/assets/ShahrazadLandingPage.png";
 import GameImg from "@/assets/ShahrazadInGame.png";
+import { ExternalLinkIcon } from "lucide-react";
 
 export function ShahrazadCard({
     scrollable_ref,
@@ -17,7 +18,7 @@ export function ShahrazadCard({
 }) {
     return (
         <ProjectCard id="Shahrazad" colorNum={4} parent={scrollable_ref}>
-            <h1 className="text-4xl">Shahrazad</h1>
+            <h1 className="text-4xl pt-2">Shahrazad</h1>
             <p>Public realtime multiplayer table top game simulator.</p>
             <i>Rich drag and drop features.</i>
             <div className="flex align-middle justify-center flex-row space-x-4">
@@ -36,6 +37,7 @@ export default function Shahrazad() {
     const technologies = [
         "Rust",
         "Wasm",
+        "Axum",
         "Next",
         "Vercel",
         "Docker",
@@ -63,7 +65,13 @@ export default function Shahrazad() {
                             Shahrazad
                         </h1>
                     </Hitbox>
-                    <GithubIcon to="https://github.com/LiamS-H/shahrazad-app" />
+                    <IconButton to="https://github.com/LiamS-H/shahrazad-app">
+                        <GithubIcon />
+                    </IconButton>
+
+                    <IconButton to="https://shahrazad.vercel.app">
+                        <ExternalLinkIcon className="w-[36px] h-[36px]" />
+                    </IconButton>
                 </div>
                 <div className="flex flex-wrap gap-x-4 gap-y-2">
                     {technologies.map((n) => (
@@ -71,7 +79,7 @@ export default function Shahrazad() {
                     ))}
                 </div>
                 <Hitbox
-                    id={"shahrazad-desc-1"}
+                    id={"shahrazad-desc-0"}
                     className="p-4 w-fit bg-black"
                     parent={scrollable_ref}
                 >
@@ -83,6 +91,18 @@ export default function Shahrazad() {
                 </Hitbox>
                 <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex flex-col gap-4">
+                        <Hitbox
+                            id={"shahrazad-desc-1"}
+                            className="p-4 w-fit bg-black"
+                            parent={scrollable_ref}
+                        >
+                            Users can create game lobbies to play with friends.
+                            Upon joining all features to play a game of Magic
+                            The Gathering are available. Players can import
+                            their decks draw their starting hands and start
+                            playing cards by dragging them into play. Everything
+                            updates in real time and feels very responsive.
+                        </Hitbox>
                         <Hitbox
                             id={"shahrazad-desc-2"}
                             className="p-4 w-fit bg-black"
@@ -99,9 +119,7 @@ export default function Shahrazad() {
                             className="p-4 w-fit bg-black"
                             parent={scrollable_ref}
                         >
-                            State transformations are handled in wasm and
-                            rendered in react on the frontend. State is updated
-                            within a game lobby using websockets. For
+                            State transformations are sent using websockets. For
                             non-colliding moves, the server only sends the
                             action over the socket not the full game state. This
                             keeps socket packets small, though a global state is
