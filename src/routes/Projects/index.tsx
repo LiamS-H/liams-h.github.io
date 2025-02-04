@@ -123,14 +123,14 @@ export default function Projects() {
 
                 <div
                     ref={scrollable_ref}
-                    className="h-fit gap-8 md:gap-24 flex flex-row justify-around items-center overflow-x-auto relative
+                    className="h-fit gap-8 md:gap-24 flex flex-row items-center overflow-x-auto
                     [mask-image:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)] 
                     [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_60%,transparent)]"
                     style={{
                         scrollbarWidth: "none",
                     }}
                 >
-                    <div className="min-w-[45%]" />
+                    <div className="min-w-[45%] h-full" />
 
                     <ShahrazadCard scrollable_ref={scrollable_ref} />
 
@@ -140,7 +140,7 @@ export default function Projects() {
 
                     <ConfluenceCard scrollable_ref={scrollable_ref} />
 
-                    <div className="min-w-[45%]" />
+                    <div className="min-w-[45%] h-full" />
                 </div>
             </div>
         </div>
