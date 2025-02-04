@@ -212,28 +212,32 @@ export class Simulator {
     }
 
     private async initGPU() {
-        const adapter = await navigator.gpu.requestAdapter();
-        if (!adapter) {
-            console.error("Missing adapter");
-            this.broken = true;
-            return false;
-        }
-        const device = await adapter.requestDevice();
-        const context = this.canvas.getContext("webgpu");
-        if (!context) {
-            console.error("Missing context");
-            this.broken = true;
-            return false;
-        }
-        const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
-        context.configure({
-            device: device,
-            format: canvasFormat,
-        });
+        try {
+            const adapter = await navigator.gpu.requestAdapter();
+            if (!adapter) {
+                console.error("Missing adapter");
+                this.broken = true;
+                return false;
+            }
+            const device = await adapter.requestDevice();
+            const context = this.canvas.getContext("webgpu");
+            if (!context) {
+                console.error("Missing context");
+                this.broken = true;
+                return false;
+            }
+            const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
+            context.configure({
+                device: device,
+                format: canvasFormat,
+            });
 
-        this.context = context;
-        this.device = device;
-        return true;
+            this.context = context;
+            this.device = device;
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     private async updateUniforms() {
