@@ -21,10 +21,12 @@ function NavBarButton(props: {
             <Hitbox
                 id={props.path}
                 className={`bg-black p-4 mb-4 transition-colors ${
-                    props.active
+                    props.active === null
+                        ? "text-orange-400"
+                        : props.active
                         ? " text-purple-600"
                         : " text-white hover:text-pink-500"
-                } ${props.active === null ? "text-orange-400" : ""}`}
+                }`}
             >
                 <li key={props.path}>{props.label}</li>
             </Hitbox>
