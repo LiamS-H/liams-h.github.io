@@ -151,7 +151,7 @@ export default function About() {
                                 id="bio-3"
                                 parent={scrollable_ref}
                             >
-                                While I currently live near Sacramento, CA I'm
+                                While I currently live near Sacramento, CA, I'm
                                 happy to relocate.
                             </Hitbox>
 
