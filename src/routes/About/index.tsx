@@ -1,4 +1,4 @@
-import { Code, Terminal } from "lucide-react";
+import { Code, Copy, Terminal } from "lucide-react";
 import Hitbox from "../../components/hitbox";
 import Technology, { ITechnology, TechType } from "../../components/technology";
 import { Language } from "./language";
@@ -7,6 +7,7 @@ import Dropdown from "@/routes/About/dropdown";
 import { LinkedInIcon, GithubIcon, IconButton } from "@/components/icons";
 import { useFluidColorRegister, useFluidContext } from "@/contexts/fluid";
 import InternalLink from "@/components/internal-link";
+import TransparentButton from "@/components/transparent-button";
 
 export default function About() {
     const [bioOpen, setBioOpen] = useState(false);
@@ -74,7 +75,7 @@ export default function About() {
                         <span className="text-4xl">
                             Hi, I'm{" "}
                             <span className="bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold">
-                                Liam
+                                Liam Stelly-Hawkes
                             </span>
                             .
                             <br />
@@ -110,6 +111,14 @@ export default function About() {
                     <IconButton to="https://www.linkedin.com/in/lstelly-hawkes/">
                         <LinkedInIcon />
                     </IconButton>
+                    <TransparentButton
+                        onClick={() => {
+                            navigator.clipboard.writeText("liamsh@gmail.com");
+                        }}
+                    >
+                        liamsh@gmail.com
+                        <Copy />
+                    </TransparentButton>
                 </div>
                 {bioOpen && (
                     <div className="max-w-4xl mx-auto pt-4">
@@ -168,8 +177,8 @@ export default function About() {
                                 created dozens of small video game projects.
                                 While it's mostly inapplicable to anything I do
                                 now, they got me thinking algorithmically. When
-                                I retire I want to teach kids and get them that
-                                same experience I'm so grateful for.
+                                I retire I want to teach and giver others that
+                                same experience and wonder I'm so grateful for.
                             </Hitbox> */}
                         </div>
                     </div>
@@ -185,7 +194,7 @@ export default function About() {
                                 <Code className="mr-2 text-emerald-500" />
                                 Languages
                             </h2>
-                            <div className="space-y-4">
+                            <div>
                                 {languages.map((lang) => (
                                     <Language
                                         key={lang.name}
