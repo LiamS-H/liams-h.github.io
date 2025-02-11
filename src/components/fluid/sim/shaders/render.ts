@@ -49,6 +49,9 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
 
     let smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
     let s = solids[index];
+    if (x < (U.res.x)/2 + 3) {
+        return vec4<f32>(0,0,0, 1.0);
+    }
     if (s == 0) {
         return vec4<f32>(0,0,0, 1.0);
     }
