@@ -27,7 +27,7 @@ export function Language({
 
     return (
         <div
-            className={`flex items-center max-w-md group transition-all duration-300 ${hover}`}
+            className={`p-2 flex items-center max-w-md group transition-all duration-300 ${hover}`}
             onMouseEnter={() => changeColor(colorNum)}
             onMouseLeave={() => changeColor(0)}
         >

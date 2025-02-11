@@ -56,7 +56,7 @@ export default function About() {
     return (
         <div
             ref={scrollable_ref}
-            className="h-[90%] text-white px-14 sm:p-10  space-y-12 overflow-y-auto"
+            className="h-[90%] text-white px-14 sm:p-10 overflow-y-auto"
             style={{
                 maskImage:
                     "linear-gradient(to top, transparent, black 10%, black 80%, transparent)",
