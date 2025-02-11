@@ -46,7 +46,7 @@ export default function Shahrazad() {
     return (
         <div
             ref={scrollable_ref}
-            className="h-[90%] text-white px-14 sm:p-10  space-y-12 overflow-y-auto"
+            className="h-[90%] text-white px-14 sm:p-10 overflow-y-auto"
             style={{
                 maskImage:
                     "linear-gradient(to top, transparent, black 10%, black 80%, transparent)",
@@ -54,7 +54,7 @@ export default function Shahrazad() {
                     "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
             }}
         >
-            <div className="max-w-4xl mx-auto p-4 flex flex-col gap-4">
+            <div className="max-w-4xl mx-auto px-4 flex flex-col gap-4">
                 <div className="flex items-center gap-4">
                     <Hitbox
                         id={"shahrazad-title"}
@@ -126,9 +126,8 @@ export default function Shahrazad() {
                             State transformations are sent using websockets. For
                             non-colliding moves, the server only sends the
                             action over the socket not the full game state. This
-                            keeps socket packets small, though a global state is
-                            always managed on the server and is retrieved when
-                            reconnecting or resolving race conditions.
+                            keeps socket packets small, until a desync occur
+                            with coliding moves and server sends a full state.
                         </Hitbox>
                     </div>
                     <div className="flex flex-grow flex-col gap-4">
