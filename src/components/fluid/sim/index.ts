@@ -5,6 +5,7 @@ import { Uniform, ComputeProgram, Buffer } from "./primitives";
 import { PROGRAM } from "./shaders/compute";
 import { render_shader } from "./shaders/render";
 import { type RefObject } from "react";
+import isOutdated from "@/utils/version";
 
 export class Simulator {
     private time: number = 0;
@@ -102,6 +103,7 @@ export class Simulator {
         instance.rectMap = rectMap;
         const success = await instance.initGPU();
         if (!success) return null;
+        if (isOutdated()) return null;
         await instance.init();
         return instance;
     }

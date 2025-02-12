@@ -29,8 +29,9 @@ export default function WebGPU() {
                     <p>
                         I picked WebGPU because I already had some familiarity
                         with WebGL and wanted to build with something new. While
-                        WebGPU is supported fully on Chrome, and Edge, it
-                        requires a flag or preview build on Safari or Firefox.
+                        WebGPU is supported fully on Chrome 115, and Edge 115,
+                        it requires a flag or preview build on Safari or
+                        Firefox.
                     </p>
                 </div>
                 <div className="bg-black relative rounded-lg p-2 w-fit">
