@@ -101,11 +101,11 @@ export default function Shahrazad() {
                             app specialized to play Magic The Gathering. No
                             sign-up required, I made it as easy and fast as
                             possible to create and join games. Upon joining all
-                            features to play a game of are available. Players
-                            can import their decks, draw their starting hands,
-                            and start playing cards by dragging them into play.
-                            Everything updates in real time and feels far more
-                            responsive than alternatives.
+                            features to play a game of Magic are available.
+                            Players can import their decks, draw their starting
+                            hands, and start playing cards by dragging them into
+                            play. Everything updates in real time and feels far
+                            more responsive than alternatives.
                         </Hitbox>
                         <Hitbox
                             id={"shahrazad-desc-2"}
