@@ -161,7 +161,7 @@ export default function About() {
                                 parent={scrollable_ref}
                             >
                                 While I currently live near Sacramento, CA, I'm
-                                happy to relocate.
+                                happy to relocate. Looking at SF.
                             </Hitbox>
 
                             {/* <Hitbox
