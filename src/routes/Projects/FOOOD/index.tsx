@@ -28,5 +28,5 @@ export function FOOODCard({
 
 export default function FOOD() {
     useFluidColorRegister(2);
-    return <>Shahrazad</>;
+    return <>Food</>;
 }

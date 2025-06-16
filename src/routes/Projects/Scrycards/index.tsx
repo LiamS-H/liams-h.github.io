@@ -28,5 +28,5 @@ export function ScrycardsCard({
 }
 export default function Scrycards() {
     useFluidColorRegister(1);
-    return <>Shahrazad</>;
+    return <>Scrycards</>;
 }

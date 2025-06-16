@@ -5,6 +5,7 @@ import { ScrycardsCard } from "./Scrycards";
 import { FOOODCard } from "./FOOOD";
 import { ConfluenceCard } from "./Confluence";
 import { ShahrazadCard } from "./Shahrazad";
+import { PokeTierlistCard } from "./PokeTierlist";
 
 function debounce<F extends (...args: unknown[]) => unknown>(
     func: F,
@@ -134,11 +135,13 @@ export default function Projects() {
 
                     <ShahrazadCard scrollable_ref={scrollable_ref} />
 
+                    <ConfluenceCard scrollable_ref={scrollable_ref} />
+
                     <FOOODCard scrollable_ref={scrollable_ref} />
 
-                    <ScrycardsCard scrollable_ref={scrollable_ref} />
+                    <PokeTierlistCard scrollable_ref={scrollable_ref} />
 
-                    <ConfluenceCard scrollable_ref={scrollable_ref} />
+                    <ScrycardsCard scrollable_ref={scrollable_ref} />
 
                     <div className="min-w-[45%] h-full" />
                 </div>

@@ -11,12 +11,10 @@ export function ConfluenceCard({
     return (
         <ProjectCard id="Confluence" colorNum={3} parent={scrollable_ref}>
             <h1 className="text-4xl pt-2">Confluence</h1>
-            <p>
-                Public website with visual tools and syntax for advanced
-                Scryfall database queries.
-            </p>
+            <p>In browser text editor for writing database queries.</p>
+            <i>With custom MCP and tuned LLM for generation.</i>
             <div className="flex align-middle justify-center flex-row space-x-4">
-                <ExternalLink href="https://card-confluence.web.app/about">
+                <ExternalLink href="https://cconfluence.vercel.app">
                     Vist Site
                 </ExternalLink>
             </div>
@@ -26,5 +24,5 @@ export function ConfluenceCard({
 
 export default function Confluence() {
     useFluidColorRegister(3);
-    return <>Shahrazad</>;
+    return <>Confluence</>;
 }

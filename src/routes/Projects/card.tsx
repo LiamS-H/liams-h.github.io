@@ -24,6 +24,9 @@ export function ProjectCard(
         case 4:
             textColor = "from-pink-400 via-rose-800 to-pink-400";
             break;
+        case 6:
+            textColor = "from-purple-600 via-blue-800 to-purple-600";
+            break;
         default:
             textColor = "";
     }
