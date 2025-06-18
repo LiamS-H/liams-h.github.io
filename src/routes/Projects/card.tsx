@@ -1,6 +1,17 @@
 import type { HTMLProps, MutableRefObject } from "react";
 import Hitbox from "../../components/hitbox";
 import { useFluidContext } from "../../contexts/fluid";
+
+const colors = [
+    ,
+    "from-pink-500 via-orange-500 to-pink-500",
+    "from-emerald-600 via-lime-300 to-emerald-600",
+    "from-cyan-400 via-blue-500 to-cyan-400",
+    "from-pink-400 via-rose-800 to-pink-400",
+    ,
+    "from-purple-600 via-blue-800 to-purple-600",
+];
+
 export function ProjectCard(
     props: HTMLProps<HTMLDivElement> & {
         id: string;
@@ -10,26 +21,7 @@ export function ProjectCard(
 ) {
     const { id, colorNum, parent, ...divProps } = props;
     const { changeColor } = useFluidContext();
-    let textColor: string;
-    switch (props.colorNum) {
-        case 1:
-            textColor = "from-pink-500 via-orange-500 to-pink-500";
-            break;
-        case 2:
-            textColor = "from-emerald-600 via-lime-300 to-emerald-600";
-            break;
-        case 3:
-            textColor = "from-cyan-400 via-blue-500 to-cyan-400";
-            break;
-        case 4:
-            textColor = "from-pink-400 via-rose-800 to-pink-400";
-            break;
-        case 6:
-            textColor = "from-purple-600 via-blue-800 to-purple-600";
-            break;
-        default:
-            textColor = "";
-    }
+    const textColor = colors[colorNum] ?? "";
 
     return (
         <Hitbox

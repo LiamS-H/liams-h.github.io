@@ -9,6 +9,7 @@ import NotFound from "./not-found";
 import Confluence from "./Projects/Confluence";
 import FOOD from "./Projects/FOOOD";
 import Scrycards from "./Projects/Scrycards";
+import Ribbons from "./Projects/Ribbons";
 
 export const routes = [
     { path: "/", label: "Home" },
@@ -29,6 +30,7 @@ export default function Router() {
                     <Route path="/projects/confluence" Component={Confluence} />
                     <Route path="/projects/food" Component={FOOD} />
                     <Route path="/projects/scrycards" Component={Scrycards} />
+                    <Route path="/projects/ribbons" Component={Ribbons} />
                     <Route path="*" Component={NotFound} />
                 </Route>
             </Routes>
