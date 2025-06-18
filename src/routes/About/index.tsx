@@ -11,6 +11,7 @@ import TransparentButton from "@/components/transparent-button";
 
 export default function About() {
     const [bioOpen, setBioOpen] = useState(false);
+
     const { changeColor } = useFluidContext();
     useFluidColorRegister(0);
     const languages = [
@@ -25,23 +26,28 @@ export default function About() {
     const all_technologies: ITechnology[] = [
         { name: "React", type: ["Framework"] },
         { name: "Next", type: ["Framework"] },
+        { name: "Redis", type: ["Database"] },
+        { name: "MongoDB", type: ["Database"] },
+        { name: "Prisma", type: ["Database"] },
+        { name: "PostgreSQL", type: ["Database"] },
         { name: "Expo", type: ["Framework"] },
-        { name: "Flask", type: ["Framework"] },
-        { name: "Express", type: ["Framework"] },
         { name: "Axum", type: ["Framework"] },
+        { name: "FastAPI", type: ["Framework"] },
         { name: "Git/Github", type: ["CICD"] },
         { name: "AWS", type: ["CICD"] },
         { name: "Vercel", type: ["CICD"] },
         { name: "Firebase", type: ["CICD"] },
         { name: "Firestore", type: ["Database"] },
-        { name: "SQL/SQLite", type: ["Database"] },
-        { name: "Redis", type: ["Database"] },
-        { name: "MongoDB", type: ["Database"] },
         { name: "Cloudflare", type: ["CICD"] },
         { name: "Docker", type: ["CICD"] },
         { name: "GCloud", type: ["CICD"] },
+        { name: "Flask", type: ["Framework"] },
+        { name: "Express", type: ["Framework"] },
+        { name: "MySQL/SQLite", type: ["Database"] },
         { name: "Dnd-Kit", type: ["Library"] },
         { name: "ReactQuery", type: ["Library"] },
+        { name: "GeminiAPI (Agents)", type: ["Library"] },
+        { name: "MCP (Agents)", type: ["Library"] },
         { name: "wasm-pack", type: ["Library"] },
     ];
 
@@ -65,7 +71,7 @@ export default function About() {
             }}
         >
             {/* <div className=""> */}
-            <div className="max-w-4xl mx-auto p-4">
+            <div className="max-w-4xl mx-auto pt-10 sm:p-4">
                 <Hitbox
                     id={"about-desc"}
                     className="flex flex-col p-4 m-1 bg-black"
@@ -104,7 +110,7 @@ export default function About() {
                         {bioOpen ? "Read Less" : "Read More"}
                     </button>
                 </Hitbox>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-x-3 mb-4 sm:mb-0">
                     <IconButton to="https://github.com/LiamS-H">
                         <GithubIcon />
                     </IconButton>
