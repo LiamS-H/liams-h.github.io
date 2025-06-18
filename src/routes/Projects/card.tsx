@@ -3,12 +3,12 @@ import Hitbox from "../../components/hitbox";
 import { useFluidContext } from "../../contexts/fluid";
 
 const colors = [
-    ,
+    "",
     "from-pink-500 via-orange-500 to-pink-500",
     "from-emerald-600 via-lime-300 to-emerald-600",
     "from-cyan-400 via-blue-500 to-cyan-400",
     "from-pink-400 via-rose-800 to-pink-400",
-    ,
+    "",
     "from-purple-600 via-blue-800 to-purple-600",
 ];
 

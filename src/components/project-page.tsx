@@ -6,12 +6,12 @@ import Technology from "./technology";
 import { useFluidColorRegister } from "@/contexts/fluid";
 
 const colors = [
-    ,
+    "",
     "from-pink-500 via-orange-500 to-pink-500",
     "from-emerald-600 via-lime-300 to-emerald-600",
     "from-cyan-400 via-blue-500 to-cyan-400",
     "from-pink-500 via-rose-500 to-pink-500",
-    ,
+    "",
     "from-purple-600 via-blue-800 to-purple-600",
 ];
 

@@ -5,7 +5,7 @@ import { ScrycardsCard } from "./Scrycards";
 import { FOOODCard } from "./FOOOD";
 import { ConfluenceCard } from "./Confluence";
 import { ShahrazadCard } from "./Shahrazad";
-import { PokeTierlistCard } from "./PokeTierlist";
+// import { PokeTierlistCard } from "./PokeTierlist";
 import { RibbonCard } from "./Ribbons";
 
 function debounce<F extends (...args: unknown[]) => unknown>(
