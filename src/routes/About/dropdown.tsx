@@ -51,7 +51,7 @@ export function Dropdown({ options, onSelect }: DropdownProps) {
 
             {isOpen && (
                 <div
-                    className="absolute z-10 w-full mt-2 rounded-md shadow-lg focus:outline-none bg-black/70"
+                    className="absolute z-10 w-full mt-2 rounded-md shadow-lg focus:outline-none bg-black/90"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="menu-button"
