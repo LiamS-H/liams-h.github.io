@@ -764,12 +764,6 @@ export class Simulator {
         // console.log(this.mouseU, this.mouseV);
 
         this.updateUniforms();
-        // this.updateRectangles([[0.5, 0.5, 0.2, 0.2]]);
-        // this.updateRectangles([
-        //     [0.1, 0.4, 0.005, 0.2],
-        //     [0.1, 0.1, 0.005, 0.2],
-        //     [0.1, 0.7, 0.005, 0.2],
-        // ]);
         await this.simulate();
         this.render();
     }

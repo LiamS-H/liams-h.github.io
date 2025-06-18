@@ -44,7 +44,6 @@ ${FUNCTION.idx}
 fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let x = texCoord.x * (U.res.x);
     let y = texCoord.y * (U.res.y)-1;
-    // let index = idx(x, y);
     let index = u32((y * U.res.x) + x);
 
     let smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
@@ -64,26 +63,11 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let vscale = 30.0;
 
     var out = vec4<f32>(smoke_color, 1.0);
-    // if (out.r <=0.001 && out.g <=0.001 &&out.b <=0.001) {
-    //     return out;
-    // }
+
     out.r *= 1 + abs(v) * vscale;
     out.b *= 1 + abs(u) * vscale;
 
-    // out.r += abs(v) * 6;
-    // out.b += abs(u) * 6;
-    
-    // out.g += abs(v) * abs(u) * 2.25;
     return out;
 
-
-    // return vec4<f32>(x / U.res.x, y / U.res.y, 0.0, 1.0);
-    // return vec4<f32>(f32(index)/1024,0.0,0.0, 1.0);
-    // return vec4<f32>(f32(x>=1 && x <= 4),f32(y>=1 && y<=2),0, 1.0);
-    // return vec4<f32>(smoke_color, 1.0);
-    // return vec4<f32>(f32(d>0 && x>6),0,0, 1.0);
-    // return vec4<f32>(f32(texCoord.x > 1),0.0, 0.0, 1.0);
-    // return vec4<f32>(f32(u32(U.res.x) == 1636),f32(u32(U.res.y) == 1024), 0.0, 1.0);
-// return vec4<f32>(texCoord.x, texCoord.y, 0.0, 1.0);
 }
 `;
