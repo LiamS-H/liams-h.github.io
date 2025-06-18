@@ -199,7 +199,7 @@ export class Simulator {
         this.width = gridSize.w;
         this.height = gridSize.h;
 
-        this.pressureIterations = Math.floor(this.width / 250);
+        this.pressureIterations = Math.floor(this.width / 300);
 
         // Useful values for the simulation
         this.rdx = this.grid_size * 4;

@@ -46,7 +46,7 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let y = texCoord.y * (U.res.y)-1;
     let index = u32((y * U.res.x) + x);
 
-    let smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
+    var smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
     let s = solids[index];
     if (x < (U.res.x)/2 + 3) {
         return vec4<f32>(0,0,0, 1.0);
@@ -57,17 +57,18 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let u = vel_x[index];
     let v = vel_y[index];
     let p = pressure[index];
-    let vel = sqrt(u*u+v*v);
+    // let vel = sqrt(u*u+v*v) * 2;
+    let vel = u*u+v*v * 400;
 
-    let d = divergence[index];
     let vscale = 30.0;
 
-    var out = vec4<f32>(smoke_color, 1.0);
+    let d = divergence[index];
+    smoke_color = smoke_color * (1 / pow(smoke_color, vec3<f32>(vel,vel,vel))); 
 
-    out.r *= 1 + abs(v) * vscale;
-    out.b *= 1 + abs(u) * vscale;
+    smoke_color.r *= 1 + abs(v) * vscale;
+    smoke_color.b *= 1 + abs(u) * vscale;
 
-    return out;
 
+    return vec4<f32>(smoke_color, 1.0);
 }
 `;

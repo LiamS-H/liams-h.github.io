@@ -127,11 +127,11 @@ export namespace PROGRAM {
             if (U.color == 5) {
                 smoke_write_r[index] = 1;
                 smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
-                smoke_write_b[index] = 0.7;
+                smoke_write_b[index] = 0.5 + f32(pos.y / U.res.y)*0.2;
                 return;
             }
             if (U.color == 6) {
-                smoke_write_r[index] = 0.7;
+                smoke_write_r[index] = 0.5 + f32(pos.y / U.res.y)*0.2;
                 smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
                 smoke_write_b[index] = 1;
                 return;
