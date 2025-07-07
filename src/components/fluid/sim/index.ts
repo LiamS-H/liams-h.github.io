@@ -157,8 +157,6 @@ export class Simulator {
         } else {
             this.grid_size = 256; // Low-end
         }
-        // set to lower sim fidelity for testing
-        // this.grid_size = 256;
 
         const maxBufferSize = this.device.limits.maxStorageBufferBindingSize;
         const maxCanvasSize = this.device.limits.maxTextureDimension2D;
