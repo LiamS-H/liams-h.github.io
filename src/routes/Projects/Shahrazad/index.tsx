@@ -17,7 +17,7 @@ export function ShahrazadCard({
         <ProjectCard id="Shahrazad" colorNum={4} parent={scrollable_ref}>
             <h1 className="text-4xl pt-2">Shahrazad</h1>
             <p>Public realtime multiplayer table top game simulator.</p>
-            <i>Rich drag and drop features.</i>
+            <i>Custom WASM Sync Engine, Rich drag and drop.</i>
             <div className="flex align-middle justify-center flex-row space-x-4">
                 <ExternalLink href="https://shahrazad.vercel.app">
                     Vist Site
@@ -44,9 +44,9 @@ export default function Shahrazad() {
                 `My goal was to replace the laggy generic table-top
                 simulator my friends and I were using with a fast
                 app specialized to play Magic The Gathering. No
-                sign-up required, I made it as easy and fast as
+                sign-up required, I made it as quick and easy as
                 possible to create and join games.`,
-                `Upon joining all
+                `Upon joining, all
                 features to play a game of Magic are available.
                 Players can import their decks, draw their starting
                 hands, and start playing cards by dragging them into
