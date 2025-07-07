@@ -11,12 +11,12 @@ export default function Water({ children }: { children: ReactNode }) {
     const { FluidProvider, rectMap } = FluidContextHost(sim, initialized);
     const [error, setError] = useState(false);
     const focus = useWindowFocus();
-    const [canvasW, setCanvasW] = useState(
-        window.visualViewport?.width || window.innerWidth
-    );
-    const [canvasH, setCanvasH] = useState(
-        window.visualViewport?.height || window.innerHeight
-    );
+    // const [canvasW, setCanvasW] = useState(
+    //     window.visualViewport?.width || window.innerWidth
+    // );
+    // const [canvasH, setCanvasH] = useState(
+    //     window.visualViewport?.height || window.innerHeight
+    // );
     const controller_ref = useRef(new AbortController());
 
     async function init(canvas: HTMLCanvasElement) {
@@ -51,8 +51,9 @@ export default function Water({ children }: { children: ReactNode }) {
 
             const vw = window.visualViewport?.width || window.innerWidth;
             const vh = window.visualViewport?.height || window.innerHeight;
-            setCanvasH(vh);
-            setCanvasW(vw);
+            console.log("!", vw, vh);
+            // setCanvasH(vh);
+            // setCanvasW(vw);
 
             canvas.current.width = Math.max(vw, minW);
             canvas.current.height = Math.max(vh, minH);
@@ -121,13 +122,14 @@ export default function Water({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <div className="absolute top-0 left-0 -z-10">
+            <div className="absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
                 <canvas
                     ref={canvas}
-                    style={{
-                        width: `${canvasW}px`,
-                        height: `${canvasH}px`,
-                    }}
+                    className="w-full h-full"
+                    // style={{
+                    //     width: `${canvasW}px`,
+                    //     height: `${canvasH}px`,
+                    // }}
                 />
             </div>
 

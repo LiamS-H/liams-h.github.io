@@ -7,6 +7,7 @@ import { ConfluenceCard } from "./Confluence";
 import { ShahrazadCard } from "./Shahrazad";
 // import { PokeTierlistCard } from "./PokeTierlist";
 import { RibbonCard } from "./Ribbons";
+import { useFluidContext } from "@/contexts/fluid";
 
 function debounce<F extends (...args: unknown[]) => unknown>(
     func: F,
@@ -27,6 +28,20 @@ export default function Projects() {
     const scrollable_ref = useRef<HTMLDivElement | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [totalChildren, setTotalChildren] = useState(0);
+    const { changeColor } = useFluidContext();
+
+    useEffect(() => {
+        const controller = new AbortController();
+        window.addEventListener(
+            "pointerup",
+            () => {
+                console.log("pointer up");
+                changeColor(0);
+            },
+            { signal: controller.signal }
+        );
+        return () => controller.abort();
+    }, []);
 
     useEffect(() => {
         const container = scrollable_ref.current;
