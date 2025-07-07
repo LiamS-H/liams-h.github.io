@@ -63,6 +63,10 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
     let vscale = 30.0;
 
     let d = divergence[index];
+    if (smoke_color.x <0.01 && smoke_color.y <0.01 && smoke_color.z<0.01) {
+        return vec4<f32>(smoke_color, 1.0);
+    }
+
     smoke_color = smoke_color * (1 / pow(smoke_color, vec3<f32>(vel,vel,vel))); 
 
     smoke_color.r *= 1 + abs(v) * vscale;
