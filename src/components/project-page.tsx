@@ -105,21 +105,17 @@ export function ProjectPage({
                             </Hitbox>
                         ))}
                     </div>
-                    <div className="flex flex-grow flex-col gap-10 sm:gap-4">
+                    <div className="flex flex-grow flex-col gap-10 sm:gap-4 w-full md:max-w-[280px]">
                         {images.map((image, index) => (
                             <Hitbox
                                 key={index}
                                 id={`${title
                                     .toLowerCase()
                                     .replace(/\s/g, "-")}-img-${index}`}
-                                className="w-fit"
+                                className="w-full"
                                 parent={scrollable_ref}
                             >
-                                <img
-                                    src={image.src}
-                                    alt={image.alt}
-                                    className="rounded-lg shadow-lg max-w-full h-auto"
-                                />
+                                <img src={image.src} alt={image.alt} />
                             </Hitbox>
                         ))}
                     </div>
