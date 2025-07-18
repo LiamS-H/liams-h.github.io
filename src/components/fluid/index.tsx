@@ -122,7 +122,7 @@ export default function Water({ children }: { children: ReactNode }) {
 
     return (
         <>
-            <div className="absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
+            <div className="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
                 <canvas
                     ref={canvas}
                     className="w-full h-full"
