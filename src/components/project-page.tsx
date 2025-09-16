@@ -87,7 +87,11 @@ export function ProjectPage({
                     ))}
                 </div>
 
-                <Hitbox className="p-4 w-fit" id={`${title}-intro`}>
+                <Hitbox
+                    parent={scrollable_ref}
+                    className="p-4 w-fit"
+                    id={`${title}-intro`}
+                >
                     {intro}
                 </Hitbox>
 
