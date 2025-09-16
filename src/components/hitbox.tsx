@@ -70,7 +70,6 @@ export default function Hitbox(
         }
         return () => {
             registerBound(null, id);
-            // console.log("deleting:", id);
             controller.abort();
         };
     }, [calcBounds, parent, id, registerBound]);

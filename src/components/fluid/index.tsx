@@ -11,12 +11,7 @@ export default function Water({ children }: { children: ReactNode }) {
     const { FluidProvider, rectMap } = FluidContextHost(sim, initialized);
     const [error, setError] = useState(false);
     const focus = useWindowFocus();
-    // const [canvasW, setCanvasW] = useState(
-    //     window.visualViewport?.width || window.innerWidth
-    // );
-    // const [canvasH, setCanvasH] = useState(
-    //     window.visualViewport?.height || window.innerHeight
-    // );
+
     const controller_ref = useRef(new AbortController());
 
     async function init(canvas: HTMLCanvasElement) {
@@ -45,15 +40,11 @@ export default function Water({ children }: { children: ReactNode }) {
         if (!initialized) return;
         async function resizeCanvas() {
             if (!canvas.current) return;
-            console.log("resizing");
             const minW = 4;
             const minH = 4;
 
             const vw = window.visualViewport?.width || window.innerWidth;
             const vh = window.visualViewport?.height || window.innerHeight;
-            console.log("!", vw, vh);
-            // setCanvasH(vh);
-            // setCanvasW(vw);
 
             canvas.current.width = Math.max(vw, minW);
             canvas.current.height = Math.max(vh, minH);
@@ -101,7 +92,6 @@ export default function Water({ children }: { children: ReactNode }) {
         const controller = controller_ref.current;
         if (initialized) {
             return () => {
-                console.log("aborting");
                 controller.abort();
             };
         }

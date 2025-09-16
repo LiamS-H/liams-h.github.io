@@ -19,7 +19,12 @@ export const routes = [
 
 export default function Router() {
     return (
-        <BrowserRouter>
+        <BrowserRouter
+            future={{
+                v7_startTransition: true,
+                v7_relativeSplatPath: true,
+            }}
+        >
             <Routes>
                 <Route path="" Component={Root}>
                     <Route path="/" Component={Home} />

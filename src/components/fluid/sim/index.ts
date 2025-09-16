@@ -97,7 +97,6 @@ export class Simulator {
         canvas: HTMLCanvasElement,
         rectMap: RefObject<FluidRects>
     ): Promise<Simulator | null> {
-        console.log("creating new instance");
         const instance = new Simulator(canvas);
         instance.canvas = canvas;
         instance.rectMap = rectMap;
@@ -108,7 +107,6 @@ export class Simulator {
         return instance;
     }
     private async init() {
-        console.log("initializing instance");
         this.initSizes();
         await this.initBuffers();
         this.updateTextMatte("");
@@ -122,7 +120,7 @@ export class Simulator {
 
         const aspectRatio = vw / vh;
         const limits = this.device.limits;
-        console.log(limits);
+        // console.log(limits);
 
         const HIGH_END_LIMITS = {
             maxComputeInvocationsPerWorkgroup: 512,
@@ -199,7 +197,6 @@ export class Simulator {
 
         this.pressureIterations = Math.floor(this.width / 300);
 
-        // Useful values for the simulation
         this.rdx = this.grid_size * 4;
         this.dx = 1 / this.rdx;
 
@@ -207,8 +204,7 @@ export class Simulator {
         this.canvas.width = this.width;
         this.canvas.height = this.height;
         this.numCells = this.width * this.height;
-        console.log("w", this.width);
-        console.log("h", this.height);
+        // console.log("w", this.width, "h", this.height);
     }
 
     private async initGPU() {

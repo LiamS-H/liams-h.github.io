@@ -35,7 +35,6 @@ export default function Projects() {
         window.addEventListener(
             "pointerup",
             () => {
-                console.log("pointer up");
                 changeColor(0);
             },
             { signal: controller.signal }
