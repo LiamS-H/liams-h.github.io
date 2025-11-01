@@ -1,0 +1,15 @@
+The following license governs the content of this repository.
+
+Copyright (c) 2025, Liam Stelly-Hawkes
+
+All Rights Reserved Status
+
+This work, including all source code, documentation, and related files contained within this repository, is the exclusive intellectual property of the sole contributor, Liam Stelly-Hawkes.
+
+No license is currently granted to any third party for use, modification, reproduction, or distribution of this code for any purpose, commercial or non-commercial. All rights, including copyright and intellectual property rights, are explicitly reserved by the copyright holder
+
+Intent Regarding Future Licensing
+
+The copyright holder intends to release this repository under the MIT License at a future date. Until the explicit commit is made to replace this text with the full MIT License text, the "All Rights Reserved" status remains in full effect for all past, present, and future commits and versions of the code.
+
+By viewing or cloning this repository, you acknowledge and agree to these terms.

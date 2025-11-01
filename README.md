@@ -1,5 +1,5 @@
 # Hi, I'm Liam
-If you're reading this it means I've made this project public. (hopefully that means I have a job!)
+As per the licence, you may not modify, reproduce, or distribute this code for any purpose, commercial or non-commercial.
 
-Feel free to use it however you like.
+Eventually this license may change.
 
