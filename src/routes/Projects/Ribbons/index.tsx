@@ -49,10 +49,10 @@ export default function RibbonDiagram() {
                 a proprietary graph solver to create beautiful plots. The plots are rendered using
                 the OffscreenCanvas API from a worker thread and kept responsive using a shared memory layer
                 that can stop expensive tasks mid computation when settings are changed.`,
-                `Many settings are available to manipulate the plots, highting specific HMM groupings, and a responsive drag-and-drop
+                `Many settings are available to manipulate the plots and highlighting specific HMM groupings, and a responsive drag-and-drop
                 UI allows organisms to be rearranged. Plots can be exported as high quality pngs ready for academic use,
                 though this tool sees most of its use as a quick way to validate, and rapidly prototype, on modifications to the HMM.`,
-                `Further collaboration related to public deployments and integration of the HMM within the visualization tool is in the works.`,
+                // `Further collaboration related to public deployments and integration of the HMM within the visualization tool is in the works.`,
             ]}
         />
     );
