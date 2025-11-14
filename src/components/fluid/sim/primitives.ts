@@ -100,7 +100,13 @@ export class Buffer {
     }
 
     protected writeBuffer(buffer: GPUBuffer, data: Float32Array) {
-        this.device.queue.writeBuffer(buffer, 0, data, 0, data.length);
+        this.device.queue.writeBuffer(
+            buffer,
+            0,
+            new Float32Array(data),
+            0,
+            data.length
+        );
     }
 
     protected async readBuffer(buffer: GPUBuffer): Promise<Float32Array> {
