@@ -1,9 +1,11 @@
 import { type ReactNode, useRef } from "react";
 import Hitbox from "./hitbox";
 import { GithubIcon, IconButton } from "./icons";
-import { ExternalLinkIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLinkIcon } from "lucide-react";
 import Technology from "./technology";
 import { useFluidColorRegister } from "@/contexts/fluid";
+import { projectPages } from "@/routes/Projects/project-list";
+import { Link } from "react-router-dom";
 
 const colors = [
     "",
@@ -37,10 +39,17 @@ export function ProjectPage({
     const scrollable_ref = useRef<HTMLDivElement | null>(null);
     useFluidColorRegister(colorNum);
 
+    const currentIndex = projectPages.findIndex((p) => p.name === title);
+    const prevProject =
+        currentIndex > 0 ? projectPages[currentIndex - 1] : null;
+    const nextProject =
+        currentIndex !== -1 &&
+        projectPages[(currentIndex + 1) % projectPages.length];
+
     return (
         <div
             ref={scrollable_ref}
-            className="h-[90%] text-white pt-10 px-14  overflow-y-auto"
+            className="h-[90%] text-white pt-10 px-14 overflow-y-auto relative"
             style={{
                 maskImage:
                     "linear-gradient(to top, transparent, black 10%, black 80%, transparent)",
@@ -48,7 +57,7 @@ export function ProjectPage({
                     "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
             }}
         >
-            <div className="max-w-4xl mx-auto px-4 flex flex-col gap-4">
+            <div className="max-w-4xl mx-auto px-4 flex flex-col gap-4 relative">
                 {/* Title and Icons */}
                 <div className="flex flex-wrap items-center gap-4">
                     <Hitbox
@@ -73,6 +82,45 @@ export function ProjectPage({
                         <IconButton to={liveLink}>
                             <ExternalLinkIcon className="w-[36px] h-[36px]" />
                         </IconButton>
+                    )}
+                </div>
+                {/* Navigation */}
+                <div className="max-w-4xl mx-auto absolute top-0 right-0 px-4 flex gap-2 justify-between mt-10 pb-10">
+                    {prevProject ? (
+                        <Link
+                            to={prevProject.path}
+                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
+                        >
+                            <ArrowLeft />
+                            <div className="text-left">
+                                <div className="text-sm text-gray-400">
+                                    Previous
+                                </div>
+                                <div className="font-semibold">
+                                    {prevProject.name}
+                                </div>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div />
+                    )}
+                    {nextProject ? (
+                        <Link
+                            to={nextProject.path}
+                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
+                        >
+                            <div className="text-right">
+                                <div className="text-sm text-gray-400">
+                                    Next
+                                </div>
+                                <div className="font-semibold">
+                                    {nextProject.name}
+                                </div>
+                            </div>
+                            <ArrowRight />
+                        </Link>
+                    ) : (
+                        <div />
                     )}
                 </div>
 

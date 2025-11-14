@@ -19,7 +19,7 @@ export function RibbonCard({
             <p>An internal tool for creating genomic ribbon diagrams.</p>
             <i>Web Workers, Canvas, and a Custom graph solver.</i>
             <div className="flex align-middle justify-center flex-row space-x-4">
-                <InternalLink to="/projects/Ribbons">Explore</InternalLink>
+                <InternalLink to="/projects/ribbons">Explore</InternalLink>
             </div>
         </ProjectCard>
     );
