@@ -57,71 +57,75 @@ export function ProjectPage({
                     "linear-gradient(to top, transparent, black 8%, black 92%, transparent)",
             }}
         >
-            <div className="max-w-4xl mx-auto px-4 flex flex-col gap-4 relative">
-                {/* Title and Icons */}
-                <div className="flex flex-wrap items-center gap-4">
-                    <Hitbox
-                        id={`${title.toLowerCase().replace(/\s/g, "-")}-title`}
-                        className="p-4 w-fit"
-                        parent={scrollable_ref}
-                    >
-                        <h1
-                            className={`font-bold bg-clip-text text-transparent bg-gradient-to-r ${
-                                colors[colorNum] ?? ""
-                            } animate-gradient-swirl text-4xl`}
+            <div className="max-w-4xl mx-auto px-4 flex flex-col gap-4">
+                <div className="flex flex-col gap-4 md:flex-row-reverse justify-between">
+                    {/* Navigation */}
+                    <div className="flex gap-4 justify-around md:justify-start">
+                        {prevProject ? (
+                            <Link
+                                to={prevProject.path}
+                                className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
+                            >
+                                <ArrowLeft />
+                                <div className="text-left">
+                                    <div className="text-sm text-gray-400">
+                                        Previous
+                                    </div>
+                                    <div className="font-semibold">
+                                        {prevProject.name}
+                                    </div>
+                                </div>
+                            </Link>
+                        ) : (
+                            <div />
+                        )}
+                        {nextProject ? (
+                            <Link
+                                to={nextProject.path}
+                                className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
+                            >
+                                <div className="text-right">
+                                    <div className="text-sm text-gray-400">
+                                        Next
+                                    </div>
+                                    <div className="font-semibold">
+                                        {nextProject.name}
+                                    </div>
+                                </div>
+                                <ArrowRight />
+                            </Link>
+                        ) : (
+                            <div />
+                        )}
+                    </div>
+                    {/* Title and Icons */}
+                    <div className="flex flex-wrap items-center gap-4">
+                        <Hitbox
+                            id={`${title
+                                .toLowerCase()
+                                .replace(/\s/g, "-")}-title`}
+                            className="p-4 w-fit"
+                            parent={scrollable_ref}
                         >
-                            {title}
-                        </h1>
-                    </Hitbox>
-                    {githubLink && (
-                        <IconButton to={githubLink}>
-                            <GithubIcon />
-                        </IconButton>
-                    )}
-                    {liveLink && (
-                        <IconButton to={liveLink}>
-                            <ExternalLinkIcon className="w-[36px] h-[36px]" />
-                        </IconButton>
-                    )}
-                </div>
-                {/* Navigation */}
-                <div className="max-w-4xl mx-auto absolute top-0 right-0 px-4 flex gap-2 justify-between mt-10 pb-10">
-                    {prevProject ? (
-                        <Link
-                            to={prevProject.path}
-                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
-                        >
-                            <ArrowLeft />
-                            <div className="text-left">
-                                <div className="text-sm text-gray-400">
-                                    Previous
-                                </div>
-                                <div className="font-semibold">
-                                    {prevProject.name}
-                                </div>
-                            </div>
-                        </Link>
-                    ) : (
-                        <div />
-                    )}
-                    {nextProject ? (
-                        <Link
-                            to={nextProject.path}
-                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-white/10 transition-colors"
-                        >
-                            <div className="text-right">
-                                <div className="text-sm text-gray-400">
-                                    Next
-                                </div>
-                                <div className="font-semibold">
-                                    {nextProject.name}
-                                </div>
-                            </div>
-                            <ArrowRight />
-                        </Link>
-                    ) : (
-                        <div />
-                    )}
+                            <h1
+                                className={`font-bold bg-clip-text text-transparent bg-gradient-to-r ${
+                                    colors[colorNum] ?? ""
+                                } animate-gradient-swirl text-4xl`}
+                            >
+                                {title}
+                            </h1>
+                        </Hitbox>
+                        {githubLink && (
+                            <IconButton to={githubLink}>
+                                <GithubIcon />
+                            </IconButton>
+                        )}
+                        {liveLink && (
+                            <IconButton to={liveLink}>
+                                <ExternalLinkIcon className="w-[36px] h-[36px]" />
+                            </IconButton>
+                        )}
+                    </div>
                 </div>
 
                 {/* Technologies */}
