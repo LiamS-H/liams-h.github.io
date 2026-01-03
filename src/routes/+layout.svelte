@@ -1,5 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
+	import '../app.css';
+	import Fluid from '$lib/components/fluid/fluid.svelte';
 
 	let { children } = $props();
 </script>
@@ -8,4 +10,8 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-{@render children()}
+<main>
+	<Fluid>
+		{@render children()}
+	</Fluid>
+</main>
