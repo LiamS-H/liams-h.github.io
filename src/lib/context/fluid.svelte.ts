@@ -32,7 +32,7 @@ class FluidState {
 	changeColor = (new_color: number) => {
 		if (new_color === this.color) return;
 		this.color = new_color;
-		this.sim().updateColor(new_color);
+		this.sim().changeColor(new_color);
 	};
 }
 
