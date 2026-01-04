@@ -31,6 +31,7 @@ export class Simulator {
 	//              x,      y,      w,      h,
 	private maxBoxes: number = 50;
 	private smoke_color: number = 0;
+	private prev_smoke_color?: number;
 
 	private grid_size: number = 512;
 	private width!: number;
@@ -556,9 +557,9 @@ export class Simulator {
 	}
 
 	public async updateTextMatte() {
-		if (this.prevText == this.text) {
-			return;
-		}
+		if (!this.initialized) return;
+		if (this.prevText == this.text) return;
+
 		this.prevText = this.text;
 
 		const text = this.text?.toLowerCase() ?? '';
@@ -626,13 +627,20 @@ export class Simulator {
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
-	public async updateColor(color: number) {
+	public async changeColor(color: number) {
 		this.smoke_color = color;
+	}
+
+	private async updateColor() {
+		if (!this.initialized) return;
+		if (this.prev_smoke_color == this.smoke_color) return;
+		this.prev_smoke_color = this.smoke_color;
 		this.Ures_dif.update([this.width, this.height, this.diffusion, this.smoke_color]);
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
 	private async updateRectangles() {
+		if (!this.initialized) return;
 		const new_boxes: FluidRectList = [];
 		if (!this.rectMap) {
 			return;
@@ -697,6 +705,7 @@ export class Simulator {
 		return this.broken;
 	}
 	public async resize() {
+		this.initialized = false;
 		const tW = this.width;
 		const tH = this.height;
 		this.initSizes();
