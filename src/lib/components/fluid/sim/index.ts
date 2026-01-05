@@ -655,8 +655,8 @@ export class Simulator {
 		const matte = new Float32Array(this.numCells);
 
 		for (let i = 0; i < this.numCells; i++) {
-			matte[i] = pixelArray[i * 4 + 3] > 0 ? 0.0 : 1.0;
-			// matte[i] = 1;
+			// read alpha channel, normalize to 255.0
+			matte[i] = 1.0 - pixelArray[i * 4 + 3] / 255.0;
 		}
 
 		this.solids0.write(matte);
@@ -787,14 +787,10 @@ export class Simulator {
 
 		// this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
-		const dt = (now - this.time) * this.dt_mult;
+		const dt = ((now - this.time) * this.dt_mult) / 1000;
+		if (dt == 0) return;
 		this.time = now;
-		if (dt < 200) {
-			this.dt = dt / 1000;
-		}
-		if (this.dt === 0) {
-			return;
-		}
+		this.dt = Math.min(dt, 0.05);
 
 		const prevX = this.prevMouseX;
 		const prevY = this.prevMouseY;
