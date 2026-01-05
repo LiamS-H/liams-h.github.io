@@ -26,16 +26,21 @@ export class Simulator {
 
 	private text?: string;
 	private prevText?: string;
-	private rectMap!: FluidRects;
+	private rectMap: FluidRects = new Map();
 	private boxes: FluidRectList = [];
 	//              x,      y,      w,      h,
 	private maxBoxes: number = 50;
 	private smoke_color: number = 0;
 	private prev_smoke_color?: number;
 
+	private horizontal_view_buffer: number = 6;
+	private vertical_view_buffer: number = 1;
+
 	private grid_size: number = 512;
 	private width!: number;
 	private height!: number;
+	private viewWidth!: number;
+	private viewHeight!: number;
 	private numCells!: number;
 	private diffusion: number = 0.999;
 	private pressureIterations: number = 5;
@@ -197,19 +202,32 @@ export class Simulator {
 			};
 		};
 
-		// Calculate simulation buffer dimensions
+		// Calculate preferred visible dimensions
 		const gridSize = getPreferredDimensions(this.grid_size);
-		this.width = gridSize.w;
-		this.height = gridSize.h;
+		let viewWidth = gridSize.w;
+		let viewHeight = gridSize.h;
+
+		// Expand simulation grid by fixed cell buffers
+		this.width = viewWidth + 2 * this.horizontal_view_buffer;
+		this.height = viewHeight + 2 * this.vertical_view_buffer;
+
+		// Validate expanded dimensions are within GPU limits and update final sizes
+		const finalSizes = getValidDimensions(this.width, this.height);
+		this.width = finalSizes.w;
+		this.height = finalSizes.h;
+
+		// Recalculate visible area based on final simulation grid
+		this.viewWidth = this.width - 2 * this.horizontal_view_buffer;
+		this.viewHeight = this.height - 2 * this.vertical_view_buffer;
 
 		this.pressureIterations = Math.floor(this.width / 300);
 
 		this.rdx = this.grid_size * 4;
 		this.dx = 1 / this.rdx;
 
-		// Resize the canvas
-		this.canvas.width = this.width;
-		this.canvas.height = this.height;
+		// Resize the canvas to the final VISIBLE dimensions
+		this.canvas.width = this.viewWidth;
+		this.canvas.height = this.viewHeight;
 		this.numCells = this.width * this.height;
 		// console.log("w", this.width, "h", this.height);
 	}
@@ -244,7 +262,12 @@ export class Simulator {
 	}
 
 	private async updateUniforms() {
-		this.Ures.update([this.width, this.height]);
+		this.Ures.update([
+			this.width,
+			this.height,
+			this.horizontal_view_buffer,
+			this.vertical_view_buffer
+		]);
 		this.Ures_mouse.update([
 			this.width,
 			this.height,
@@ -288,7 +311,12 @@ export class Simulator {
 		this.solids0.write(solids0);
 
 		//uniforms
-		this.Ures = new Uniform(this.device, 2, 'Ures', [this.width, this.height]);
+		this.Ures = new Uniform(this.device, 4, 'Ures', [
+			this.width,
+			this.height,
+			this.horizontal_view_buffer,
+			this.vertical_view_buffer
+		]);
 		this.Ures_mouse = new Uniform(this.device, 6, 'Ures_mouse', [
 			this.width,
 			this.height,
@@ -565,7 +593,7 @@ export class Simulator {
 
 		const text = this.text?.toLowerCase() ?? '';
 
-		const fontSize = this.width / 5;
+		const fontSize = this.viewWidth / 5;
 		const letterSpacing = 50;
 
 		await document.fonts.ready;
@@ -580,8 +608,15 @@ export class Simulator {
 		context.translate(0, canvas.height);
 		context.scale(1, -1);
 
+		context.translate(this.horizontal_view_buffer, this.vertical_view_buffer);
+
 		// Set background transparent and draw centered text
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.clearRect(
+			-this.horizontal_view_buffer,
+			-this.vertical_view_buffer,
+			canvas.width,
+			canvas.height
+		);
 		// context.font = "bold 400px futura";
 		context.textBaseline = 'middle';
 		context.fillStyle = 'black'; // Text color
@@ -594,8 +629,8 @@ export class Simulator {
 				totalWidth += letterSpacing;
 			}
 		}
-		const startX = (canvas.width - totalWidth) / 2;
-		const y = canvas.height / 2;
+		const startX = (this.viewWidth - totalWidth) / 2;
+		const y = this.viewHeight / 2;
 
 		// Draw each character with custom letter spacing
 		let x = startX;
@@ -640,19 +675,25 @@ export class Simulator {
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
-	public async registerRectangle(bounds: DOMRect | null, id: string) {
-		if (!bounds) {
+	public async registerRectangle(rect: FluidRectObj | null, id: string) {
+		if (!rect) {
 			this.rectMap.delete(id);
 			return;
 		}
+
 		const vh = window.visualViewport?.height || window.innerHeight;
 		const vw = window.visualViewport?.width || window.innerWidth;
+		const x_sim = (this.horizontal_view_buffer + (rect.x / vw) * this.viewWidth) / this.width;
+		const y_sim =
+			(this.vertical_view_buffer + ((vh - rect.h - rect.y) / vh) * this.viewHeight) / this.height;
+		const w_sim = ((rect.w / vw) * this.viewWidth) / this.width;
+		const h_sim = ((rect.h / vh) * this.viewHeight) / this.height;
 
 		this.rectMap.set(id, {
-			x: bounds.x / vw,
-			y: (vh - bounds.height - bounds.y) / vh,
-			w: bounds.width / vw,
-			h: bounds.height / vh
+			x: x_sim,
+			y: y_sim,
+			w: w_sim,
+			h: h_sim
 		});
 	}
 
@@ -683,8 +724,9 @@ export class Simulator {
 		const vw = window.visualViewport?.width || window.innerWidth;
 		const ny = y / vh;
 		const nx = x / vw;
-		this.mouseX = nx;
-		this.mouseY = 1 - ny;
+
+		this.mouseX = (this.horizontal_view_buffer + nx * this.viewWidth) / this.width;
+		this.mouseY = (this.vertical_view_buffer + (1 - ny) * this.viewHeight) / this.height;
 		this.touch = touch || false;
 	}
 
@@ -773,8 +815,6 @@ export class Simulator {
 		this.updateRectangles();
 		this.updateTextMatte();
 		this.updateColor();
-
-		// console.log(this.mouseU, this.mouseV);
 
 		this.updateUniforms();
 		await this.simulate();
