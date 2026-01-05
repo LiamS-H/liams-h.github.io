@@ -115,13 +115,19 @@ export class Simulator {
 		await instance.init(canvas);
 		return instance;
 	}
-	public async init(canvas?: HTMLCanvasElement) {
-		if (canvas) this.canvas = canvas;
-		if (!(await this.initGPU())) return false;
+
+	private async reset() {
 		this.initSizes();
 		await this.initBuffers();
 		this.initComputePrograms();
 		this.initRenderPipeline();
+	}
+
+	public async init(canvas: HTMLCanvasElement) {
+		this.initialized = false;
+		this.canvas = canvas;
+		if (!(await this.initGPU())) return false;
+		this.reset();
 		this.initialized = true;
 		return true;
 	}
@@ -714,10 +720,12 @@ export class Simulator {
 		}
 		this.prevText = undefined;
 		this.boxes = [];
-		await this.init();
+		await this.reset();
+		this.initialized = true;
 	}
 
 	public async step() {
+		if (this.initialized == false) return;
 		const now = Date.now();
 
 		// this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
@@ -749,6 +757,7 @@ export class Simulator {
 		}
 		this.updateRectangles();
 		this.updateTextMatte();
+		this.updateColor();
 
 		// console.log(this.mouseU, this.mouseV);
 
