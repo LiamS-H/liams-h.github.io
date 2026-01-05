@@ -9,7 +9,7 @@
 	let frame: number;
 	// let sim: Simulator;
 	// let sim: Simulator | null = null;
-	let sim = new Simulator(new Map());
+	let sim = new Simulator();
 	setFluidContext(() => sim);
 
 	let isFocused = true;
@@ -46,18 +46,14 @@
 		canvas.width = Math.max(vw, minW);
 		canvas.height = Math.max(vh, minH);
 		await sim.resize();
-        isFocused = true;
+		isFocused = true;
 	}
 	function mouseMove(e: MouseEvent) {
-		const vh = window.visualViewport?.height || window.innerHeight;
-		const vw = window.visualViewport?.width || window.innerWidth;
-		sim?.updateMouse(e.clientX / vw, e.clientY / vh);
+		sim?.updateMouse(e.clientX, e.clientY);
 	}
 	function touchMove(e: TouchEvent) {
-		const vw = window.visualViewport?.width || window.innerWidth;
-		const vh = window.visualViewport?.height || window.innerHeight;
 		const touch = e.touches[0];
-		sim?.updateMouse(touch.clientX / vw, touch.clientY / vh, true);
+		sim?.updateMouse(touch.clientX, touch.clientY, true);
 	}
 
 	onMount(() => {
