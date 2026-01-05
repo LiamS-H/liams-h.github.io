@@ -1,4 +1,4 @@
-import { FUNCTION, UNIFORM } from "./utils";
+import { FUNCTION, UNIFORM } from './utils';
 
 export const render_shader = /*wgsl*/ `
 struct VertexOutput {
@@ -20,9 +20,7 @@ fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
     );
 
     output.position = vec4<f32>(vertices[vertexIndex], 0.0, 1.0);
-    output.texCoord.x = (vertices[vertexIndex].x + 2.0) * 0.5;
-    output.texCoord.y = (vertices[vertexIndex].y + 1.0) * 0.5;
-    // output.texCoord = (vertices[vertexIndex]+1) * 0.5;
+    output.texCoord = (vertices[vertexIndex] + 1.0) * 0.5;
 
     return output;
 }
@@ -42,15 +40,13 @@ ${FUNCTION.idx}
 
 @fragment
 fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
-    let x = texCoord.x * (U.res.x);
-    let y = texCoord.y * (U.res.y)-1;
-    let index = u32((y * U.res.x) + x);
+    let x = clamp(texCoord.x * U.res.x, 0.0, U.res.x - 1.0);
+    let y = clamp(texCoord.y * U.res.y, 0.0, U.res.y - 1.0);
+    let index = u32(floor(y) * U.res.x + floor(x));
 
     var smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
     let s = solids[index];
-    if (x < (U.res.x)/2 + 3) {
-        return vec4<f32>(0,0,0, 1.0);
-    }
+
     if (s == 0) {
         return vec4<f32>(0,0,0, 1.0);
     }
