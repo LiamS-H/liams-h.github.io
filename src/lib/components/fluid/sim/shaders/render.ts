@@ -40,9 +40,9 @@ ${FUNCTION.idx}
 
 @fragment
 fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
-    let x = clamp(texCoord.x * U.res.x, 0.0, U.res.x - 1.0);
-    let y = clamp(texCoord.y * U.res.y, 0.0, U.res.y - 1.0);
-    let index = u32(floor(y) * U.res.x + floor(x));
+    let simX = U.horizontal_view_buffer + texCoord.x * (U.res.x - 2.0 * U.horizontal_view_buffer);
+    let simY = U.vertical_view_buffer + texCoord.y * (U.res.y - 2.0 * U.vertical_view_buffer);
+    let index = u32(floor(simY) * U.res.x + floor(simX));
 
     var smoke_color = vec3<f32>(smoke_r[index], smoke_g[index], smoke_b[index]);
     let s = solids[index];

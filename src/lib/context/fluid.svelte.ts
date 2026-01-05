@@ -16,7 +16,15 @@ class FluidState {
 	};
 
 	registerBound = (bounds: DOMRect | null, id: string) => {
-		this.sim().registerRectangle(bounds, id);
+		const rect = bounds
+			? {
+					x: bounds.x,
+					y: bounds.y,
+					w: bounds.width,
+					h: bounds.height
+				}
+			: null;
+		this.sim().registerRectangle(rect, id);
 	};
 }
 

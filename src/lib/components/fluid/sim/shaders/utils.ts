@@ -17,6 +17,8 @@ export namespace UNIFORM {
     export const res = /*wgsl*/ `
     struct Uniforms {
         res: vec2<f32>,
+        horizontal_view_buffer: f32,
+        vertical_view_buffer: f32,
     };`;
 
     export const res_dt = /*wgsl*/ `
