@@ -103,14 +103,9 @@ export class Simulator {
 	private vorticityConfinement!: ComputeProgram;
 	private advectSmoke!: ComputeProgram;
 
-	public constructor(rectMap: FluidRects) {
-		this.rectMap = rectMap;
-	}
-	public static async create(
-		canvas: HTMLCanvasElement,
-		rectMap: FluidRects
-	): Promise<Simulator | null> {
-		const instance = new Simulator(rectMap);
+	public constructor() {}
+	public static async create(canvas: HTMLCanvasElement): Promise<Simulator | null> {
+		const instance = new Simulator();
 		// if (isOutdated()) return null;
 		await instance.init(canvas);
 		return instance;
@@ -645,6 +640,22 @@ export class Simulator {
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
+	public async registerRectangle(bounds: DOMRect | null, id: string) {
+		if (!bounds) {
+			this.rectMap.delete(id);
+			return;
+		}
+		const vh = window.visualViewport?.height || window.innerHeight;
+		const vw = window.visualViewport?.width || window.innerWidth;
+
+		this.rectMap.set(id, {
+			x: bounds.x / vw,
+			y: (vh - bounds.height - bounds.y) / vh,
+			w: bounds.width / vw,
+			h: bounds.height / vh
+		});
+	}
+
 	private async updateRectangles() {
 		if (!this.initialized) return;
 		const new_boxes: FluidRectList = [];
@@ -668,8 +679,12 @@ export class Simulator {
 	}
 
 	public async updateMouse(x: number, y: number, touch?: true) {
-		this.mouseX = x;
-		this.mouseY = 1 - y;
+		const vh = window.visualViewport?.height || window.innerHeight;
+		const vw = window.visualViewport?.width || window.innerWidth;
+		const ny = y / vh;
+		const nx = x / vw;
+		this.mouseX = nx;
+		this.mouseY = 1 - ny;
 		this.touch = touch || false;
 	}
 
