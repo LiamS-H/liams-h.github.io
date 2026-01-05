@@ -127,7 +127,7 @@ export class Simulator {
 		this.initialized = false;
 		this.canvas = canvas;
 		if (!(await this.initGPU())) return false;
-		this.reset();
+		await this.reset();
 		this.initialized = true;
 		return true;
 	}
