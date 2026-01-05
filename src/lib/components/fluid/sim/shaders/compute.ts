@@ -138,9 +138,12 @@ export namespace PROGRAM {
             }
         }
         if (solids_read[index] == 0) {
-            smoke_write_r[index] = smoke_read_r[index] * U.diffusion * 0.99;
-            smoke_write_g[index] = smoke_read_g[index] * U.diffusion * 0.99;
-            smoke_write_b[index] = smoke_read_b[index] * U.diffusion * 0.99;
+            smoke_write_r[index] = smoke_read_r[index] * 0.0;
+            smoke_write_g[index] = smoke_read_g[index] * 0.0;
+            smoke_write_b[index] = smoke_read_b[index] * 0.0;
+            // smoke_write_r[index] = smoke_read_r[index] * U.diffusion * 0.99;
+            // smoke_write_g[index] = smoke_read_g[index] * U.diffusion * 0.99;
+            // smoke_write_b[index] = smoke_read_b[index] * U.diffusion * 0.99;
             return;
         }
 
