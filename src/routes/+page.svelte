@@ -6,7 +6,6 @@
 	const fluid = useFluidContext();
 
 	onMount(() => {
-		console.log(fluid);
 		fluid.registerText('LIAM');
 	});
 </script>
