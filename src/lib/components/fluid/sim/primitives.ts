@@ -75,8 +75,8 @@ export class Buffer {
 			this.writeBuffer(this.buffers[i], dataList[i]);
 		}
 	}
-	public async read(): Promise<ArrayBuffer[]> {
-		const promises: Promise<ArrayBuffer>[] = [];
+	public async read(): Promise<Float32Array[]> {
+		const promises: Promise<Float32Array>[] = [];
 		for (let i = 0; i < this.dims; i++) {
 			promises.push(this.readBuffer(this.buffers[i]));
 		}
@@ -88,7 +88,7 @@ export class Buffer {
 		this.device.queue.writeBuffer(buffer, 0, data, 0, data.length);
 	}
 
-	protected async readBuffer(buffer: GPUBuffer): Promise<ArrayBuffer> {
+	protected async readBuffer(buffer: GPUBuffer): Promise<Float32Array> {
 		const readBuffer = this.device.createBuffer({
 			size: this.size,
 			usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
@@ -105,7 +105,7 @@ export class Buffer {
 		const floatArray = arrayBuffer.slice(0);
 
 		readBuffer.unmap();
-		return floatArray;
+		return new Float32Array(floatArray);
 	}
 }
 
