@@ -46,6 +46,7 @@
 		canvas.width = Math.max(vw, minW);
 		canvas.height = Math.max(vh, minH);
 		await sim.resize();
+        isFocused = true;
 	}
 	function mouseMove(e: MouseEvent) {
 		const vh = window.visualViewport?.height || window.innerHeight;
