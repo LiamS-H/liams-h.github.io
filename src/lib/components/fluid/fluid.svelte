@@ -48,12 +48,14 @@
 		await sim.resize();
 		isFocused = true;
 	}
+
 	function mouseMove(e: MouseEvent) {
-		sim?.updateMouse(e.clientX, e.clientY);
+		sim.updateMouse(e.clientX, e.clientY);
 	}
+
 	function touchMove(e: TouchEvent) {
 		const touch = e.touches[0];
-		sim?.updateMouse(touch.clientX, touch.clientY, true);
+		sim.updateMouse(touch.clientX, touch.clientY, true);
 	}
 
 	onMount(() => {
