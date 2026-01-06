@@ -10,7 +10,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<main>
+<main >
 	<Fluid>
 		{@render children()}
 	</Fluid>

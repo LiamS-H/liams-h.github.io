@@ -51,6 +51,12 @@
 
 	function mouseMove(e: MouseEvent) {
 		sim.updateMouse(e.clientX, e.clientY);
+        // sim.registerRectangle({
+        //     x:e.clientX-5,
+        //     y:e.clientY-5,
+        //     w: 10, h: 10,
+
+        // },"mouse")
 	}
 
 	function touchMove(e: TouchEvent) {
@@ -69,9 +75,7 @@
 	on:mousemove={mouseMove}
 	on:touchmove={touchMove}
 	on:pageshow={handleFocus(true)}
-	on:pagehide={handleFocus(false)}
 	on:focus={handleFocus(true)}
-	on:blur={handleFocus(false)}
 />
 
 <div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">

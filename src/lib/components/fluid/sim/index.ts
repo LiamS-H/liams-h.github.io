@@ -18,6 +18,8 @@ export type FluidRectList = FluidRect[];
 
 export type FluidRects = Map<string, FluidRectObj | null>;
 
+const ignore_alias: string[] = ['h', 'i', 'l', 't'] as const;
+
 export class Simulator {
 	private time: number = 0;
 	private initialized: boolean = false;
@@ -593,7 +595,7 @@ export class Simulator {
 
 		const text = this.text?.toLowerCase() ?? '';
 
-		const fontSize = this.viewWidth / 5;
+		const fontSize = Math.floor(Math.floor(this.viewWidth / 5) / 2) * 2;
 		const letterSpacing = 50;
 
 		await document.fonts.ready;
@@ -612,8 +614,10 @@ export class Simulator {
 
 		// Set background transparent and draw centered text
 		context.clearRect(
-			-this.horizontal_view_buffer,
-			-this.vertical_view_buffer,
+			// -this.horizontal_view_buffer,
+			// -this.vertical_view_buffer,
+			0,
+			0,
 			canvas.width,
 			canvas.height
 		);
@@ -629,8 +633,10 @@ export class Simulator {
 				totalWidth += letterSpacing;
 			}
 		}
-		const startX = (this.viewWidth - totalWidth) / 2;
-		const y = this.viewHeight / 2;
+		const startX = Math.floor((this.viewWidth - totalWidth) / 2);
+		const y = Math.floor(this.viewHeight / 2);
+
+		// const draws = [];
 
 		// Draw each character with custom letter spacing
 		let x = startX;
@@ -639,13 +645,31 @@ export class Simulator {
 			context.fillText(char, x, y);
 			if (char == 'm') {
 				const w = context.measureText(char).width;
-				context.clearRect(x + w * 0.22, y + w * 0.3, w * 0.573, w * 0.2);
+				context.clearRect(x, y + w * 0.3, w, w * 0.2);
+				context.drawImage(
+					context.canvas,
+					x + this.horizontal_view_buffer,
+					this.height - (y + w * 0.3 - this.vertical_view_buffer),
+					w,
+					w * 0.15,
+					x,
+					y + w * 0.3,
+					w,
+					w * 0.15
+				);
 			}
 			if (char == 'a') {
 				const w = context.measureText(char).width;
-				context.clearRect(x + w * 0.2, y + w * 0.45, w * 0.2, w * 0.2);
+				context.clearRect(x + w * 0.2, y + w * 0.45, w * 0.3, w * 0.2);
 			}
-			x += context.measureText(char).width + letterSpacing;
+			const w = context.measureText(char).width + letterSpacing;
+			// draws.push({
+			// 	b: x - 2,
+			// 	e: w + x + 2,
+
+			// 	alias: ignore_alias.includes(char)
+			// });
+			x += w;
 		}
 
 		// context.fillText(text, canvas.width / 2, canvas.height / 2);
@@ -653,11 +677,24 @@ export class Simulator {
 		const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 		const pixelArray = imageData.data;
 		const matte = new Float32Array(this.numCells);
-
+		// intialize with 1.0 s
 		for (let i = 0; i < this.numCells; i++) {
-			// read alpha channel, normalize to 255.0
-			matte[i] = 1.0 - pixelArray[i * 4 + 3] / 255.0;
+			matte[i] = 1.0;
 		}
+
+		for (let x = 0; x < this.width; x++) {
+			for (let y = 0; y < this.height; y++) {
+				const i = y * this.width + x;
+				const alpha = 1.0 - pixelArray[i * 4 + 3] / 255.0;
+				matte[i] = alpha;
+			}
+		}
+
+		// for (let i = 0; i < this.numCells; i++) {
+		// 	// read alpha channel, normalize to 255.0
+		// 	const alpha = 1.0 - pixelArray[i * 4 + 3] / 255.0;
+		// 	matte[i] = alpha;
+		// }
 
 		this.solids0.write(matte);
 		return this.device.queue.onSubmittedWorkDone();
