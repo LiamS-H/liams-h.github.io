@@ -25,7 +25,6 @@ class FluidState {
 					color
 				}
 			: null;
-		console.log(rect);
 		this.sim().registerRectangle(rect, id);
 	};
 }
