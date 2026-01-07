@@ -10,9 +10,10 @@ export interface FluidRectObj {
 	y: number;
 	w: number;
 	h: number;
+	color?: number;
 }
 
-export type FluidRect = [number, number, number, number];
+export type FluidRect = [number, number, number, number, number];
 
 export type FluidRectList = FluidRect[];
 
@@ -30,7 +31,8 @@ export class Simulator {
 	private prevText?: string;
 	private rectMap: FluidRects = new Map();
 	private boxes: FluidRectList = [];
-	//              x,      y,      w,      h,
+	//              x,      y,      w,      h,      c,      p,      p,      p
+
 	private maxBoxes: number = 50;
 	private smoke_color: number = 0;
 	private prev_smoke_color?: number;
@@ -45,7 +47,7 @@ export class Simulator {
 	private viewHeight!: number;
 	private numCells!: number;
 	private diffusion: number = 0.999;
-	private pressureIterations: number = 5;
+	private pressureIterations!: number;
 	// private dt: number = 0.03; // delta time
 	// private dt: number = 0.015; // delta time
 	private dt_mult: number = 2.5;
@@ -279,7 +281,14 @@ export class Simulator {
 			this.mouseU
 		]);
 		this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
-		this.Ures_dif.update([this.width, this.height, this.diffusion, this.smoke_color]);
+		this.Ures_dif.update([
+			this.width,
+			this.height,
+			this.diffusion,
+			this.smoke_color,
+			this.boxes.length,
+			0
+		]);
 		this.Ures_dt.update([
 			this.width,
 			this.height,
@@ -305,7 +314,7 @@ export class Simulator {
 		this.vorticity = new Buffer(this.device, this.numCells, 1, 'vort');
 		this.solids = new Buffer(this.device, this.numCells, 1, 'solid');
 		this.solids0 = new Buffer(this.device, this.numCells, 1, 'solid0');
-		this.rectangles = new Buffer(this.device, this.maxBoxes * 4, 1, 'rect');
+		this.rectangles = new Buffer(this.device, this.maxBoxes * 8, 1, 'rect');
 
 		const solids0 = new Float32Array(this.numCells);
 		solids0.fill(1.0);
@@ -333,11 +342,13 @@ export class Simulator {
 			this.boxes.length,
 			0
 		]);
-		this.Ures_dif = new Uniform(this.device, 4, 'Ures_dif', [
+		this.Ures_dif = new Uniform(this.device, 6, 'Ures_dif', [
 			this.width,
 			this.height,
 			this.diffusion,
-			this.smoke_color
+			this.smoke_color,
+			this.boxes.length,
+			0
 		]);
 		this.Ures_dt = new Uniform(this.device, 6, 'Ures_dt', [
 			this.width,
@@ -430,7 +441,7 @@ export class Simulator {
 		this.updateSmoke = new ComputeProgram(
 			this.device,
 			PROGRAM.updateSmoke,
-			[this.smoke, this.solids],
+			[this.smoke, this.solids, this.rectangles],
 			[this.smoke0],
 			[this.Ures_dif],
 			this.width,
@@ -680,7 +691,14 @@ export class Simulator {
 		if (!this.initialized) return;
 		if (this.prev_smoke_color == this.smoke_color) return;
 		this.prev_smoke_color = this.smoke_color;
-		this.Ures_dif.update([this.width, this.height, this.diffusion, this.smoke_color]);
+		this.Ures_dif.update([
+			this.width,
+			this.height,
+			this.diffusion,
+			this.smoke_color,
+			this.boxes.length,
+			0
+		]);
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
@@ -690,20 +708,24 @@ export class Simulator {
 			return;
 		}
 
-		const vh = window.visualViewport?.height || window.innerHeight;
-		const vw = window.visualViewport?.width || window.innerWidth;
-		const x_sim = (this.horizontal_view_buffer + (rect.x / vw) * this.viewWidth) / this.width;
-		const y_sim =
-			(this.vertical_view_buffer + ((vh - rect.h - rect.y) / vh) * this.viewHeight) / this.height;
-		const w_sim = ((rect.w / vw) * this.viewWidth) / this.width;
-		const h_sim = ((rect.h / vh) * this.viewHeight) / this.height;
+		// const vh = window.visualViewport?.height || window.innerHeight;
+		// const vw = window.visualViewport?.width || window.innerWidth;
+		// const x_sim = (this.horizontal_view_buffer + (rect.x / vw) * this.viewWidth) / this.width;
+		// const y_sim =
+		// 	(this.vertical_view_buffer + ((vh - rect.h - rect.y) / vh) * this.viewHeight) / this.height;
+		// const w_sim = ((rect.w / vw) * this.viewWidth) / this.width;
+		// const h_sim = ((rect.h / vh) * this.viewHeight) / this.height;
+		// console.log(vh);
+		// console.log(this.viewHeight);
 
-		this.rectMap.set(id, {
-			x: x_sim,
-			y: y_sim,
-			w: w_sim,
-			h: h_sim
-		});
+		// this.rectMap.set(id, {
+		// 	x: x_sim,
+		// 	y: y_sim,
+		// 	w: w_sim,
+		// 	h: h_sim,
+		// 	color: rect.color
+		// });
+		this.rectMap.set(id, rect);
 	}
 
 	private async updateRectangles() {
@@ -715,16 +737,35 @@ export class Simulator {
 
 		for (const [, rect] of this.rectMap) {
 			if (!rect) return;
-			new_boxes.push([rect.x, rect.y, rect.w, rect.h]);
+			new_boxes.push([rect.x, rect.y, rect.w, rect.h, rect.color ?? -1]);
 		}
 
 		if (this.isBoxSame(new_boxes)) {
 			return;
 		}
+		const vh = window.visualViewport?.height || window.innerHeight;
+		const vw = window.visualViewport?.width || window.innerWidth;
 
 		this.boxes = new_boxes;
 		this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
-		this.rectangles.write(new Float32Array(this.boxes.flat()));
+		this.Ures_dif.update([
+			this.width,
+			this.height,
+			this.diffusion,
+			this.smoke_color,
+			this.boxes.length,
+			0
+		]);
+		const data = new Float32Array(this.maxBoxes * 8);
+		this.boxes.forEach(([x, y, w, h, c], i) => {
+			const x_sim = (this.horizontal_view_buffer + (x / vw) * this.viewWidth) / this.width;
+			const y_sim =
+				(this.vertical_view_buffer + ((vh - h - y) / vh) * this.viewHeight) / this.height;
+			const w_sim = ((w / vw) * this.viewWidth) / this.width;
+			const h_sim = ((h / vh) * this.viewHeight) / this.height;
+			data.set([x_sim, y_sim, w_sim, h_sim, c, 0, 0, 0], i * 8);
+		});
+		this.rectangles.write(data);
 		return this.device.queue.onSubmittedWorkDone();
 	}
 

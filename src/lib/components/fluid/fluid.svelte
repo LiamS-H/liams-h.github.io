@@ -76,6 +76,8 @@
 	on:touchmove={touchMove}
 	on:pageshow={handleFocus(true)}
 	on:focus={handleFocus(true)}
+    on:blur={handleFocus(false)}
+    on:pagehide={handleFocus(false)}
 />
 
 <div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">

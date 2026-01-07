@@ -1,4 +1,4 @@
-import { FUNCTION, UNIFORM } from './utils';
+import { FUNCTION, UNIFORM, STRUCT } from './utils';
 const COMPUTE_BOUNDARY_HEADER = /*wgsl*/ `
 var pos = vec2<f32>(global_id.xy);
 let index = idx(pos.x, pos.y);
@@ -15,37 +15,26 @@ let index = idx(pos.x, pos.y);
 export namespace PROGRAM {
 	export const updateSolids = /*wgsl*/ `
     ${FUNCTION.idx}
+    ${STRUCT.rect}
+    ${FUNCTION.checkBoundsRect}
     struct Uniforms {
         res: vec2<f32>,
         rects: f32,
         padding: f32,
-    }
-    struct rect {
-        x: f32,
-        y: f32,
-        w: f32,
-        h: f32,
     }
 
     ${UNIFORM.binding}
     @group(0) @binding(1) var<storage, read> rectangles : array<rect>;
     @group(0) @binding(2) var<storage, read_write> solids: array<f32>;
 
-    fn checkBounds(pos:vec2<f32>) -> bool {
+    fn checkSolidBounds(pos:vec2<f32>) -> bool {
         let numRects = u32(U.rects);
-        // let rect = rectangles[0];
-        // if (numRects > 0) {
-        //     return rect.w > 0;
-        // }
         for (var i = 0u; i < numRects; i = i + 1u) {
-            let rect = rectangles[i];
-            
-            let x = rect.x * U.res.x;
-            let y = rect.y * U.res.y;
-            let w = rect.w * U.res.x;
-            let h = rect.h * U.res.y;
-
-            if (x < pos.x && pos.x < x + w && y < pos.y && pos.y < y + h) {
+            let r = rectangles[i];
+            if (r.color > -0.5) {
+                continue;
+            }
+            if (checkBoundsRect(pos, r)) {
                 return true;
             }
         }
@@ -57,93 +46,74 @@ export namespace PROGRAM {
         var pos = vec2<f32>(global_id.xy);
         let index = idx(pos.x, pos.y);
 
-        // if (pos.x == 0 || pos.y == 0 || pos.x >= U.res.x - 1 || pos.y >= U.res.y - 1) {
-        // if (pos.x == 0 || pos.y == 0 || pos.y >= U.res.y - 1) {
-        //     solids[index] = 0.0;
-        //     return;
-        // }
-
-        if (checkBounds(pos)) {
+        if (checkSolidBounds(pos)) {
             solids[index] = 0.0;
         } 
-        // solids[index] = 1;
     }
     `;
 	export const updateSmoke = /*wgsl*/ `
     ${FUNCTION.idx}
+    ${STRUCT.rect}
+    ${FUNCTION.checkBoundsRect}
+    ${FUNCTION.smokeColor}
     struct Uniforms {
         res: vec2<f32>,
         diffusion: f32,
         color: f32,
+        rects: f32,
+        padding: f32,
     }
     ${UNIFORM.binding}
     @group(0) @binding(1) var<storage, read> smoke_read_r: array<f32>;
     @group(0) @binding(2) var<storage, read> smoke_read_g: array<f32>;
     @group(0) @binding(3) var<storage, read> smoke_read_b: array<f32>;
     @group(0) @binding(4) var<storage, read_write> solids_read: array<f32>;
-    @group(0) @binding(5) var<storage, read_write> smoke_write_r: array<f32>;
-    @group(0) @binding(6) var<storage, read_write> smoke_write_g: array<f32>;
-    @group(0) @binding(7) var<storage, read_write> smoke_write_b: array<f32>;
+    @group(0) @binding(5) var<storage, read> rectangles : array<rect>;
+    @group(0) @binding(6) var<storage, read_write> smoke_write_r: array<f32>;
+    @group(0) @binding(7) var<storage, read_write> smoke_write_g: array<f32>;
+    @group(0) @binding(8) var<storage, read_write> smoke_write_b: array<f32>;
 
+    fn checkSmokeBounds(pos: vec2<f32>) -> i32 {
+        let numRects = u32(U.rects);
+        for (var i = 0u; i < numRects; i = i + 1u) {
+            let r = rectangles[i];
+            if (r.color < -0.5) {
+                continue;
+            }
+            if (checkBoundsRect(pos, r)) {
+                return i32(r.color);
+            }
+        }
+        return -1;
+    }
 
     @compute @workgroup_size(8, 8)
     fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
         ${COMPUTE_HEADER}
 
+        let y_ratio = f32(pos.y / U.res.y);
+
         if (pos.x <= 4) {
-            if (U.color == 0) {
-                smoke_write_r[index] = 1;
-                smoke_write_g[index] = f32(pos.y / U.res.y);
-                smoke_write_b[index] = 1;
-                return;
-            }
-            // if (U.color == 0 || (pos.y > 0.6 * U.res.y || pos.y < 0.4 * U.res.y )) {
-            //     return;
-            // }
-            if (U.color == 1) {
-                smoke_write_r[index] = 1;
-                smoke_write_g[index] = f32(pos.y / U.res.y);
-                smoke_write_b[index] = 0.5;
-                return;
-            }
-            if (U.color == 2) {
-                smoke_write_r[index] = f32(pos.y / U.res.y);
-                smoke_write_g[index] = 1;
-                smoke_write_b[index] = 0.5;
-                return;
-            }
-            if (U.color == 3) {
-                smoke_write_r[index] = f32(pos.y / U.res.y);
-                smoke_write_g[index] = 1;
-                smoke_write_b[index] = 1;
-                return;
-            }
-            if (U.color == 4) {
-                smoke_write_r[index] = 1;
-                smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
-                smoke_write_b[index] = f32(pos.y / U.res.y)*0.5;
-                return;
-            }
-            if (U.color == 5) {
-                smoke_write_r[index] = 1;
-                smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
-                smoke_write_b[index] = 0.5 + f32(pos.y / U.res.y)*0.2;
-                return;
-            }
-            if (U.color == 6) {
-                smoke_write_r[index] = 0.5 + f32(pos.y / U.res.y)*0.2;
-                smoke_write_g[index] = f32(pos.y / U.res.y)*0.5;
-                smoke_write_b[index] = 1;
-                return;
-            }
+            let smoke = smokeColor(i32(U.color), y_ratio);
+            smoke_write_r[index] = smoke.x;
+            smoke_write_g[index] = smoke.y;
+            smoke_write_b[index] = smoke.z;
+            return;
         }
+
+        let rectColor = checkSmokeBounds(pos);
+        if (rectColor >= 0) {
+            let smoke = smokeColor(rectColor, y_ratio);
+            smoke_write_r[index] = smoke.x;
+            smoke_write_g[index] = smoke.y;
+            smoke_write_b[index] = smoke.z;
+            return;
+        }
+
         if (solids_read[index] == 0) {
             smoke_write_r[index] = smoke_read_r[index] * 0.0;
             smoke_write_g[index] = smoke_read_g[index] * 0.0;
             smoke_write_b[index] = smoke_read_b[index] * 0.0;
-            // smoke_write_r[index] = smoke_read_r[index] * U.diffusion * 0.99;
-            // smoke_write_g[index] = smoke_read_g[index] * U.diffusion * 0.99;
-            // smoke_write_b[index] = smoke_read_b[index] * U.diffusion * 0.99;
             return;
         }
 

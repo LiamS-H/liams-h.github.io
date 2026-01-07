@@ -15,15 +15,17 @@ class FluidState {
 		this.sim().changeColor(new_color);
 	};
 
-	registerBound = (bounds: DOMRect | null, id: string) => {
+	registerBound = (bounds: DOMRect | null, id: string, color?: number) => {
 		const rect = bounds
 			? {
 					x: bounds.x,
 					y: bounds.y,
 					w: bounds.width,
-					h: bounds.height
+					h: bounds.height,
+					color
 				}
 			: null;
+		console.log(rect);
 		this.sim().registerRectangle(rect, id);
 	};
 }
