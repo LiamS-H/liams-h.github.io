@@ -587,43 +587,24 @@ export class Simulator {
 		this.text = text;
 	}
 
-	public async updateTextMatte() {
+	private async updateTextMatte() {
 		if (!this.initialized) return;
 		if (this.prevText == this.text) return;
-
 		this.prevText = this.text;
-
 		const text = this.text?.toLowerCase() ?? '';
-
 		const fontSize = Math.floor(Math.floor(this.viewWidth / 5) / 2) * 2;
 		const letterSpacing = 50;
-
 		await document.fonts.ready;
 		await document.fonts.load(`bold ${fontSize}px Megrim`);
-
 		const canvas = document.createElement('canvas');
 		canvas.width = this.width;
 		canvas.height = this.height;
-
 		const context = canvas.getContext('2d');
 		if (!context) throw new Error('2D context not available');
-		context.translate(0, canvas.height);
-		context.scale(1, -1);
 
-		context.translate(this.horizontal_view_buffer, this.vertical_view_buffer);
-
-		// Set background transparent and draw centered text
-		context.clearRect(
-			// -this.horizontal_view_buffer,
-			// -this.vertical_view_buffer,
-			0,
-			0,
-			canvas.width,
-			canvas.height
-		);
-		// context.font = "bold 400px futura";
+		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.textBaseline = 'middle';
-		context.fillStyle = 'black'; // Text color
+		context.fillStyle = 'black';
 		context.font = `bold ${fontSize}px Megrim`;
 
 		let totalWidth = 0;
@@ -633,68 +614,59 @@ export class Simulator {
 				totalWidth += letterSpacing;
 			}
 		}
+
 		const startX = Math.floor((this.viewWidth - totalWidth) / 2);
 		const y = Math.floor(this.viewHeight / 2);
+		const draws = [];
 
-		// const draws = [];
-
-		// Draw each character with custom letter spacing
 		let x = startX;
 		for (let i = 0; i < text.length; i++) {
 			const char = text[i];
 			context.fillText(char, x, y);
 			if (char == 'm') {
 				const w = context.measureText(char).width;
-				context.clearRect(x, y + w * 0.3, w, w * 0.2);
-				context.drawImage(
-					context.canvas,
-					x + this.horizontal_view_buffer,
-					this.height - (y + w * 0.3 - this.vertical_view_buffer),
-					w,
-					w * 0.15,
-					x,
-					y + w * 0.3,
-					w,
-					w * 0.15
-				);
+				const o = Math.floor(w * 0.15);
+				context.clearRect(x, y + o * 2, w, w * 0.2);
+				context.drawImage(context.canvas, x, y + o, w, o, x, y + o * 2, w, o);
 			}
 			if (char == 'a') {
 				const w = context.measureText(char).width;
 				context.clearRect(x + w * 0.2, y + w * 0.45, w * 0.3, w * 0.2);
 			}
 			const w = context.measureText(char).width + letterSpacing;
-			// draws.push({
-			// 	b: x - 2,
-			// 	e: w + x + 2,
-
-			// 	alias: ignore_alias.includes(char)
-			// });
+			draws.push({
+				b: x - 7,
+				e: w + x + 2,
+				noAlias: ignore_alias.includes(char)
+			});
 			x += w;
 		}
 
-		// context.fillText(text, canvas.width / 2, canvas.height / 2);
-		// Get image data from the canvas
 		const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
 		const pixelArray = imageData.data;
-		const matte = new Float32Array(this.numCells);
-		// intialize with 1.0 s
-		for (let i = 0; i < this.numCells; i++) {
-			matte[i] = 1.0;
-		}
+		const matte = new Float32Array(this.numCells).fill(1.0);
 
-		for (let x = 0; x < this.width; x++) {
-			for (let y = 0; y < this.height; y++) {
-				const i = y * this.width + x;
-				const alpha = 1.0 - pixelArray[i * 4 + 3] / 255.0;
-				matte[i] = alpha;
+		for (const draw of draws) {
+			const canvasXStart = Math.floor(draw.b + this.horizontal_view_buffer);
+			const canvasXEnd = Math.floor(draw.e + this.horizontal_view_buffer);
+
+			for (let canvasX = canvasXStart; canvasX < canvasXEnd; canvasX++) {
+				for (let canvasY = 0; canvasY < this.height; canvasY++) {
+					const canvasIdx = canvasY * this.width + canvasX;
+
+					const simX = canvasX - this.horizontal_view_buffer;
+					const simY = this.viewHeight - 1 - (canvasY - this.vertical_view_buffer);
+
+					const simIdx = simY * this.width + simX;
+
+					const alpha = pixelArray[canvasIdx * 4 + 3] / 255.0;
+
+					const finalAlpha = draw.noAlias ? (alpha > 0.5 ? 1.0 : 0.0) : alpha;
+
+					matte[simIdx] = 1.0 - finalAlpha;
+				}
 			}
 		}
-
-		// for (let i = 0; i < this.numCells; i++) {
-		// 	// read alpha channel, normalize to 255.0
-		// 	const alpha = 1.0 - pixelArray[i * 4 + 3] / 255.0;
-		// 	matte[i] = alpha;
-		// }
 
 		this.solids0.write(matte);
 		return this.device.queue.onSubmittedWorkDone();
