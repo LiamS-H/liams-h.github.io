@@ -31,7 +31,7 @@ export class Buffer {
 	}
 	copyTo(buffer: Buffer, commandEncoder: GPUCommandEncoder) {
 		if (buffer.dims !== this.dims) {
-			console.error('dimension mismatch on buffer copy');
+			throw new Error(`Could not copy buffer to ${buffer.buffers[0].label}: Dimension mismatch`);
 		}
 		for (let i = 0; i < Math.max(this.dims, buffer.dims); i++) {
 			commandEncoder.copyBufferToBuffer(
@@ -51,7 +51,9 @@ export class Buffer {
 			buffers = [buffers];
 		}
 		if (buffers.length !== this.dims) {
-			console.error('dimension mismatch on buffer copy');
+			throw new Error(
+				`Could not copy buffer from ${buffers[0].label}: Dimension mismatch [${buffers.length},${this.dims}]`
+			);
 		}
 		for (let i = 0; i < Math.max(this.dims, buffers.length); i++) {
 			commandEncoder.copyBufferToBuffer(
@@ -69,7 +71,9 @@ export class Buffer {
 			dataList = [dataList];
 		}
 		if (dataList.length !== this.dims) {
-			throw Error(`could not write to ${this.buffers[0].label}, dimension mismatch`);
+			throw new Error(
+				`Could not write to ${this.buffers[0].label}: Dimension mismatch [${dataList.length},${this.dims}]`
+			);
 		}
 		for (let i = 0; i < dataList.length; i++) {
 			this.writeBuffer(this.buffers[i], dataList[i]);
@@ -117,8 +121,8 @@ export class Uniform {
 	size: number;
 	constructor(device: GPUDevice, length: number = 8, label?: string, data?: number[]) {
 		if (length % 2 !== 0) {
-			console.error(
-				'uniform sizes must align with 64 bit (8byte) chunks, they should have even length'
+			throw new Error(
+				`Uniform sizes must align with 64-bit (8-byte) chunks; they should have an even length; Invalid length "${length}"`
 			);
 		}
 		this.device = device;
@@ -137,7 +141,9 @@ export class Uniform {
 		if (!data) return;
 		if (data.length === 0) return;
 		if (data.length !== this.length) {
-			throw Error(`invalid uniform label[${this.buffer.label}]`);
+			throw new Error(
+				`Could not update uniform ${this.buffer.label}: Dimension mismatch [${data.length},${this.length}]`
+			);
 		}
 		if (this.data.length === data.length && this.data.every((v, i) => v == data[i])) {
 			return;
