@@ -321,6 +321,10 @@ export class Simulator {
 
 		this.solids0.write(solids0);
 
+		const velocity0x = new Float32Array(this.numCells);
+		velocity0x.fill(0.01);
+		this.velocity0.write([velocity0x, new Float32Array(0)]);
+
 		//uniforms
 		this.Ures = new Uniform(this.device, 4, 'Ures', [
 			this.width,
