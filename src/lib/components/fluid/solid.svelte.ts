@@ -10,7 +10,7 @@ export const registerSolid: Action<HTMLElement, { id: string; color?: number }> 
 	const getId = () => id;
 	const getColor = () => color;
 
-	const { signal, abort } = new AbortController();
+	const controller = new AbortController();
 
 	const update = () => {
 		const rect = node.getBoundingClientRect();
@@ -19,15 +19,19 @@ export const registerSolid: Action<HTMLElement, { id: string; color?: number }> 
 
 	const observer = new ResizeObserver(update);
 	observer.observe(node);
-	window.addEventListener('scroll', update, { capture: true, passive: true, signal });
-	window.addEventListener('resize', update, { passive: true, signal });
+	window.addEventListener('scroll', update, {
+		capture: true,
+		passive: true,
+		signal: controller.signal
+	});
+	window.addEventListener('resize', update, { passive: true, signal: controller.signal });
 
 	return {
 		update,
 		destroy: () => {
 			observer.disconnect();
 			fluid.registerBound(null, getId());
-			abort();
+			controller.abort();
 		}
 	};
 };
