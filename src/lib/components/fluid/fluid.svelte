@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Simulator } from './sim';
-	import { setFluidContext } from '@/lib/context/fluid.svelte';
+	import { setFluidContext } from '$lib/context/fluid.svelte';
 
 	let { children } = $props();
 
@@ -51,12 +51,12 @@
 
 	function mouseMove(e: MouseEvent) {
 		sim.updateMouse(e.clientX, e.clientY);
-        // sim.registerRectangle({
-        //     x:e.clientX-5,
-        //     y:e.clientY-5,
-        //     w: 10, h: 10,
+		// sim.registerRectangle({
+		//     x:e.clientX-5,
+		//     y:e.clientY-5,
+		//     w: 10, h: 10,
 
-        // },"mouse")
+		// },"mouse")
 	}
 
 	function touchMove(e: TouchEvent) {
@@ -76,8 +76,8 @@
 	on:touchmove={touchMove}
 	on:pageshow={handleFocus(true)}
 	on:focus={handleFocus(true)}
-    on:blur={handleFocus(false)}
-    on:pagehide={handleFocus(false)}
+	on:blur={handleFocus(false)}
+	on:pagehide={handleFocus(false)}
 />
 
 <div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">

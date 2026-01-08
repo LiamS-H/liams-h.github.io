@@ -1,5 +1,5 @@
 import { setContext, getContext } from 'svelte';
-import type { Simulator } from '@/lib/components/fluid/sim';
+import type { Simulator } from '$lib/components/fluid/sim';
 
 class FluidState {
 	text = $state('');

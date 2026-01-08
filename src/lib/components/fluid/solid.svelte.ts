@@ -1,4 +1,4 @@
-import { useFluidContext } from '@/lib/context/fluid.svelte';
+import { useFluidContext } from '$lib/context/fluid.svelte';
 import type { Action } from 'svelte/action';
 
 export const registerSolid: Action<HTMLElement, { id: string; color?: number }> = (

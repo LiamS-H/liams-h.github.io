@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { useFluidContext } from '@/lib/context/fluid.svelte';
+	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { onMount } from 'svelte';
-	import { registerSolid } from '@/lib/components/fluid/solid.svelte';
+	import { registerSolid } from '$lib/components/fluid/solid.svelte';
 
 	const fluid = useFluidContext();
 
