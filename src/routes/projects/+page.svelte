@@ -2,12 +2,13 @@
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { onMount } from 'svelte';
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { routes } from '$lib/data/routes';
 
 	const fluid = useFluidContext();
 
 	onMount(() => {
 		fluid.registerText('');
-		fluid.changeColor(6);
+		fluid.changeColor(routes[2].color);
 	});
 </script>
 
