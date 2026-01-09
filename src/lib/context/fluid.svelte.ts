@@ -7,15 +7,19 @@ class FluidState {
 
 	constructor(private sim: () => Simulator) {}
 
-	registerText = (new_text: string) => {
+	registerText(new_text: string) {
 		this.sim().updateText(new_text);
-	};
+	}
 
-	changeColor = (new_color: number) => {
+	changeColor(new_color: number) {
 		this.sim().changeColor(new_color);
-	};
+	}
 
-	registerBound = (bounds: DOMRect | null, id: string, color?: number) => {
+	registerBound<T extends { x: number; y: number; width: number; height: number }>(
+		bounds: T | null,
+		id: string,
+		color?: number
+	) {
 		const rect = bounds
 			? {
 					x: bounds.x,
@@ -26,7 +30,7 @@ class FluidState {
 				}
 			: null;
 		this.sim().registerRectangle(rect, id);
-	};
+	}
 }
 
 const CONTEXT_KEY = Symbol('fluid-context');
