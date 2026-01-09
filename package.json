@@ -34,6 +34,7 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
+		"@sveltejs/enhanced-img": "^0.9.2",
 		"@tailwindcss/vite": "^4.1.18",
 		"tailwindcss": "^4.1.18"
 	}
