@@ -3,9 +3,8 @@
 	import { onMount } from 'svelte';
 
 	const fluid = useFluidContext();
-
 	onMount(() => {
-		fluid.registerText('LIAM');
-		fluid.changeColor(0);
+		fluid.registerText('');
+		fluid.changeColor(1);
 	});
 </script>
