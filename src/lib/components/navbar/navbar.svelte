@@ -1,12 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { routes } from '$lib/data/routes';
 	import Item from './item.svelte';
 
-	const routes = [
-		{ path: '/', label: 'Home', color: 0 },
-		{ path: '/about', label: 'About', color: 1 },
-		{ path: '/projects', label: 'Projects', color: 6 }
-	];
 	function match(path: string, path2: string) {
 		if (path2 === '/') {
 			return path === path2;

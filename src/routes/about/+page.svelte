@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { useFluidContext } from '$lib/context/fluid.svelte';
+	import { routes } from '$lib/data/routes';
 	import { onMount } from 'svelte';
 
 	const fluid = useFluidContext();
 	onMount(() => {
 		fluid.registerText('');
-		fluid.changeColor(1);
+		fluid.changeColor(routes[1].color);
 	});
 </script>

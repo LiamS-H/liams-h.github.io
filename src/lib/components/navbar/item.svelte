@@ -10,12 +10,20 @@
 	const hovers: Record<number, string> = {
 		0: 'hover:text-color-0',
 		1: 'hover:text-rose-500',
+		2: 'hover:text-color-2',
+		3: 'hover:text-color-3',
+		4: 'hover:text-color-4',
+		5: 'hover:text-color-5',
 		6: 'hover:text-color-6'
 	};
 
 	const colors: Record<number, string> = {
 		0: 'text-color-0',
 		1: 'text-rose-500',
+		2: 'text-color-2',
+		3: 'text-color-3',
+		4: 'text-color-4',
+		5: 'text-color-5',
 		6: 'text-color-6'
 	};
 
