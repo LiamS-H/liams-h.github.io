@@ -3,21 +3,15 @@ import type { Action } from 'svelte/action';
 
 export const registerSolid: Action<HTMLElement, { id: string; color?: number; inner?: number }> = (
 	node,
-	{ id, color, inner }
+	params
 ) => {
 	const fluid = useFluidContext();
 
-	const getId = () => id;
-	const getColor = () => color;
-	const getInner = () => inner;
-
 	const controller = new AbortController();
 
-	const update = () => {
+	const update = ({ id, color, inner }: typeof params) => {
 		const rect = node.getBoundingClientRect();
-		const id = getId();
-		fluid.registerBound(rect, id, getColor());
-		const inner = getInner();
+		fluid.registerBound(rect, id, color);
 		if (!inner) return;
 		fluid.registerBound(
 			{
@@ -30,20 +24,23 @@ export const registerSolid: Action<HTMLElement, { id: string; color?: number; in
 		);
 	};
 
-	const observer = new ResizeObserver(update);
+	const observer = new ResizeObserver(() => update(params));
 	observer.observe(node);
-	window.addEventListener('scroll', update, {
+	window.addEventListener('scroll', () => update(params), {
 		capture: true,
 		passive: true,
 		signal: controller.signal
 	});
-	window.addEventListener('resize', update, { passive: true, signal: controller.signal });
+	window.addEventListener('resize', () => update(params), {
+		passive: true,
+		signal: controller.signal
+	});
 
 	return {
 		update,
 		destroy: () => {
 			observer.disconnect();
-			fluid.registerBound(null, getId());
+			fluid.registerBound(null, params.id);
 			controller.abort();
 		}
 	};
