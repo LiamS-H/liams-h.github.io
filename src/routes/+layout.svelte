@@ -2,7 +2,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import '../app.css';
 	import Fluid from '$lib/components/fluid/fluid.svelte';
-	import Navbar from './navbar.svelte';
+	import Navbar from '$lib/components/navbar/navbar.svelte';
 
 	let { children } = $props();
 </script>
