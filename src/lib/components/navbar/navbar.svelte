@@ -17,7 +17,7 @@
 	}
 </script>
 
-<nav class="fixed bottom-0 w-full mb-20 md:mb-8 md:px-[20%]">
+<nav class="fixed bottom-0 w-full mb-14 md:mb-8 md:px-[20%]">
 	<ul class="flex justify-around">
 		{#each routes as route}
 			<Item {...route} active={match(page.url.pathname, route.path)} />

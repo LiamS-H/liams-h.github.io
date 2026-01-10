@@ -13,7 +13,7 @@
 
 <Fluid>
 	<Navbar />
-	<main>
+	<main class="h-full">
 		{@render children()}
 	</main>
 </Fluid>

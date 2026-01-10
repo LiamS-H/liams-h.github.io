@@ -33,10 +33,8 @@
 <a
 	href={`${path}`}
 	data-sveltekit-preload-data="hover"
-	onmouseenter={() => {
-		isHovered = true;
-	}}
-	onmouseleave={() => (isHovered = false)}
+	onpointerleave={() => (isHovered = false)}
+	onpointerenter={() => (isHovered = true)}
 >
 	<div
 		class={`p-4 ${active ? colors[color] : 'text-white'} ${hovers[color]} `}

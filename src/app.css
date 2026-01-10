@@ -3,6 +3,10 @@
 @layer base {
 	html {
 		@apply bg-black;
+		@apply h-full;
+	}
+	body {
+		@apply h-full;
 	}
 }
 
