@@ -34,6 +34,6 @@ export const technologies = {
 	CodeMirror: { type: ['Library'] },
 	WebWorkers: { type: ['Library'] },
 	Canvas2D: { type: ['Library'] }
-};
+} as const;
 
 export type Technology = keyof typeof technologies;
