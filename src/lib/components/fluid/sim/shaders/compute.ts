@@ -73,7 +73,12 @@ export namespace PROGRAM {
     @group(0) @binding(7) var<storage, read_write> smoke_write_g: array<f32>;
     @group(0) @binding(8) var<storage, read_write> smoke_write_b: array<f32>;
 
-    fn checkSmokeBounds(pos: vec2<f32>) -> i32 {
+    struct SmokeBound {
+        color: i32,
+        y_ratio: f32
+    }
+
+    fn checkSmokeBounds(pos: vec2<f32>) -> SmokeBound {
         let numRects = u32(U.rects);
         for (var i = 0u; i < numRects; i = i + 1u) {
             let r = rectangles[i];
@@ -81,10 +86,13 @@ export namespace PROGRAM {
                 continue;
             }
             if (checkBoundsRect(pos, r)) {
-                return i32(r.color);
+                if (r.h > 0.2) {
+                    return SmokeBound(i32(r.color),(pos.y-(r.y * U.res.y))/(r.h * U.res.y));
+                }
+                return SmokeBound(i32(r.color),0.0);
             }
         }
-        return -1;
+        return SmokeBound(-1,0.0);
     }
 
     @compute @workgroup_size(8, 8)
@@ -101,9 +109,9 @@ export namespace PROGRAM {
             return;
         }
 
-        let rectColor = checkSmokeBounds(pos);
-        if (rectColor >= 0) {
-            let smoke = smokeColor(rectColor, y_ratio);
+        let smoke = checkSmokeBounds(pos);
+        if (smoke.color >= 0) {
+            let smoke = smokeColor(smoke.color, smoke.y_ratio);
             smoke_write_r[index] = smoke.x;
             smoke_write_g[index] = smoke.y;
             smoke_write_b[index] = smoke.z;
