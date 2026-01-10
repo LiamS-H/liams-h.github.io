@@ -2,8 +2,9 @@ import type { Language } from './languages';
 import type { Technology } from './technologies';
 
 interface Intro {
-	description: string;
+	summary: string;
 	hook: string;
+	description: string[];
 }
 
 interface Project {
@@ -19,16 +20,26 @@ interface Project {
 	colorNum: number;
 }
 
-export const project_ids = ['shahrazad', 'ribbons', 'confluence', 'food', 'scrycards'] as const;
-type ProjectID = (typeof project_ids)[number];
+export const project_ids: readonly string[] = [
+	'shahrazad',
+	'ribbons',
+	'confluence',
+	'food',
+	'scrycards'
+] as const;
+
+export type ProjectID = (typeof project_ids)[number];
 
 export const projects: Record<ProjectID, Project> = {
 	shahrazad: {
 		id: 'shahrazad',
 		title: 'Shahrazad',
 		intro: {
-			description: 'Public realtime multiplayer table top game simulator.',
-			hook: 'Custom WASM Sync Engine, Rich drag and drop.'
+			summary: 'Public realtime multiplayer table top game simulator.',
+			hook: 'Custom WASM Sync Engine, Rich drag and drop.',
+			description: [
+				'A table top simulator named after the MTG card and character Shahrazad, from "One Thousand and One Nights."'
+			]
 		},
 		githubLink: 'https://github.com/LiamS-H/shahrazad-app',
 		liveLink: 'https://shahrazad.vercel.app',
@@ -50,8 +61,9 @@ export const projects: Record<ProjectID, Project> = {
 		id: 'ribbons',
 		title: 'DNA Ribbons',
 		intro: {
-			description: 'An internal tool for creating genomic ribbon diagrams.',
-			hook: 'Web Workers, Canvas, and a Custom graph solver.'
+			summary: 'An internal tool for creating genomic ribbon diagrams.',
+			hook: 'Web Workers, Canvas, and a Custom graph solver.',
+			description: []
 		},
 		technologies: ['WebWorkers', 'Canvas2D', 'Next', 'Vercel'],
 		languages: ['TypeScript'],
@@ -71,8 +83,11 @@ export const projects: Record<ProjectID, Project> = {
 		id: 'confluence',
 		title: 'Confluence',
 		intro: {
-			description: 'In browser text editor for writing database queries.',
-			hook: 'With custom MCP and tuned LLM for generation.'
+			summary: 'In browser text editor for writing database queries.',
+			hook: 'With custom MCP and tuned LLM for generation.',
+			description: [
+				'An in-browser text editor with syntax highlighting and autocompletion for the Scryfall query language.'
+			]
 		},
 		liveLink: 'https://cconfluence.vercel.app',
 		technologies: ['CodeMirror', 'GeminiAPI (Agents)', 'Next', 'Vercel'],
@@ -87,8 +102,9 @@ export const projects: Record<ProjectID, Project> = {
 		id: 'food',
 		title: 'FoodML',
 		intro: {
-			description: 'A machine learning full stack project for estimating caloric data from images.',
-			hook: '1st place HackMecedIX.'
+			summary: 'A machine learning full stack project for estimating caloric data from images.',
+			hook: '1st place HackMecedIX.',
+			description: []
 		},
 		languages: ['Python', 'TypeScript'],
 		liveLink: 'https://devpost.com/software/foooood',
@@ -101,9 +117,10 @@ export const projects: Record<ProjectID, Project> = {
 		id: 'scrycards',
 		title: 'Scrycards',
 		intro: {
-			description:
+			summary:
 				'A react component library that wraps a Public API and provides a lightweight cache + components.',
-			hook: ''
+			hook: '',
+			description: []
 		},
 		languages: ['TypeScript'],
 		githubLink: 'https://github.com/LiamS-H/react-scrycards',

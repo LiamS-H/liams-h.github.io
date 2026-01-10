@@ -1,4 +1,4 @@
-const languages = {
+export const languages = {
 	Python: { years: '5+', colorNum: 2 },
 	TypeScript: { years: '3+', colorNum: 3 },
 	JavaScript: { years: '3+', colorNum: 1 },
