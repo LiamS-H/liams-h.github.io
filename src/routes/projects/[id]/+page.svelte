@@ -7,6 +7,7 @@
 	import type { PageProps } from './$types';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { gradients } from '$lib/utils/colors';
 
 	const { params }: PageProps = $props();
 	const {
@@ -41,7 +42,7 @@
 		<div class="flex flex-wrap items-center gap-4">
 			<div use:registerSolid={{ id: `${title}-title` }} class="p-4 w-fit">
 				<h1
-					class={`font-bold bg-clip-text text-transparent bg-linear-to-r bg-color-0 animate-gradient-swirl text-4xl`}
+					class={`font-bold bg-clip-text text-transparent ${gradients[colorNum]} animate-gradient-swirl text-4xl`}
 				>
 					{title}
 				</h1>
@@ -51,7 +52,7 @@
 			{/if}
 
 			{#if liveLink}
-				<TransparentButton href={githubLink}>Visit Site</TransparentButton>
+				<TransparentButton href={liveLink}>Visit Site</TransparentButton>
 			{/if}
 		</div>
 

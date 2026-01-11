@@ -37,7 +37,7 @@ export class Simulator {
 	private smoke_color: number = 0;
 	private prev_smoke_color?: number;
 
-	private horizontal_view_buffer: number = 6;
+	private horizontal_view_buffer: number = 10;
 	private vertical_view_buffer: number = 1;
 
 	private grid_size: number = 512;
@@ -711,24 +711,6 @@ export class Simulator {
 			this.rectMap.delete(id);
 			return;
 		}
-
-		// const vh = window.visualViewport?.height || window.innerHeight;
-		// const vw = window.visualViewport?.width || window.innerWidth;
-		// const x_sim = (this.horizontal_view_buffer + (rect.x / vw) * this.viewWidth) / this.width;
-		// const y_sim =
-		// 	(this.vertical_view_buffer + ((vh - rect.h - rect.y) / vh) * this.viewHeight) / this.height;
-		// const w_sim = ((rect.w / vw) * this.viewWidth) / this.width;
-		// const h_sim = ((rect.h / vh) * this.viewHeight) / this.height;
-		// console.log(vh);
-		// console.log(this.viewHeight);
-
-		// this.rectMap.set(id, {
-		// 	x: x_sim,
-		// 	y: y_sim,
-		// 	w: w_sim,
-		// 	h: h_sim,
-		// 	color: rect.color
-		// });
 		this.rectMap.set(id, rect);
 	}
 

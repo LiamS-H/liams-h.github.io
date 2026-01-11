@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { colors, hovers } from '$lib/utils/colors';
 
 	const {
 		active,
@@ -7,25 +8,6 @@
 		label,
 		path
 	}: { path: string; label: string; color: number; active: boolean } = $props();
-	const hovers: Record<number, string> = {
-		0: 'hover:text-color-0',
-		1: 'hover:text-rose-500',
-		2: 'hover:text-color-2',
-		3: 'hover:text-color-3',
-		4: 'hover:text-color-4',
-		5: 'hover:text-color-5',
-		6: 'hover:text-color-6'
-	};
-
-	const colors: Record<number, string> = {
-		0: 'text-color-0',
-		1: 'text-rose-500',
-		2: 'text-color-2',
-		3: 'text-color-3',
-		4: 'text-color-4',
-		5: 'text-color-5',
-		6: 'text-color-6'
-	};
 
 	let isHovered = $state(false);
 </script>
@@ -37,7 +19,7 @@
 	onpointerenter={() => (isHovered = true)}
 >
 	<div
-		class={`p-4 ${active ? colors[color] : 'text-white'} ${hovers[color]} `}
+		class={`p-4 ${active || isHovered ? colors[color] : 'text-white'} ${hovers[color]} `}
 		use:registerSolid={{
 			id: `nav-${path}`,
 			color: isHovered ? color : undefined,
