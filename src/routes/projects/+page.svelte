@@ -8,7 +8,7 @@
 	const fluid = useFluidContext();
 
 	let behavior: ScrollBehavior = $state('instant');
-	let activeIndex: number = $state(0);
+	let activeIndex: number = $state(Number(0));
 	let carouselEl: HTMLUListElement;
 	let scrollTimeout: ReturnType<typeof setTimeout>;
 
@@ -18,30 +18,38 @@
 		const containerCenter = carouselEl.scrollLeft + carouselEl.offsetWidth / 2;
 
 		let i = 0;
-
+		let min = Infinity;
+		let new_index: number = -1;
 		for (const child of Array.from(carouselEl.children)) {
 			if (child.tagName === 'LI') {
 				const card = child as HTMLLIElement;
-				const cardCenter = card.offsetLeft - 128.5 + card.offsetWidth / 2;
+				const cardCenter = card.offsetLeft + card.offsetWidth / 2;
 				const distance = Math.abs(containerCenter - cardCenter);
 
-				if (distance == 0) {
-					activeIndex = i;
-					sessionStorage.setItem('carousel_index', i.toString());
-					return;
+				if (distance < min) {
+					new_index = i;
+					min = distance;
 				}
 				i += 1;
 			}
 		}
+		if (new_index != -1) {
+			activeIndex = new_index;
+			sessionStorage.setItem('carousel_index', activeIndex.toString());
+		}
+	}
+
+	function scrollTo(index: number) {
+		activeIndex = index;
+		sessionStorage.setItem('carousel_index', activeIndex.toString());
 	}
 
 	function scroll(direction: -1 | 1, wrap = true) {
 		if (wrap) {
-			activeIndex = (project_ids.length + activeIndex + direction) % project_ids.length;
+			scrollTo((project_ids.length + activeIndex + direction) % project_ids.length);
 		} else {
-			activeIndex = Math.max(0, Math.min(activeIndex + direction, project_ids.length - 1));
+			scrollTo(Math.max(0, Math.min(activeIndex + direction, project_ids.length - 1)));
 		}
-		sessionStorage.setItem('carousel_index', activeIndex.toString());
 	}
 
 	onMount(() => {
@@ -86,7 +94,7 @@
 
 <div class="relative h-full flex flex-col justify-center px-10 md:px-32">
 	<button
-		class="absolute left-4 top-1/2 lg:top-2/3 lg:-translate-x-14 lg:left-1/2 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white"
+		class="absolute left-4 top-1/2 lg:top-2/3 lg:-translate-x-14 lg:left-1/2 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white disabled:text-white/10"
 		onclick={() => scroll(-1)}
 		aria-label="Scroll left"
 	>
@@ -101,6 +109,13 @@
 			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
 		</svg>
 	</button>
+	<div class="absolute flex md:hidden top-2/3 left-1/2 -translate-y-1/2 -translate-x-1/2">
+		{#each project_ids as id, i}
+			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
+				<div class={`w-4 h-4 rounded-full ${activeIndex == i ? 'bg-white' : 'bg-white/50'}`}></div>
+			</button>
+		{/each}
+	</div>
 	<div class="flex flex-col-reverse justify-center">
 		<ul
 			bind:this={carouselEl}
