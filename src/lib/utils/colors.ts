@@ -19,21 +19,21 @@ export const colors: Record<number, string> = {
 } as const;
 
 export const gradients: Record<number, string> = {
-	0: 'bg-color-0',
-	1: 'bg-color-1',
-	2: 'bg-color-2',
-	3: 'bg-color-3',
-	4: 'bg-color-4',
-	5: 'bg-color-5',
-	6: 'bg-color-6'
+	0: 'bg-gradient-0',
+	1: 'bg-gradient-1',
+	2: 'bg-gradient-2',
+	3: 'bg-gradient-3',
+	4: 'bg-gradient-4',
+	5: 'bg-gradient-5',
+	6: 'bg-gradient-6'
 } as const;
 
 export const gradient_hover: Record<number, string> = {
-	0: 'hover:bg-color-0',
-	1: 'hover:bg-color-1',
-	2: 'hover:bg-color-2',
-	3: 'hover:bg-color-3',
-	4: 'hover:bg-color-4',
-	5: 'hover:bg-color-5',
-	6: 'hover:bg-color-6'
+	0: 'hover:bg-gradient-0',
+	1: 'hover:bg-gradient-1',
+	2: 'hover:bg-gradient-2',
+	3: 'hover:bg-gradient-3',
+	4: 'hover:bg-gradient-4',
+	5: 'hover:bg-gradient-5',
+	6: 'hover:bg-gradient-6'
 } as const;

@@ -18,43 +18,43 @@
 	--color-color-4: var(--color-rose-600);
 	--color-color-5: var(--color-green-400);
 	--color-color-6: var(--color-violet-600);
-	--background-image-gradient-color-0: linear-gradient(
+	--background-image-gradient-0: linear-gradient(
 		to right in oklch,
 		var(--color-pink-400),
-		var(--color-pink-600),
+		var(--color-rose-600),
 		var(--color-rose-400)
 	);
-	--background-image-gradient-color-1: linear-gradient(
+	--background-image-gradient-1: linear-gradient(
 		to right in oklch,
 		var(--color-pink-500),
 		var(--color-orange-500),
 		var(--color-pink-500)
 	);
-	--background-image-gradient-color-2: linear-gradient(
+	--background-image-gradient-2: linear-gradient(
 		to right in oklch,
 		var(--color-emerald-600),
-		var(--color-lime-300),
+		var(--color-yellow-300),
 		var(--color-emerald-600)
 	);
-	--background-image-gradient-color-3: linear-gradient(
+	--background-image-gradient-3: linear-gradient(
 		to right in oklch,
-		var(--color-cyan-400),
+		var(--color-cyan-100),
 		var(--color-blue-500),
 		var(--color-cyan-400)
 	);
-	--background-image-gradient-color-4: linear-gradient(
+	--background-image-gradient-4: linear-gradient(
 		to right in oklch,
 		var(--color-pink-500),
 		var(--color-rose-500),
 		var(--color-pink-500)
 	);
-	--background-image-gradient-color-5: linear-gradient(
+	--background-image-gradient-5: linear-gradient(
 		to right in oklch,
-		var(--color-pink-500),
-		var(--color-rose-500),
-		var(--color-pink-500)
+		var(--color-blue-600),
+		var(--color-lime-300),
+		var(--color-cyan-500)
 	);
-	--background-image-gradient-color-6: linear-gradient(
+	--background-image-gradient-6: linear-gradient(
 		to right in oklch,
 		var(--color-purple-600),
 		var(--color-blue-800),
