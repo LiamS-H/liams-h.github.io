@@ -51,10 +51,15 @@
 					Visit Site
 				</a>
 			{:else if project.githubLink}
-				<a href={project.liveLink}> Github </a>
+				<a
+					class="bg-size-[200%_200%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-1 to-color-4"
+					href={project.githubLink}
+				>
+					Github
+				</a>
 			{/if}
 			<a
-				class="bg-size-[300%_100%] bg-left transition-all duration-1500 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-3 to-color-2"
+				class={`bg-size-[300%_100%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-3 to-color-${project.colorNum}`}
 				href={`/projects/${project.id}`}
 				data-sveltekit-preload-data="hover"
 			>
