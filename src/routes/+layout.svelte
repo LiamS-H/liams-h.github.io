@@ -12,8 +12,8 @@
 </svelte:head>
 
 <Fluid>
-	<Navbar />
 	<main class="h-full">
 		{@render children()}
 	</main>
+	<Navbar />
 </Fluid>
