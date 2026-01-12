@@ -12,12 +12,12 @@
 
 @theme {
 	--color-color-0: var(--color-pink-500);
-	--color-color-1: var(--color-rose-400);
+	--color-color-1: var(--color-yellow-300);
 	--color-color-2: var(--color-green-400);
 	--color-color-3: var(--color-cyan-400);
 	--color-color-4: var(--color-rose-600);
-	--color-color-5: var(--color-green-400);
-	--color-color-6: var(--color-violet-600);
+	--color-color-5: var(--color-indigo-400);
+	--color-color-6: var(--color-fuchsia-500);
 	--background-image-gradient-0: linear-gradient(
 		to right in oklch,
 		var(--color-pink-400),
