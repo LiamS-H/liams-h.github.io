@@ -7,4 +7,6 @@ export const languages = {
 	Java: { years: '1+', colorNum: 6 }
 } as const;
 
+export const language_list: Language[] = Object.keys(languages) as Language[];
+
 export type Language = keyof typeof languages;

@@ -36,4 +36,6 @@ export const technologies = {
 	Canvas2D: { type: ['Library'] }
 } as const;
 
+export const technology_list: Technology[] = Object.keys(technologies) as Technology[];
+
 export type Technology = keyof typeof technologies;
