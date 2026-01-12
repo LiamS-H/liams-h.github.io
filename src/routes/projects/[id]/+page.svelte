@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Language from '$lib/components/language.svelte';
 	import Technology from '$lib/components/technology.svelte';
-	import TransparentButton from '$lib/components/transparent-button.svelte';
+	import TransparentButton from '$lib/components/transparent-link.svelte';
 	import { projects } from '$lib/data/projects';
 	import { onMount } from 'svelte';
 	import type { PageProps } from './$types';
