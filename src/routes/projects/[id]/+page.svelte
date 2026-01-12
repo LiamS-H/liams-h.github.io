@@ -31,6 +31,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{title} - LiamS-H</title>
+</svelte:head>
+
 <div
 	bind:this={parent}
 	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] text-white pt-10 px-14 overflow-y-auto
