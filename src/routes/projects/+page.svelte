@@ -2,15 +2,18 @@
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { onMount, tick } from 'svelte';
 	import { routes } from '$lib/data/routes';
-	import { project_ids } from '$lib/data/projects';
+	import { project_ids, projects } from '$lib/data/projects';
 	import ProjectCard from './project-card.svelte';
+	import Technology from '$lib/components/technology.svelte';
+	import Language from '$lib/components/language.svelte';
 
 	const fluid = useFluidContext();
 
 	let behavior: ScrollBehavior = $state('instant');
-	let activeIndex: number = $state(Number(0));
-	let carouselEl: HTMLUListElement;
+	let activeIndex: number = $state(0);
+	let carouselEl: HTMLUListElement | undefined = $state();
 	let scrollTimeout: ReturnType<typeof setTimeout>;
+	// const activeProject = $derived(projects[project_ids[activeIndex]]);
 
 	function updateActiveState() {
 		if (!carouselEl) return;
@@ -109,6 +112,18 @@
 			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
 		</svg>
 	</button>
+	<div class="absolute bottom-2/3 left-1/2 -translate-x-1/2 flex flex-col gap-2">
+		<!-- <ul class="flex flex-wrap justify-center">
+			{#each activeProject.technologies as tech (tech)}
+				<Technology {tech} />
+			{/each}
+		</ul>
+		<ul class="flex flex-wrap justify-center">
+			{#each activeProject.languages as lang (lang)}
+				<Language {lang} />
+			{/each}
+		</ul> -->
+	</div>
 	<div class="absolute flex md:hidden top-2/3 left-1/2 -translate-y-1/2 -translate-x-1/2">
 		{#each project_ids as id, i}
 			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
