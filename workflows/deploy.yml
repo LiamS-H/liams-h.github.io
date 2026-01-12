@@ -3,11 +3,16 @@ name: Build and Deploy to GitHub Pages
 on:
   push:
     branches: ['main']
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -15,16 +20,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
-
+      
       - name: Install dependencies
         run: bun install
-
+      
       - name: Build
         run: bun run build
-
+        env:
+          BASE_PATH: ${{ github.event.repository.name != github.repository_owner.github.io && format('/{0}', github.event.repository.name) || '' }}
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
