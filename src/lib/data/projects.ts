@@ -49,7 +49,7 @@ export const projects: Record<ProjectID, Project> = {
 			'My goal was to replace the laggy generic table-top simulator my friends and I were using with a fast app specialized to play Magic The Gathering. No sign-up required, I made it as quick and easy as possible to create and join games.',
 			'Upon joining, all features to play a game of Magic are available. Players can import their decks, draw their starting hands, and start playing cards by dragging them into play. Everything updates in real time and feels far more responsive than alternatives.',
 			'The state machine to handle the game logic is written in a shared rust lib. It is compiled natively on the server and runs as a wasm pkg on client. In this way server updates and optimistic client updates are running the same code.',
-			'State transformations are sent using websockets. For non-colliding moves, the server only sends the action over the socket not the full game state. This keeps socket packets small, until a rare desync occurs with colliding moves and server sends a full state.'
+			'State transformations are sent using websockets. For non-colliding moves, the server only sends the action over the socket not the full game state. This keeps socket packets small, while letting the server maintain true state'
 		],
 		images: [
 			{ src: '/ShahrazadLandingPage.png', alt: 'Landing Page' },
@@ -77,7 +77,7 @@ export const projects: Record<ProjectID, Project> = {
 			{ src: '/RibbonUpload.png', alt: 'File Upload' },
 			{ src: '/RibbonDiagram.png', alt: 'Diagram' }
 		],
-		colorNum: 6
+		colorNum: 5
 	},
 	confluence: {
 		id: 'confluence',
