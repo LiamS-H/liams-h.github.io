@@ -8,10 +8,10 @@
 
 	function getColor(_types: typeof type) {
 		const types = _types as readonly string[];
-		if (types.includes('Framework')) return 6;
-		if (types.includes('CICD')) return 5;
+		if (types.includes('Framework')) return 3;
+		if (types.includes('CICD')) return 1;
 		if (types.includes('Database')) return 4;
-		if (types.includes('Library')) return 3;
+		if (types.includes('Library')) return 2;
 		return 1;
 	}
 	const color = $derived(getColor(type));
