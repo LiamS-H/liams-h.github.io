@@ -4,6 +4,7 @@
     "": {
       "name": "liams-h.github.io",
       "dependencies": {
+        "@sveltejs/adapter-static": "^3.0.10",
         "@sveltejs/enhanced-img": "^0.9.2",
         "@tailwindcss/vite": "^4.1.18",
         "tailwindcss": "^4.1.18",
@@ -226,6 +227,8 @@
     "@sveltejs/acorn-typescript": ["@sveltejs/acorn-typescript@1.0.8", "", { "peerDependencies": { "acorn": "^8.9.0" } }, "sha512-esgN+54+q0NjB0Y/4BomT9samII7jGwNy/2a3wNZbT2A2RpmXsXwUt24LvLhx6jUq2gVk4cWEvcRO6MFQbOfNA=="],
 
     "@sveltejs/adapter-auto": ["@sveltejs/adapter-auto@7.0.0", "", { "peerDependencies": { "@sveltejs/kit": "^2.0.0" } }, "sha512-ImDWaErTOCkRS4Gt+5gZuymKFBobnhChXUZ9lhUZLahUgvA4OOvRzi3sahzYgbxGj5nkA6OV0GAW378+dl/gyw=="],
+
+    "@sveltejs/adapter-static": ["@sveltejs/adapter-static@3.0.10", "", { "peerDependencies": { "@sveltejs/kit": "^2.0.0" } }, "sha512-7D9lYFWJmB7zxZyTE/qxjksvMqzMuYrrsyh1f4AlZqeZeACPRySjbC3aFiY55wb1tWUaKOQG9PVbm74JcN2Iew=="],
 
     "@sveltejs/enhanced-img": ["@sveltejs/enhanced-img@0.9.2", "", { "dependencies": { "magic-string": "^0.30.5", "sharp": "^0.34.1", "svelte-parse-markup": "^0.1.5", "vite-imagetools": "^9.0.2", "zimmerframe": "^1.1.2" }, "peerDependencies": { "@sveltejs/vite-plugin-svelte": "^6.0.0", "svelte": "^5.0.0", "vite": "^6.3.0 || >=7.0.0" } }, "sha512-hAYZ8YFgYtqrQ0dXyq6rdmHBFyG+eIQnNjdIoVhqeZQEBIREXoBThkx+7FtDa6ZV35lTRaT9dgFKF4W+4LbuaQ=="],
 
