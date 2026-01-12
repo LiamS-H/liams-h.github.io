@@ -3,7 +3,7 @@
 	import { colors } from '$lib/utils/colors';
 	import { registerSolid } from './fluid/solid.svelte';
 
-	const { tech }: { tech: Technology } = $props();
+	const { tech, parent }: { tech: Technology; parent?: HTMLElement } = $props();
 	const { type } = $derived(technologies[tech]);
 
 	function getColor(_types: typeof type) {
@@ -18,7 +18,7 @@
 </script>
 
 <div
-	use:registerSolid={{ id: `${tech}`, color, inner: 4 }}
+	use:registerSolid={{ id: `${tech}`, color, inner: 4, parent }}
 	class={`px-3 pt-1 pb-1.5 ${colors[color]}`}
 >
 	{tech}

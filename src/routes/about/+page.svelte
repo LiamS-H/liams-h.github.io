@@ -11,6 +11,9 @@
 	import TransparentLink from '$lib/components/transparent-link.svelte';
 
 	const fluid = useFluidContext();
+
+	let parent: HTMLElement | undefined = $state();
+
 	onMount(() => {
 		fluid.registerText('');
 		fluid.changeColor(routes[1].color);
@@ -22,25 +25,25 @@
 </svelte:head>
 
 <div
-	class="h-full flex flex-col justify-center overflow-x-auto
-                    mask-[linear-gradient(to_top,transparent,black_20%,black_80%,transparent)]
-                    [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]"
+	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] md:flex md:flex-col md:justify-center px-4 md:px-0 overflow-y-auto
+                    mask-[linear-gradient(to_top,transparent,black_5%,black_90%,transparent)]
+                    [webkit-mask:linear-gradient(to_right,transparent,black_5%,black_90%,transparent)]"
+	bind:this={parent}
 >
 	<div class="max-w-4xl mx-auto pt-10 sm:p-4">
 		<div
 			class="flex flex-col p-4 m-1 bg-black text-white"
-			use:registerSolid={{ id: 'about-header' }}
+			use:registerSolid={{ id: 'about-header', parent }}
 		>
 			<p class="text-lg leading-relaxed">
 				<span class="text-4xl">
 					Hi, I'm{' '}
 					<span
-						class="bg-linear-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold"
+						class="block md:inline text-4xl bg-linear-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold -mr-2"
 					>
 						Liam Stelly-Hawkes
+						<br />
 					</span>
-					.
-					<br />
 				</span>
 				I have a{' '}
 				<span
@@ -68,7 +71,7 @@
                         {bioOpen ? "Read Less" : "Read More"}
                     </button> -->
 		</div>
-		<div class="flex flex-wrap gap-x-3 mb-4 sm:mb-0">
+		<div class="flex flex-wrap gap-x-1 -mx-4 mb-4 sm:mb-0">
 			<TransparentLink href="https://github.com/LiamS-H">Github</TransparentLink>
 			<TransparentLink href="https://www.linkedin.com/in/lstelly-hawkes/">LinkedIn</TransparentLink>
 			<TransparentLink href="mailto:liamsh@gmail.com">liamsh@gmail.com</TransparentLink>
@@ -76,22 +79,23 @@
 	</div>
 	<div class="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 cursor-default">
 		<div class="min-w-56">
-			<h2 class="text-2xl text-white font-bold flex items-center">Languages</h2>
+			<h2 class="text-2xl mb-4 text-white font-bold flex items-center">Languages</h2>
 
 			<ul>
 				{#each language_list as name}
-					<LanguageItem {name} />
+					<LanguageItem {name} {parent} />
 				{/each}
 			</ul>
 		</div>
 		<div class="w-full min-h-100">
-			<h2 class="text-2xl text-white font-bold flex items-center">Technologies</h2>
+			<h2 class="text-2xl mb-4 text-white font-bold flex items-center">Technologies</h2>
 
-			<ul class="mt-2 flex flex-wrap gap-2">
+			<ul class="mt-5 flex flex-wrap gap-2">
 				{#each technology_list as tech (tech)}
-					<Technology {tech} />
+					<Technology {tech} {parent} />
 				{/each}
 			</ul>
 		</div>
 	</div>
+	<div class="h-64 md:h-0"></div>
 </div>
