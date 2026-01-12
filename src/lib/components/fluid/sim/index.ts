@@ -607,7 +607,7 @@ export class Simulator {
 		if (this.prevText == this.text) return;
 		this.prevText = this.text;
 		const text = this.text?.toLowerCase() ?? '';
-		const fontSize = Math.floor(Math.floor(this.viewWidth / 5) / 2) * 2;
+		const fontSize = Math.floor(Math.floor(this.viewWidth / 4) / 2) * 2;
 		const letterSpacing = 50;
 		await document.fonts.ready;
 		await document.fonts.load(`bold ${fontSize}px Megrim`);
@@ -625,10 +625,8 @@ export class Simulator {
 		let totalWidth = 0;
 		for (let i = 0; i < text.length; i++) {
 			totalWidth += context.measureText(text[i]).width;
-			if (i < text.length - 1) {
-				totalWidth += letterSpacing;
-			}
 		}
+		totalWidth += letterSpacing * (text.length - 2);
 
 		const startX = Math.floor((this.viewWidth - totalWidth) / 2);
 		const y = Math.floor(this.viewHeight / 2);
