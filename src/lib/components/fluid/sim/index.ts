@@ -33,7 +33,7 @@ export class Simulator {
 	private boxes: FluidRectList = [];
 	//              x,      y,      w,      h,      c,      p,      p,      p
 
-	private maxBoxes: number = 50;
+	private maxBoxes: number = 100;
 	private smoke_color: number = 0;
 	private prev_smoke_color?: number;
 

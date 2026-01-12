@@ -105,7 +105,7 @@
 		<ul
 			bind:this={carouselEl}
 			class="h-fit gap-8 md:gap-24 flex flex-row items-center overflow-x-auto snap-x snap-mandatory md:snap-normal
-                    mask-[]
+                    mask-[linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]
                     [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]"
 			style="scrollbar-width: none;"
 		>
