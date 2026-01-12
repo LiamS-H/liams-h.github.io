@@ -80,6 +80,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Projects - LiamS-H</title>
+</svelte:head>
+
 <div class="relative h-full flex flex-col justify-center px-10 md:px-32">
 	<button
 		class="absolute left-4 top-1/2 lg:top-2/3 lg:-translate-x-14 lg:left-1/2 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white"
@@ -101,7 +105,7 @@
 		<ul
 			bind:this={carouselEl}
 			class="h-fit gap-8 md:gap-24 flex flex-row items-center overflow-x-auto snap-x snap-mandatory md:snap-normal
-                    mask-[linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]
+                    mask-[]
                     [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]"
 			style="scrollbar-width: none;"
 		>

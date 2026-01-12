@@ -10,3 +10,7 @@
 		fluid.changeColor(routes[0].color);
 	});
 </script>
+
+<svelte:head>
+	<title>LiamS-H</title>
+</svelte:head>
