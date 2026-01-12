@@ -35,7 +35,10 @@
 			class="flex flex-col p-4 m-1 bg-black text-white"
 			use:registerSolid={{ id: 'about-header', parent }}
 		>
-			<p class="text-lg leading-relaxed">
+			<p class="text-lg relative leading-relaxed">
+				<span class="absolute top-0 right-0 bg-white/20 px-2 rounded-sm text-white/70">
+					Sacramento, CA
+				</span>
 				<span class="text-4xl">
 					Hi, I'm{' '}
 					<span
