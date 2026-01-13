@@ -58,13 +58,15 @@
 					Github
 				</a>
 			{/if}
-			<a
-				class={`bg-size-[300%_100%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-3 to-color-${project.colorNum}`}
-				href={`/projects/${project.id}`}
-				data-sveltekit-preload-data="hover"
-			>
-				Explore
-			</a>
+			{#if project.paragraphs.length > 0}
+				<a
+					class={`bg-size-[300%_100%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-3 to-color-${project.colorNum}`}
+					href={`/projects/${project.id}`}
+					data-sveltekit-preload-data="hover"
+				>
+					Explore
+				</a>
+			{/if}
 		</div>
 	</div>
 </li>

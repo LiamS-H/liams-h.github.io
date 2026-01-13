@@ -2,14 +2,14 @@
 	import Language from '$lib/components/language.svelte';
 	import Technology from '$lib/components/technology.svelte';
 	import TransparentButton from '$lib/components/transparent-link.svelte';
-	import { projects } from '$lib/data/projects';
 	import { onMount } from 'svelte';
-	import type { PageProps } from './$types';
+	import type { PageData } from './$types';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
 	import { gradients } from '$lib/utils/colors';
 
-	const { params }: PageProps = $props();
+	const { data }: { data: PageData } = $props();
+
 	const {
 		title,
 		liveLink,
@@ -20,7 +20,7 @@
 		images,
 		colorNum,
 		intro
-	} = $derived(projects[params.id]);
+	} = $derived(data.project);
 
 	const fluid = useFluidContext();
 	let parent: HTMLDivElement | undefined = $state();
