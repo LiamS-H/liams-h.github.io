@@ -5,7 +5,6 @@
 	import { onMount } from 'svelte';
 
 	const fluid = useFluidContext();
-	console.log(page);
 
 	onMount(() => {
 		fluid.registerText(page.status.toString());
