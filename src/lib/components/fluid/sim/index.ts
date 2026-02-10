@@ -190,7 +190,7 @@ export class Simulator {
 		) {
 			this.grid_size = 512; // Mid-range
 		} else {
-			this.grid_size = 256; // Low-end
+			this.grid_size = 384; // Low-end - smallest size that still looks good
 		}
 
 		const maxBufferSize = this.device.limits.maxStorageBufferBindingSize;
