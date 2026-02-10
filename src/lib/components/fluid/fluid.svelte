@@ -2,10 +2,11 @@
 	import { onMount } from 'svelte';
 	import { Simulator } from './sim';
 	import { setFluidContext } from '$lib/context/fluid.svelte';
+	import { NoGpuStore } from '$lib/context/nogpu-store';
 
 	let { children } = $props();
 
-	// error will never restart without refresh
+	// svelte-ignore non_reactive_update
 	let canvas: HTMLCanvasElement;
 	let frame: number;
 	let error = $state(false);
@@ -13,15 +14,11 @@
 	setFluidContext(() => sim);
 
 	let isFocused = true;
-	// function handleFocus(focus: boolean) {
-	// 	return () => (isFocused = focus);
-	// }
 
 	async function init() {
-		// sim = await Simulator.create(canvas, new Map());
 		if (!(await sim.init(canvas))) {
 			error = true;
-			setFluidContext(() => sim, true);
+			NoGpuStore.set(true);
 			return;
 		}
 		frame = requestAnimationFrame(animate);
@@ -41,6 +38,7 @@
 			frame = requestAnimationFrame(resize);
 			return;
 		}
+		if (!canvas) return;
 		const minW = 4;
 		const minH = 4;
 
@@ -75,15 +73,13 @@
 </script>
 
 <svelte:window on:resize={resize} on:mousemove={mouseMove} on:touchmove={touchMove} />
-<!-- on:pageshow={handleFocus(true)}
-on:focus={handleFocus(true)}
-on:blur={handleFocus(false)}
-on:pagehide={handleFocus(false)} -->
-<!-- /> -->
 {#if error}
 	<div
 		class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen bg-gradient-0 animate-gradient-swirl"
 	></div>
+	<a href="/no-gpu" class="top-4 left-4 absolute z-10 text-blue-500 hover:text-blue-600">
+		NO-GPU: Rendering Limited - Learn More
+	</a>
 {:else}
 	<div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
 		<canvas bind:this={canvas} class="w-full h-full"></canvas>

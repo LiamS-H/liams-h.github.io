@@ -20,7 +20,7 @@
 <nav class="fixed bottom-0 w-full mb-14 md:mb-4 lg:mb-8 md:px-[20%]">
 	<ul class="flex justify-around">
 		<!-- eslint-disable-next-line svelte/require-each-key -->
-		{#each routes as route}
+		{#each routes as route (route)}
 			<Item {...route} active={match(page.url.pathname, route.path)} />
 		{/each}
 	</ul>

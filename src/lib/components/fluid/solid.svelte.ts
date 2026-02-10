@@ -1,4 +1,5 @@
 import { useFluidContext } from '$lib/context/fluid.svelte';
+import { NoGpuStore } from '$lib/context/nogpu-store';
 import { constrainRects as constrainRect } from '$lib/utils/constraint';
 import type { Action } from 'svelte/action';
 
@@ -6,13 +7,23 @@ export const registerSolid: Action<
 	HTMLElement,
 	{ id: string; color?: number; inner?: number; parent?: HTMLElement }
 > = (node, params) => {
-	const fluid = useFluidContext();
 	let current_params = params;
-
+	const fluid = useFluidContext();
 	const controller = new AbortController();
+	NoGpuStore.subscribe((noGpu) => {
+		if (!noGpu) return;
+		node.style.backgroundColor = 'black';
+		if (params.color) {
+			node.style.outline = `${params.inner}px solid var(--color-color-${params.color})`;
+			node.style.outlineOffset = `-${params.inner}px`;
+		} else {
+			node.style.outline = `none`;
+		}
+	});
 
 	const update = (new_params: typeof params) => {
 		const { id, color, inner, parent } = new_params;
+
 		current_params = new_params;
 		const rect = node.getBoundingClientRect();
 		const pRect = (parent || node.parentElement)?.getBoundingClientRect();
