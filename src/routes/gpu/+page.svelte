@@ -11,6 +11,14 @@
 	});
 </script>
 
+<svelte:head>
+	{#if GPU}
+		<title>HasGPU - LiamS-H</title>
+	{:else}
+		<title>NoGPU - LiamS-H</title>
+	{/if}
+</svelte:head>
+
 <div class="flex w-full h-full justify-center items-center pb-28 md:pb-18 lg:pb-22 text-white">
 	{#if GPU}
 		<div class="p-4 flex flex-col items-center" use:registerSolid={{ id: 'yes-gpu' }}>

@@ -77,7 +77,7 @@
 	<div
 		class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen bg-gradient-0 animate-gradient-swirl"
 	></div>
-	<a href="/no-gpu" class="top-4 left-4 absolute z-10 text-blue-500 hover:text-blue-600">
+	<a href="/gpu" class="top-4 left-4 absolute z-10 text-blue-500 hover:text-blue-600">
 		NO-GPU: Rendering Limited - Learn More
 	</a>
 {:else}
