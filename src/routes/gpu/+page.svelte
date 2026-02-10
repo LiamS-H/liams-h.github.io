@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import InternalLink from '$lib/components/internal-link.svelte';
 	import { NoGpuStore } from '$lib/context/nogpu-store';
 
 	let GPU = $state(false);
@@ -23,11 +24,7 @@
 	{#if GPU}
 		<div class="p-4 flex flex-col items-center" use:registerSolid={{ id: 'yes-gpu' }}>
 			<h1 class="text-2xl font-bold">Graphics Card Detected</h1>
-			<a
-				href="/"
-				class="text-xl bg-size-[200%_200%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-pink-500 to-purple-600"
-				>Go Home</a
-			>
+			<InternalLink href="/">Go Home</InternalLink>
 		</div>
 	{:else}
 		<div class="w-sm md:w-lg p-2 md:p-4 bg-black">

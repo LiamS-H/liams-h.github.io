@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { languages, type Language } from '$lib/data/languages';
+	import { routes } from '$lib/data/routes';
 	import { gradient_hover } from '$lib/utils/colors';
+	const fluid = useFluidContext();
 
 	const { name, parent }: { name: Language; parent?: HTMLElement } = $props();
 	const lang = $derived(languages[name]);
@@ -9,6 +12,8 @@
 
 <li
 	class={`p-2 flex items-center max-w-50 md:max-w-md group transition-all duration-300 text-white hover:text-transparent bg-clip-text ${gradient_hover[lang.colorNum]}`}
+	onmouseenter={() => fluid.changeColor(lang.colorNum)}
+	onmouseleave={() => fluid.changeColor(routes[1].color)}
 >
 	<div
 		class="w-4 h-4 mt-1 mr-2"
