@@ -14,7 +14,7 @@
 
 <div class="absolute top-8 left-1/2 -translate-x-1/2 translate-y-8">
 	<div use:registerSolid={{ id: 'error' }} class="p-4 text-white flex flex-col items-center">
-		<h1 class="text-9xl">{page.status}</h1>
+		<h1 class="text-2xl">{page.status}</h1>
 		<p class="text-3xl">{page.error?.message}</p>
 		<a
 			href="/"
