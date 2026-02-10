@@ -147,12 +147,13 @@ export class Simulator {
 		// 	limits.maxStorageBufferBindingSize,
 		// 	limits.maxComputeWorkgroupStorageSize
 		// );
+		const TOP_END_LIMITS = {
+			maxComputeInvocationsPerWorkgroup: 512,
+			maxStorageBufferBindingSize: 256_000_000,
+			maxComputeWorkgroupStorageSize: 32_768 // 32 KB
+		};
 
 		const HIGH_END_LIMITS = {
-			// maxComputeInvocationsPerWorkgroup: 512,
-			// maxStorageBufferBindingSize: 256_000_000,
-			// maxComputeWorkgroupStorageSize: 32_768 // 32 KB
-
 			maxComputeInvocationsPerWorkgroup: 256,
 			maxStorageBufferBindingSize: 128_000_000, // 128 mb
 			maxComputeWorkgroupStorageSize: 16_000 // 16 KB
@@ -166,11 +167,18 @@ export class Simulator {
 
 		if (
 			limits.maxComputeInvocationsPerWorkgroup >=
+				TOP_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
+			limits.maxStorageBufferBindingSize >= TOP_END_LIMITS.maxStorageBufferBindingSize &&
+			limits.maxComputeWorkgroupStorageSize >= TOP_END_LIMITS.maxComputeWorkgroupStorageSize
+		) {
+			this.grid_size = 1024; // Top-end
+		} else if (
+			limits.maxComputeInvocationsPerWorkgroup >=
 				HIGH_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
 			limits.maxStorageBufferBindingSize >= HIGH_END_LIMITS.maxStorageBufferBindingSize &&
 			limits.maxComputeWorkgroupStorageSize >= HIGH_END_LIMITS.maxComputeWorkgroupStorageSize
 		) {
-			this.grid_size = 1024; // High-end
+			this.grid_size = 768; // High-end
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				MID_RANGE_LIMITS.maxComputeInvocationsPerWorkgroup &&
