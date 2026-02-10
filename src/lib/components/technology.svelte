@@ -2,6 +2,7 @@
 	import { technologies, type Technology } from '$lib/data/technologies';
 	import { colors } from '$lib/utils/colors';
 	import { registerSolid } from './fluid/solid.svelte';
+	import { page } from '$app/state';
 
 	const { tech, parent }: { tech: Technology; parent?: HTMLElement } = $props();
 	const { type } = $derived(technologies[tech]);
@@ -18,7 +19,7 @@
 </script>
 
 <div
-	use:registerSolid={{ id: `${tech}`, color, inner: 4, parent }}
+	use:registerSolid={{ id: `${page.url}-${tech}`, color, inner: 4, parent }}
 	class={`px-3 pt-1 pb-1.5 ${colors[color]}`}
 >
 	{tech}

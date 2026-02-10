@@ -24,6 +24,11 @@ export const registerSolid: Action<
 	const update = (new_params: typeof params) => {
 		const { id, color, inner, parent } = new_params;
 
+		if (current_params.id !== id) {
+			fluid.registerBound(null, current_params.id);
+			fluid.registerBound(null, current_params.id + '-inner');
+		}
+
 		current_params = new_params;
 		const rect = node.getBoundingClientRect();
 		const pRect = (parent || node.parentElement)?.getBoundingClientRect();
