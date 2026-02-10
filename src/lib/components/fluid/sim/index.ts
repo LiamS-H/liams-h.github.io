@@ -841,8 +841,10 @@ export class Simulator {
 		const elapsed = now - this.time;
 
 		// if (elapsed < 16) return; // fps cap
-		if (this.isRendering) return;
-		// this.isRendering = true;
+		if (this.isRendering) {
+			return;
+		}
+		this.isRendering = true;
 		this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
 		const dt = (elapsed * this.dt_mult) / 1000;
@@ -874,6 +876,6 @@ export class Simulator {
 		await this.simulate();
 		this.render();
 
-		// this.isRendering = false;
+		this.isRendering = false;
 	}
 }
