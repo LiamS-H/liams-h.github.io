@@ -111,6 +111,7 @@ export class Simulator {
 	private calcVorticity!: ComputeProgram;
 	private vorticityConfinement!: ComputeProgram;
 	private advectSmoke!: ComputeProgram;
+	working: boolean = false;
 
 	public constructor() {}
 	public static async create(canvas: HTMLCanvasElement): Promise<Simulator | null> {
@@ -141,18 +142,26 @@ export class Simulator {
 
 		const aspectRatio = vw / vh;
 		const limits = this.device.limits;
-		// console.log(limits);
+		console.log(
+			limits.maxComputeInvocationsPerWorkgroup,
+			limits.maxStorageBufferBindingSize,
+			limits.maxComputeWorkgroupStorageSize
+		);
 
 		const HIGH_END_LIMITS = {
-			maxComputeInvocationsPerWorkgroup: 512,
-			maxStorageBufferBindingSize: 256_000_000, // 1GB
-			maxComputeWorkgroupStorageSize: 32_768 // 32 KB
+			// maxComputeInvocationsPerWorkgroup: 512,
+			// maxStorageBufferBindingSize: 256_000_000,
+			// maxComputeWorkgroupStorageSize: 32_768 // 32 KB
+
+			maxComputeInvocationsPerWorkgroup: 256,
+			maxStorageBufferBindingSize: 128_000_000, // 128 mb
+			maxComputeWorkgroupStorageSize: 16_000 // 16 KB
 		};
 
 		const MID_RANGE_LIMITS = {
-			maxComputeInvocationsPerWorkgroup: 256,
-			maxStorageBufferBindingSize: 128_000_000, // 512 MB
-			maxComputeWorkgroupStorageSize: 16_384 // 16 KB
+			maxComputeInvocationsPerWorkgroup: 128,
+			maxStorageBufferBindingSize: 64_000_000, // 64 MB
+			maxComputeWorkgroupStorageSize: 8_000 // 8 KB
 		};
 
 		if (
@@ -818,10 +827,14 @@ export class Simulator {
 	public async step() {
 		if (this.initialized == false) return;
 		const now = Date.now();
+		const elapsed = now - this.time;
 
-		// this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
+		// if (elapsed < 16) return; // fps cap
+		if (this.working) return;
+		this.working = true;
+		this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
-		const dt = ((now - this.time) * this.dt_mult) / 1000;
+		const dt = (elapsed * this.dt_mult) / 1000;
 		if (dt == 0) return;
 		this.time = now;
 		this.dt = Math.min(dt, 0.05);
@@ -849,5 +862,7 @@ export class Simulator {
 		this.updateUniforms();
 		await this.simulate();
 		this.render();
+
+		this.working = false;
 	}
 }
