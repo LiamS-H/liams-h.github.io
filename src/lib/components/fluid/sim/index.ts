@@ -169,14 +169,16 @@ export class Simulator {
 			limits.maxComputeInvocationsPerWorkgroup >=
 				TOP_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
 			limits.maxStorageBufferBindingSize >= TOP_END_LIMITS.maxStorageBufferBindingSize &&
-			limits.maxComputeWorkgroupStorageSize >= TOP_END_LIMITS.maxComputeWorkgroupStorageSize
+			limits.maxComputeWorkgroupStorageSize >= TOP_END_LIMITS.maxComputeWorkgroupStorageSize &&
+			Math.max(vw, vh) > 1900
 		) {
 			this.grid_size = 1024; // Top-end
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				HIGH_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
 			limits.maxStorageBufferBindingSize >= HIGH_END_LIMITS.maxStorageBufferBindingSize &&
-			limits.maxComputeWorkgroupStorageSize >= HIGH_END_LIMITS.maxComputeWorkgroupStorageSize
+			limits.maxComputeWorkgroupStorageSize >= HIGH_END_LIMITS.maxComputeWorkgroupStorageSize &&
+			Math.max(vw, vh) > 1200
 		) {
 			this.grid_size = 768; // High-end
 		} else if (
