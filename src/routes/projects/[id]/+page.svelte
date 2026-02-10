@@ -1,16 +1,18 @@
 <script lang="ts">
 	import Language from '$lib/components/language.svelte';
 	import Technology from '$lib/components/technology.svelte';
-	import TransparentButton from '$lib/components/transparent-link.svelte';
-	import { onMount } from 'svelte';
+	import TransparentLink from '$lib/components/transparent-link.svelte';
 	import type { PageData } from './$types';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
 	import { gradients } from '$lib/utils/colors';
+	import { project_ids, projects } from '$lib/data/projects';
+	import { afterNavigate } from '$app/navigation';
 
 	const { data }: { data: PageData } = $props();
 
 	const {
+		id,
 		title,
 		liveLink,
 		githubLink,
@@ -22,10 +24,20 @@
 		intro
 	} = $derived(data.project);
 
+	const index = $derived(project_ids.indexOf(id));
+	const next = $derived.by(() => {
+		let next_index = index + 1;
+		while (projects[project_ids[next_index]].paragraphs.length === 0) {
+			next_index = (next_index + 1) % project_ids.length;
+		}
+		return project_ids[next_index];
+	});
+	// const prev = $derived(index === 0 ? null : project_ids[index - 1]);
+
 	const fluid = useFluidContext();
 	let parent: HTMLDivElement | undefined = $state();
 
-	onMount(() => {
+	afterNavigate(() => {
 		fluid.registerText('');
 		fluid.changeColor(colorNum);
 	});
@@ -37,13 +49,13 @@
 
 <div
 	bind:this={parent}
-	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] text-white pt-10 px-14 overflow-y-auto
+	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] text-white pt-14 md:px-14 px-4 overflow-y-auto
                     mask-[linear-gradient(to_top,transparent,black_10%,black_90%,transparent)]
                     [webkit-mask:linear-gradient(to_top,transparent,black_10%,black_90%,transparent)]
             "
 >
-	<div class="max-w-4xl mx-auto px-4 flex flex-col gap-4">
-		<div class="flex flex-wrap items-center gap-4">
+	<div class="max-w-4xl mx-auto">
+		<div class="w-full flex flex-wrap items-center">
 			<div use:registerSolid={{ id: `${title}-title` }} class="p-4 w-fit">
 				<h1
 					class={`font-bold bg-clip-text text-transparent ${gradients[colorNum]} animate-gradient-swirl text-4xl`}
@@ -51,16 +63,23 @@
 					{title}
 				</h1>
 			</div>
-			{#if githubLink}
-				<TransparentButton href={githubLink}>Github</TransparentButton>
-			{/if}
+			<div class="flex grow flex-wrap justify-between">
+				<div class="flex felx-wrap gap-4">
+					{#if githubLink}
+						<TransparentLink href={githubLink}>Github</TransparentLink>
+					{/if}
 
-			{#if liveLink}
-				<TransparentButton href={liveLink}>Visit Site</TransparentButton>
-			{/if}
+					{#if liveLink}
+						<TransparentLink href={liveLink}>Website</TransparentLink>
+					{/if}
+				</div>
+				<div class="flex flex-wrap gap-4">
+					<TransparentLink href={`/projects/${next}`}>Next</TransparentLink>
+				</div>
+			</div>
 		</div>
 
-		<div class="flex flex-wrap gap-x-4 gap-y-2">
+		<div class="p-2 flex flex-wrap gap-x-4 gap-y-2">
 			<!-- eslint-disable-next-line svelte/require-each-key -->
 			{#each languages as language}
 				<Language lang={language} />
@@ -83,7 +102,7 @@
 			</div>
 		{/each}
 
-		<div class="flex flex-col md:flex-row gap-10 sm:gap-4">
+		<div class="mt-10 sm:mt-4 flex flex-col md:flex-row gap-10 sm:gap-4">
 			<div class="flex flex-col gap-10 sm:gap-4">
 				<!-- eslint-disable-next-line svelte/require-each-key -->
 				{#each paragraphs as paragraph, index}
