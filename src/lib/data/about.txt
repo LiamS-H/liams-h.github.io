@@ -1,4 +1,3 @@
-`
 I specialize in Typescript and React but the
 last 3 years I've also been chasing my other
 passion working as a whitewater rafting and
@@ -22,4 +21,3 @@ nights a week.
 
 While I currently live near Sacramento, CA, I'm
 happy to relocate. Looking at SF.
-`;

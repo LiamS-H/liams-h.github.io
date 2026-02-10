@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Tween } from 'svelte/motion';
-	import { cubicOut, linear,  } from 'svelte/easing';
+	import { cubicOut, linear } from 'svelte/easing';
 
 	const visits = new Tween(0, {
 		duration: 10000,
@@ -9,7 +9,7 @@
 	});
 
 	const uniqueVisits = new Tween(0, {
-		duration: 10000, 
+		duration: 10000,
 		easing: linear
 	});
 
@@ -26,7 +26,7 @@
 		const uniqueVisitsData = await uniqueVisitsRes.json();
 
 		await Promise.all([
-			visits.set(visitsData.value, { duration: 1000, easing: cubicOut }), 
+			visits.set(visitsData.value, { duration: 1000, easing: cubicOut }),
 			uniqueVisits.set(uniqueVisitsData.value, { duration: 1000, easing: cubicOut })
 		]);
 	});
@@ -40,9 +40,11 @@
 			<span class="text-6xl font-thin tabular-nums">{Math.round(visits.current)}</span>
 			<span class="text-sm tracking-widest uppercase opacity-60">Total Views</span>
 		</div>
-		
+
 		<div class="flex flex-col gap-2">
-			<span class="text-6xl font-thin tabular-nums">{Math.round(uniqueVisits.current*10)/10}</span>
+			<span class="text-6xl font-thin tabular-nums"
+				>{Math.round(uniqueVisits.current * 10) / 10}</span
+			>
 			<span class="text-sm tracking-widest uppercase opacity-60">Unique Visitors</span>
 		</div>
 	</div>

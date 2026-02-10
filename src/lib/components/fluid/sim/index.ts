@@ -111,7 +111,7 @@ export class Simulator {
 	private calcVorticity!: ComputeProgram;
 	private vorticityConfinement!: ComputeProgram;
 	private advectSmoke!: ComputeProgram;
-	working: boolean = false;
+	private isRendering: boolean = false;
 
 	public constructor() {}
 	public static async create(canvas: HTMLCanvasElement): Promise<Simulator | null> {
@@ -142,11 +142,11 @@ export class Simulator {
 
 		const aspectRatio = vw / vh;
 		const limits = this.device.limits;
-		console.log(
-			limits.maxComputeInvocationsPerWorkgroup,
-			limits.maxStorageBufferBindingSize,
-			limits.maxComputeWorkgroupStorageSize
-		);
+		// console.log(
+		// 	limits.maxComputeInvocationsPerWorkgroup,
+		// 	limits.maxStorageBufferBindingSize,
+		// 	limits.maxComputeWorkgroupStorageSize
+		// );
 
 		const HIGH_END_LIMITS = {
 			// maxComputeInvocationsPerWorkgroup: 512,
@@ -217,8 +217,8 @@ export class Simulator {
 
 		// Calculate preferred visible dimensions
 		const gridSize = getPreferredDimensions(this.grid_size);
-		let viewWidth = gridSize.w;
-		let viewHeight = gridSize.h;
+		const viewWidth = gridSize.w;
+		const viewHeight = gridSize.h;
 
 		// Expand simulation grid by fixed cell buffers
 		this.width = viewWidth + 2 * this.horizontal_view_buffer;
@@ -830,8 +830,8 @@ export class Simulator {
 		const elapsed = now - this.time;
 
 		// if (elapsed < 16) return; // fps cap
-		if (this.working) return;
-		this.working = true;
+		if (this.isRendering) return;
+		this.isRendering = true;
 		this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
 		const dt = (elapsed * this.dt_mult) / 1000;
@@ -863,6 +863,6 @@ export class Simulator {
 		await this.simulate();
 		this.render();
 
-		this.working = false;
+		this.isRendering = false;
 	}
 }

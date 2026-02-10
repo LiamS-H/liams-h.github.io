@@ -1,4 +1,4 @@
- - [ ] device pixel ratio for high dpr
- - [ ] multi finger on touch
- - [ ] animations
- - [ ] project and technology rewrite
+- [ ] device pixel ratio for high dpr
+- [ ] multi finger on touch
+- [ ] animations
+- [ ] project and technology rewrite

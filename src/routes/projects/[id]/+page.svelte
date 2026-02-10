@@ -61,15 +61,18 @@
 		</div>
 
 		<div class="flex flex-wrap gap-x-4 gap-y-2">
+			<!-- eslint-disable-next-line svelte/require-each-key -->
 			{#each languages as language}
 				<Language lang={language} />
 			{/each}
 
+			<!-- eslint-disable-next-line svelte/require-each-key -->
 			{#each technologies as technology}
 				<Technology tech={technology} />
 			{/each}
 		</div>
 
+		<!-- eslint-disable-next-line svelte/require-each-key -->
 		{#each intro.description as line, index}
 			<div
 				use:registerSolid={{ id: `${title}-description-${index}`, parent }}
@@ -82,6 +85,7 @@
 
 		<div class="flex flex-col md:flex-row gap-10 sm:gap-4">
 			<div class="flex flex-col gap-10 sm:gap-4">
+				<!-- eslint-disable-next-line svelte/require-each-key -->
 				{#each paragraphs as paragraph, index}
 					<div use:registerSolid={{ id: `${title}-paragraph-${index}`, parent }} class="p-4 w-fit">
 						{paragraph}
@@ -89,6 +93,7 @@
 				{/each}
 			</div>
 			<div class="flex grow flex-col gap-10 sm:gap-4 w-full md:max-w-70">
+				<!-- eslint-disable-next-line svelte/require-each-key -->
 				{#each images as image, index}
 					<div use:registerSolid={{ id: `${title}-img-${index}`, parent }} class="w-full">
 						<enhanced:img src={image.src} alt={image.alt} />

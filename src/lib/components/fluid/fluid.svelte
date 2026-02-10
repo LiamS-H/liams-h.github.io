@@ -5,21 +5,25 @@
 
 	let { children } = $props();
 
+	// error will never restart without refresh
 	let canvas: HTMLCanvasElement;
 	let frame: number;
-	// let sim: Simulator;
-	// let sim: Simulator | null = null;
+	let error = $state(false);
 	let sim = new Simulator();
 	setFluidContext(() => sim);
 
 	let isFocused = true;
-	function handleFocus(focus: boolean) {
-		return () => (isFocused = focus);
-	}
+	// function handleFocus(focus: boolean) {
+	// 	return () => (isFocused = focus);
+	// }
 
 	async function init() {
 		// sim = await Simulator.create(canvas, new Map());
-		await sim.init(canvas);
+		if (!(await sim.init(canvas))) {
+			error = true;
+			setFluidContext(() => sim, true);
+			return;
+		}
 		frame = requestAnimationFrame(animate);
 	}
 
@@ -76,8 +80,13 @@ on:focus={handleFocus(true)}
 on:blur={handleFocus(false)}
 on:pagehide={handleFocus(false)} -->
 <!-- /> -->
-
-<div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
-	<canvas bind:this={canvas} class="w-full h-full"></canvas>
-</div>
+{#if error}
+	<div
+		class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen bg-gradient-0 animate-gradient-swirl"
+	></div>
+{:else}
+	<div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
+		<canvas bind:this={canvas} class="w-full h-full"></canvas>
+	</div>
+{/if}
 {@render children()}

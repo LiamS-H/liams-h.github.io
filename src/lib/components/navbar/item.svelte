@@ -13,7 +13,7 @@
 </script>
 
 <a
-	href={`${path}`}
+	href={path}
 	data-sveltekit-preload-data="hover"
 	onpointerleave={() => (isHovered = false)}
 	onpointerenter={() => (isHovered = true)}

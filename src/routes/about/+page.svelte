@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
-	import { language_list, languages } from '$lib/data/languages';
+	import { language_list } from '$lib/data/languages';
 	import { routes } from '$lib/data/routes';
-	import { gradient_hover, gradients } from '$lib/utils/colors';
 	import { onMount } from 'svelte';
 	import LanguageItem from './language-item.svelte';
-	import { technologies, technology_list } from '$lib/data/technologies';
+	import { technology_list } from '$lib/data/technologies';
 	import Technology from '$lib/components/technology.svelte';
 	import TransparentLink from '$lib/components/transparent-link.svelte';
 
@@ -32,7 +31,7 @@
 >
 	<div class="max-w-4xl mx-auto pt-10 sm:p-4">
 		<div
-			class="flex flex-col p-4 m-1 bg-black text-white"
+			class="flex flex-col p-4 m-1 text-white"
 			use:registerSolid={{ id: 'about-header', parent }}
 		>
 			<p class="text-lg relative leading-relaxed">
@@ -40,7 +39,7 @@
 					Sacramento, CA
 				</span>
 				<span class="text-4xl">
-					Hi, I'm{' '}
+					Hi, I'm
 					<span
 						class="block md:inline text-4xl bg-linear-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold -mr-2"
 					>
@@ -48,13 +47,13 @@
 						<br />
 					</span>
 				</span>
-				I have a{' '}
+				I have a
 				<span
 					class="bg-linear-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold"
 				>
 					Software Engineering Degree
-				</span>{' '}
-				and all the tools you need so I can{' '}
+				</span>
+				and all the tools you need so I can
 				<span
 					class="bg-linear-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-bold"
 				>
@@ -85,6 +84,7 @@
 			<h2 class="text-2xl mb-4 text-white font-bold flex items-center">Languages</h2>
 
 			<ul>
+				<!-- eslint-disable-next-line svelte/require-each-key -->
 				{#each language_list as name}
 					<LanguageItem {name} {parent} />
 				{/each}
@@ -94,11 +94,12 @@
 			<h2 class="text-2xl mb-4 text-white font-bold flex items-center">Technologies</h2>
 
 			<ul class="mt-5 flex flex-wrap gap-2">
-				{#each technology_list as tech (tech)}
+				<!-- eslint-disable-next-line svelte/require-each-key -->
+				{#each technology_list as tech}
 					<Technology {tech} {parent} />
 				{/each}
 			</ul>
 		</div>
 	</div>
-	<div class="h-64 md:h-0"></div>
+	<div class="h-40 md:h-0"></div>
 </div>

@@ -2,8 +2,9 @@ import { setContext, getContext } from 'svelte';
 import type { Simulator } from '$lib/components/fluid/sim';
 
 class FluidState {
-	text = $state('');
-	color = $state(0);
+	// text = $state('');
+	// color = $state(0);
+	isError = $state(false);
 
 	constructor(private sim: () => Simulator) {}
 
@@ -35,8 +36,9 @@ class FluidState {
 
 const CONTEXT_KEY = Symbol('fluid-context');
 
-export function setFluidContext(sim: () => Simulator) {
+export function setFluidContext(sim: () => Simulator, error: boolean = false) {
 	const state = new FluidState(sim);
+	state.isError = error;
 	return setContext(CONTEXT_KEY, state);
 }
 

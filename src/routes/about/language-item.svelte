@@ -11,7 +11,7 @@
 	class={`p-2 flex items-center max-w-50 md:max-w-md group transition-all duration-300 text-white hover:text-transparent bg-clip-text ${gradient_hover[lang.colorNum]}`}
 >
 	<div
-		class={`w-4 h-4 mt-1 mr-2`}
+		class="w-4 h-4 mt-1 mr-2"
 		use:registerSolid={{ id: name, color: lang.colorNum, inner: 2, parent }}
 	></div>
 	<span class="font-medium">{name}</span>

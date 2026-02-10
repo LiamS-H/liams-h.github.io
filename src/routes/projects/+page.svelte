@@ -2,10 +2,8 @@
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { onMount, tick } from 'svelte';
 	import { routes } from '$lib/data/routes';
-	import { project_ids, projects } from '$lib/data/projects';
+	import { project_ids } from '$lib/data/projects';
 	import ProjectCard from './project-card.svelte';
-	import Technology from '$lib/components/technology.svelte';
-	import Language from '$lib/components/language.svelte';
 
 	const fluid = useFluidContext();
 
@@ -125,7 +123,7 @@
 		</ul> -->
 	</div>
 	<div class="absolute flex md:hidden top-2/3 left-1/2 -translate-y-1/2 -translate-x-1/2">
-		{#each project_ids as id, i}
+		{#each project_ids as id, i (id)}
 			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
 				<div class={`w-4 h-4 rounded-full ${activeIndex == i ? 'bg-white' : 'bg-white/50'}`}></div>
 			</button>
@@ -140,7 +138,8 @@
 			style="scrollbar-width: none;"
 		>
 			<div class="min-w-[40%] h-full"></div>
-			{#each project_ids as id, i}
+			<!-- eslint-disable-next-line svelte/require-each-key -->
+			{#each project_ids as id, i (id)}
 				<ProjectCard {id} active={activeIndex === i} {behavior} />
 			{/each}
 			<div class="min-w-[40%] h-full"></div>
