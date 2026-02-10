@@ -867,7 +867,7 @@ export class Simulator {
 			return;
 		}
 		this.isRendering = true;
-		this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
+		// this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
 		const dt = (elapsed * this.dt_mult) / 1000;
 		if (dt == 0) return;
