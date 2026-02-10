@@ -10,11 +10,21 @@
 	}: { id: ProjectID; active: boolean; behavior?: ScrollBehavior } = $props();
 	const project = projects[(() => id)()];
 	let bind: HTMLElement;
+	let preload = $state(false);
 
 	$effect(() => {
 		if (active) bind.scrollIntoView({ behavior, inline: 'center' });
 	});
 </script>
+
+<svelte:head>
+	<!-- eslint-disable-next-line svelte/require-each-key -->
+	{#if preload}
+		{#each project.images as image}
+			<link rel="prefetch" href={image.src} as="image" />
+		{/each}
+	{/if}
+</svelte:head>
 
 <li
 	bind:this={bind}
@@ -63,6 +73,7 @@
 					class={`bg-size-[300%_100%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-3 to-color-${project.colorNum}`}
 					href={`/projects/${project.id}`}
 					data-sveltekit-preload-data="hover"
+					onpointerenter={() => (preload = true)}
 				>
 					Explore
 				</a>

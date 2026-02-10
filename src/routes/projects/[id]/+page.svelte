@@ -45,6 +45,10 @@
 
 <svelte:head>
 	<title>{title} - LiamS-H</title>
+	<!-- eslint-disable-next-line svelte/require-each-key -->
+	{#each images as image}
+		<link rel="preload" href={image.src} as="image" />
+	{/each}
 </svelte:head>
 
 <div
