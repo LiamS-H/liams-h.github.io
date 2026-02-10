@@ -28,7 +28,7 @@
 >
 	<button
 		type="button"
-		class="absolute inset-0 z-0 cursor-pointer"
+		class="absolute inset-0 z-0"
 		aria-label={`Scroll project ${project.title} into view`}
 		onclick={() => {
 			bind.scrollIntoView({ behavior: 'smooth', inline: 'center' });
