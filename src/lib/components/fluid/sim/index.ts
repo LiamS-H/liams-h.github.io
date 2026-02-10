@@ -178,14 +178,15 @@ export class Simulator {
 				HIGH_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
 			limits.maxStorageBufferBindingSize >= HIGH_END_LIMITS.maxStorageBufferBindingSize &&
 			limits.maxComputeWorkgroupStorageSize >= HIGH_END_LIMITS.maxComputeWorkgroupStorageSize &&
-			Math.max(vw, vh) > 1200
+			Math.max(vw, vh) > 1900
 		) {
 			this.grid_size = 768; // High-end
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				MID_RANGE_LIMITS.maxComputeInvocationsPerWorkgroup &&
 			limits.maxStorageBufferBindingSize >= MID_RANGE_LIMITS.maxStorageBufferBindingSize &&
-			limits.maxComputeWorkgroupStorageSize >= MID_RANGE_LIMITS.maxComputeWorkgroupStorageSize
+			limits.maxComputeWorkgroupStorageSize >= MID_RANGE_LIMITS.maxComputeWorkgroupStorageSize &&
+			Math.max(vw, vh) > 1200
 		) {
 			this.grid_size = 512; // Mid-range
 		} else {
@@ -841,7 +842,7 @@ export class Simulator {
 
 		// if (elapsed < 16) return; // fps cap
 		if (this.isRendering) return;
-		this.isRendering = true;
+		// this.isRendering = true;
 		this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
 		const dt = (elapsed * this.dt_mult) / 1000;
@@ -873,6 +874,6 @@ export class Simulator {
 		await this.simulate();
 		this.render();
 
-		this.isRendering = false;
+		// this.isRendering = false;
 	}
 }
