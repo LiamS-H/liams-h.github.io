@@ -4,6 +4,7 @@
 	import { routes } from '$lib/data/routes';
 	import { project_ids } from '$lib/data/projects';
 	import ProjectCard from './project-card.svelte';
+	import { afterNavigate } from '$app/navigation';
 
 	const fluid = useFluidContext();
 
@@ -53,10 +54,12 @@
 		}
 	}
 
-	onMount(() => {
+	afterNavigate(() => {
 		fluid.registerText('');
 		fluid.changeColor(routes[2].color);
+	});
 
+	onMount(() => {
 		activeIndex = Number(sessionStorage.getItem('carousel_index'));
 		const controller = new AbortController();
 

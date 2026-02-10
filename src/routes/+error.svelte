@@ -1,13 +1,13 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
 	import InternalLink from '$lib/components/internal-link.svelte';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
-	import { onMount } from 'svelte';
 
 	const fluid = useFluidContext();
 
-	onMount(() => {
+	afterNavigate(() => {
 		fluid.registerText(page.status.toString());
 		return () => fluid.registerText('');
 	});

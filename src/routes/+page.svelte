@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { routes } from '$lib/data/routes';
-	import { onMount } from 'svelte';
 
 	const fluid = useFluidContext();
 
-	onMount(() => {
+	afterNavigate(() => {
 		fluid.registerText('LIAM');
 		fluid.changeColor(routes[0].color);
 	});
