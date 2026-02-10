@@ -7,7 +7,7 @@
 </script>
 
 <button
-	class="px-3 h-9 mt-2 w-fit md:mr-9 text-transparent bg-clip-text bg-gradient-0 hover:bg-gradient-3"
+	class="px-3 pt-1 pb-1.5 h-9 mt-2 w-fit md:mr-9 text-transparent bg-clip-text bg-gradient-0 hover:bg-gradient-3"
 	onclick={toggleInfo}
 	use:registerSolid={{
 		id: 'about-button',
@@ -20,6 +20,6 @@
 	{#if infoOpen}
 		Read Less
 	{:else}
-		Who is Liam?
+		Learn More
 	{/if}
 </button>

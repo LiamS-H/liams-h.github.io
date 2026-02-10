@@ -94,9 +94,9 @@
 				class="max-w-xl mr-auto py-3 px-4 text-justify"
 				use:registerSolid={{ id: 'about-1', parent, inner: 4, color: 3 }}
 			>
-				I specialize in Typescript and React but the last 3 years I've also been chasing my other
-				passion working as a whitewater rafting and outdoor guide. A river is a special place and it
-				brings me great joy to see eddies and vortices wrap around the elements on this page.
+				I specialize in Typescript, Rust, and Python, but the last 3 years I've also been chasing my
+				other passion working as a whitewater rafting and outdoor guide. A river is a special place
+				and it brings me great joy to see eddies and vortices wrap around the elements on this page.
 				Hydrodynamics is not usually a concern when working on a site layout, but here we are!
 			</div>
 
@@ -108,7 +108,7 @@
 				practical and related to things Im interested in at the time. My recent fixation has been a
 				little ecosystem of projects related to Magic The Gathering; this culminated in a
 				<InternalLink href={`/projects/${project_ids[0]}`}>table-top simulator</InternalLink>
-				that I use to play Magic with my friends a few nights a week.
+				that I constantly improve, and use to play Magic with my friends a few nights a week.
 			</div>
 
 			<div
