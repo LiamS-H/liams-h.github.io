@@ -30,10 +30,11 @@ export class Simulator {
 	private text?: string;
 	private prevText?: string;
 	private rectMap: FluidRects = new Map();
-	private boxes: FluidRectList = [];
+	private solidBoxes: FluidRectList = [];
+	private colorBoxes: FluidRectList = [];
 	//              x,      y,      w,      h,      c,      p,      p,      p
 
-	private maxBoxes: number = 100;
+	private maxRects: number = 1000;
 	private smoke_color: number = 0;
 	private prev_smoke_color?: number;
 
@@ -84,7 +85,8 @@ export class Simulator {
 	private pressure0!: Buffer;
 	private vorticity!: Buffer;
 	private solids!: Buffer;
-	private rectangles!: Buffer;
+	private solidRects!: Buffer;
+	private colorRects!: Buffer;
 	private solids0!: Buffer;
 	// uniforms
 	private Ures!: Uniform;
@@ -300,13 +302,13 @@ export class Simulator {
 			this.mouseV,
 			this.mouseU
 		]);
-		this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
+		this.Ures_rect.update([this.width, this.height, this.solidBoxes.length, 0]);
 		this.Ures_dif.update([
 			this.width,
 			this.height,
 			this.diffusion,
 			this.smoke_color,
-			this.boxes.length,
+			this.colorBoxes.length,
 			0
 		]);
 		this.Ures_dt.update([
@@ -334,7 +336,8 @@ export class Simulator {
 		this.vorticity = new Buffer(this.device, this.numCells, 1, 'vort');
 		this.solids = new Buffer(this.device, this.numCells, 1, 'solid');
 		this.solids0 = new Buffer(this.device, this.numCells, 1, 'solid0');
-		this.rectangles = new Buffer(this.device, this.maxBoxes * 8, 1, 'rect');
+		this.solidRects = new Buffer(this.device, this.maxRects * 8, 1, 'solidRect');
+		this.colorRects = new Buffer(this.device, this.maxRects * 8, 1, 'colorRect');
 
 		const solids0 = new Float32Array(this.numCells);
 		solids0.fill(1.0);
@@ -363,7 +366,7 @@ export class Simulator {
 		this.Ures_rect = new Uniform(this.device, 4, 'Ures_rect', [
 			this.width,
 			this.height,
-			this.boxes.length,
+			this.solidBoxes.length,
 			0
 		]);
 		this.Ures_dif = new Uniform(this.device, 6, 'Ures_dif', [
@@ -371,7 +374,7 @@ export class Simulator {
 			this.height,
 			this.diffusion,
 			this.smoke_color,
-			this.boxes.length,
+			this.colorBoxes.length,
 			0
 		]);
 		this.Ures_dt = new Uniform(this.device, 6, 'Ures_dt', [
@@ -445,7 +448,7 @@ export class Simulator {
 		this.updateSolids = new ComputeProgram(
 			this.device,
 			PROGRAM.updateSolids,
-			[this.rectangles],
+			[this.solidRects],
 			[this.solids],
 			[this.Ures_rect],
 			this.width,
@@ -465,7 +468,7 @@ export class Simulator {
 		this.updateSmoke = new ComputeProgram(
 			this.device,
 			PROGRAM.updateSmoke,
-			[this.smoke, this.solids, this.rectangles],
+			[this.smoke, this.solids, this.colorRects],
 			[this.smoke0],
 			[this.Ures_dif],
 			this.width,
@@ -607,15 +610,16 @@ export class Simulator {
 
 		this.device.queue.submit([commandEncoder.finish()]);
 	}
-	private isBoxSame(newBoxes: FluidRectList) {
-		if (newBoxes.length !== this.boxes.length) {
+	private isBoxSame(newSolid: FluidRectList, newColor: FluidRectList) {
+		if (
+			newSolid.length !== this.solidBoxes.length ||
+			newColor.length !== this.colorBoxes.length
+		) {
 			return false;
 		}
-		return this.boxes.every((box, i) => {
-			return box.every((v, j) => {
-				return v === newBoxes[i][j];
-			});
-		});
+		const solidSame = this.solidBoxes.every((box, i) => box.every((v, j) => v === newSolid[i][j]));
+		const colorSame = this.colorBoxes.every((box, i) => box.every((v, j) => v === newColor[i][j]));
+		return solidSame && colorSame;
 	}
 
 	public async updateText(text: string) {
@@ -718,7 +722,7 @@ export class Simulator {
 			this.height,
 			this.diffusion,
 			this.smoke_color,
-			this.boxes.length,
+			this.colorBoxes.length,
 			0
 		]);
 		return this.device.queue.onSubmittedWorkDone();
@@ -734,42 +738,62 @@ export class Simulator {
 
 	private async updateRectangles() {
 		if (!this.initialized) return;
-		const new_boxes: FluidRectList = [];
+		const new_solids: FluidRectList = [];
+		const new_colors: FluidRectList = [];
 		if (!this.rectMap) {
 			return;
 		}
 
 		for (const [, rect] of this.rectMap) {
-			if (!rect) return;
-			new_boxes.push([rect.x, rect.y, rect.w, rect.h, rect.color ?? -1]);
+			if (!rect) continue;
+			if (rect.color === undefined || rect.color < 0) {
+				new_solids.push([rect.x, rect.y, rect.w, rect.h, -1]);
+			} else {
+				new_colors.push([rect.x, rect.y, rect.w, rect.h, rect.color]);
+			}
 		}
 
-		if (this.isBoxSame(new_boxes)) {
+		if (this.isBoxSame(new_solids, new_colors)) {
 			return;
 		}
 		const vh = window.visualViewport?.height || window.innerHeight;
 		const vw = window.visualViewport?.width || window.innerWidth;
 
-		this.boxes = new_boxes;
-		this.Ures_rect.update([this.width, this.height, this.boxes.length, 0]);
+		this.solidBoxes = new_solids;
+		this.colorBoxes = new_colors;
+
+		this.Ures_rect.update([this.width, this.height, this.solidBoxes.length, 0]);
 		this.Ures_dif.update([
 			this.width,
 			this.height,
 			this.diffusion,
 			this.smoke_color,
-			this.boxes.length,
+			this.colorBoxes.length,
 			0
 		]);
-		const data = new Float32Array(this.maxBoxes * 8);
-		this.boxes.forEach(([x, y, w, h, c], i) => {
+
+		const solidData = new Float32Array(this.maxRects * 8);
+		this.solidBoxes.forEach(([x, y, w, h, c], i) => {
 			const x_sim = (this.horizontal_view_buffer + (x / vw) * this.viewWidth) / this.width;
 			const y_sim =
 				(this.vertical_view_buffer + ((vh - h - y) / vh) * this.viewHeight) / this.height;
 			const w_sim = ((w / vw) * this.viewWidth) / this.width;
 			const h_sim = ((h / vh) * this.viewHeight) / this.height;
-			data.set([x_sim, y_sim, w_sim, h_sim, c, 0, 0, 0], i * 8);
+			solidData.set([x_sim, y_sim, w_sim, h_sim, c, 0, 0, 0], i * 8);
 		});
-		this.rectangles.write(data);
+		this.solidRects.write(solidData);
+
+		const colorData = new Float32Array(this.maxRects * 8);
+		this.colorBoxes.forEach(([x, y, w, h, c], i) => {
+			const x_sim = (this.horizontal_view_buffer + (x / vw) * this.viewWidth) / this.width;
+			const y_sim =
+				(this.vertical_view_buffer + ((vh - h - y) / vh) * this.viewHeight) / this.height;
+			const w_sim = ((w / vw) * this.viewWidth) / this.width;
+			const h_sim = ((h / vh) * this.viewHeight) / this.height;
+			colorData.set([x_sim, y_sim, w_sim, h_sim, c, 0, 0, 0], i * 8);
+		});
+		this.colorRects.write(colorData);
+
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
@@ -830,7 +854,8 @@ export class Simulator {
 			return;
 		}
 		this.prevText = undefined;
-		this.boxes = [];
+		this.solidBoxes = [];
+		this.colorBoxes = [];
 		await this.reset();
 		this.initialized = true;
 	}

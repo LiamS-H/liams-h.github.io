@@ -31,9 +31,7 @@ export namespace PROGRAM {
         let numRects = u32(U.rects);
         for (var i = 0u; i < numRects; i = i + 1u) {
             let r = rectangles[i];
-            if (r.color > -0.5) {
-                continue;
-            }
+            if (r.w == 0) {return false;}
             if (checkBoundsRect(pos, r)) {
                 return true;
             }
@@ -82,9 +80,7 @@ export namespace PROGRAM {
         let numRects = u32(U.rects);
         for (var i = 0u; i < numRects; i = i + 1u) {
             let r = rectangles[i];
-            if (r.color < -0.5) {
-                continue;
-            }
+            if (r.w == 0) {break;}
             if (checkBoundsRect(pos, r)) {
                 if (r.h > 0.2) {
                     return SmokeBound(i32(r.color),(pos.y-(r.y * U.res.y))/(r.h * U.res.y));
