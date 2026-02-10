@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { registerSolid } from '$lib/components/fluid/solid.svelte';
-	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { colors, hovers } from '$lib/utils/colors';
 
 	const {
