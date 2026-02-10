@@ -611,10 +611,7 @@ export class Simulator {
 		this.device.queue.submit([commandEncoder.finish()]);
 	}
 	private isBoxSame(newSolid: FluidRectList, newColor: FluidRectList) {
-		if (
-			newSolid.length !== this.solidBoxes.length ||
-			newColor.length !== this.colorBoxes.length
-		) {
+		if (newSolid.length !== this.solidBoxes.length || newColor.length !== this.colorBoxes.length) {
 			return false;
 		}
 		const solidSame = this.solidBoxes.every((box, i) => box.every((v, j) => v === newSolid[i][j]));
