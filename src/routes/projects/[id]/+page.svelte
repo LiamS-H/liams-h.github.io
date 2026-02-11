@@ -33,7 +33,7 @@
 		}
 		return project_ids[next_index];
 	});
-	const prev = $derived(index === 0 ? null : project_ids[index - 1]);
+	// const prev = $derived(index === 0 ? null : project_ids[index - 1]);
 
 	let activeImage = $state<null | { src: string; alt: string }>(null);
 

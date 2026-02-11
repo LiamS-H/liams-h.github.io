@@ -18,8 +18,8 @@
 </script>
 
 <svelte:head>
-	<!-- eslint-disable-next-line svelte/require-each-key -->
 	{#if preload}
+		<!-- eslint-disable-next-line svelte/require-each-key -->
 		{#each project.images as image}
 			<link rel="prefetch" href={image.src} as="image" />
 		{/each}
