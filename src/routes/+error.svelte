@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
-	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { registerSolid } from '$lib/actions/solid.svelte';
 	import InternalLink from '$lib/components/internal-link.svelte';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 

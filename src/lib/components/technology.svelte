@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { technologies, type Technology } from '$lib/data/technologies';
 	import { colors } from '$lib/utils/colors';
-	import { registerSolid } from './fluid/solid.svelte';
+	import { registerSolid } from '../actions/solid.svelte';
 	import { page } from '$app/state';
 
 	const { tech, parent }: { tech: Technology; parent?: HTMLElement } = $props();

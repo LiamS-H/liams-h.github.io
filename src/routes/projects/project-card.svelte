@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { registerSolid } from '$lib/actions/solid.svelte';
 	import { type ProjectID, projects } from '$lib/data/projects';
 	import { gradients } from '$lib/utils/colors';
 

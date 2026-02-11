@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { registerSolid } from '$lib/actions/solid.svelte';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
 	import { languages, type Language } from '$lib/data/languages';
 	import { routes } from '$lib/data/routes';

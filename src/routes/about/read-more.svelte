@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { registerSolid } from '$lib/actions/solid.svelte';
 
 	const { infoOpen, toggleInfo }: { infoOpen: boolean; toggleInfo: () => void } = $props();
 

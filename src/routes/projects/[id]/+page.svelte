@@ -4,7 +4,7 @@
 	import TransparentLink from '$lib/components/transparent-link.svelte';
 	import type { PageData } from './$types';
 	import { useFluidContext } from '$lib/context/fluid.svelte';
-	import { registerSolid } from '$lib/components/fluid/solid.svelte';
+	import { registerSolid } from '$lib/actions/solid.svelte';
 	import { gradients } from '$lib/utils/colors';
 	import { project_ids, projects } from '$lib/data/projects';
 	import { afterNavigate } from '$app/navigation';

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { languages, type Language } from '$lib/data/languages';
 	import { colors } from '$lib/utils/colors';
-	import { registerSolid } from './fluid/solid.svelte';
+	import { registerSolid } from '../actions/solid.svelte';
 	import { page } from '$app/state';
 
 	const { lang, parent }: { lang: Language; parent?: HTMLElement } = $props();
