@@ -8,6 +8,7 @@
 	import { gradients } from '$lib/utils/colors';
 	import { project_ids, projects } from '$lib/data/projects';
 	import { afterNavigate } from '$app/navigation';
+	import { autoFocus } from '$lib/actions/autofocus';
 
 	const { data }: { data: PageData } = $props();
 
@@ -32,7 +33,9 @@
 		}
 		return project_ids[next_index];
 	});
-	// const prev = $derived(index === 0 ? null : project_ids[index - 1]);
+	const prev = $derived(index === 0 ? null : project_ids[index - 1]);
+
+	let activeImage = $state<null | { src: string; alt: string }>(null);
 
 	const fluid = useFluidContext();
 	let parent: HTMLDivElement | undefined = $state();
@@ -51,12 +54,22 @@
 	{/each}
 </svelte:head>
 
+<svelte:window
+	onkeydown={(e) => {
+		console.log(e.key);
+		if (e.key === 'Escape') {
+			activeImage = null;
+		}
+	}}
+/>
+
 <div
 	bind:this={parent}
 	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] text-white pt-14 md:px-14 px-4 overflow-y-auto
                     mask-[linear-gradient(to_top,transparent,black_10%,black_90%,transparent)]
                     [webkit-mask:linear-gradient(to_top,transparent,black_10%,black_90%,transparent)]
             "
+	style={activeImage ? 'overflow:hidden; scrollbar-gutter:stable;' : undefined}
 >
 	<div class="max-w-4xl mx-auto">
 		<div class="w-full flex flex-wrap items-center">
@@ -77,6 +90,11 @@
 						<TransparentLink href={liveLink}>Website</TransparentLink>
 					{/if}
 				</div>
+				<!-- {#if prev}
+					<div class="flex flex-wrap gap-4">
+						<TransparentLink href={`/projects/${prev}`}>Prev</TransparentLink>
+					</div>
+				{/if} -->
 				<div class="flex flex-wrap gap-4">
 					<TransparentLink href={`/projects/${next}`}>Next</TransparentLink>
 				</div>
@@ -118,12 +136,35 @@
 			<div class="flex grow flex-col gap-10 sm:gap-4 w-full md:max-w-70">
 				<!-- eslint-disable-next-line svelte/require-each-key -->
 				{#each images as image, index}
-					<div use:registerSolid={{ id: `${title}-img-${index}`, parent }} class="w-full">
+					<button
+						aria-label={`enlarge-img-${image.alt}`}
+						onclick={() => (activeImage = image)}
+						use:registerSolid={{ id: `${title}-img-${index}`, parent }}
+						class="w-full"
+					>
 						<enhanced:img src={image.src} alt={image.alt} />
-					</div>
+					</button>
 				{/each}
 			</div>
 		</div>
 		<div class="h-64 md:h-0"></div>
 	</div>
 </div>
+
+{#if activeImage}
+	<dialog
+		class="fixed inset-0 w-full h-full px-4 md:px-8 lg:px-20 flex justify-center items-center backdrop-blur-md bg-transparent z-10"
+		onclick={() => (activeImage = null)}
+	>
+		<div class="relative flex max-h-full max-w-full rounded-md">
+			<img src={activeImage.src} alt={activeImage.alt} />
+			<button
+				use:autoFocus
+				class="absolute -right-2 -top-2 bg-color-0 h-6 w-6 rounded-full"
+				onclick={() => (activeImage = null)}
+			>
+				<span class="white">X</span>
+			</button>
+		</div>
+	</dialog>
+{/if}
