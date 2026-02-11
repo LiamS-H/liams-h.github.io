@@ -48,8 +48,7 @@
 
 <svelte:head>
 	<title>{title} - LiamS-H</title>
-	<!-- eslint-disable-next-line svelte/require-each-key -->
-	{#each images as image}
+	{#each images as image (image.src)}
 		<link rel="preload" href={image.src} as="image" />
 	{/each}
 </svelte:head>
@@ -102,19 +101,16 @@
 		</div>
 
 		<div class="p-2 flex flex-wrap gap-x-4 gap-y-2">
-			<!-- eslint-disable-next-line svelte/require-each-key -->
-			{#each languages as language}
+			{#each languages as language (language)}
 				<Language lang={language} />
 			{/each}
 
-			<!-- eslint-disable-next-line svelte/require-each-key -->
-			{#each technologies as technology}
+			{#each technologies as technology (technology)}
 				<Technology tech={technology} />
 			{/each}
 		</div>
 
-		<!-- eslint-disable-next-line svelte/require-each-key -->
-		{#each intro.description as line, index}
+		{#each intro.description as line, index (`${id}-${index}`)}
 			<div
 				use:registerSolid={{ id: `${title}-description-${index}`, parent }}
 				class="p-4 w-fit"
@@ -126,16 +122,14 @@
 
 		<div class="mt-10 sm:mt-4 flex flex-col md:flex-row gap-10 sm:gap-4">
 			<div class="flex flex-col gap-10 sm:gap-4">
-				<!-- eslint-disable-next-line svelte/require-each-key -->
-				{#each paragraphs as paragraph, index}
+				{#each paragraphs as paragraph, index (`${id}-${index}`)}
 					<div use:registerSolid={{ id: `${title}-paragraph-${index}`, parent }} class="p-4 w-fit">
 						{paragraph}
 					</div>
 				{/each}
 			</div>
 			<div class="flex grow flex-col gap-10 sm:gap-4 w-full md:max-w-70">
-				<!-- eslint-disable-next-line svelte/require-each-key -->
-				{#each images as image, index}
+				{#each images as image, index (image.src)}
 					<button
 						aria-label={`enlarge-img-${image.alt}`}
 						onclick={() => (activeImage = image)}
