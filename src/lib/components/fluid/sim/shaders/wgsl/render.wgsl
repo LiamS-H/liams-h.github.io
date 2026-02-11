@@ -1,6 +1,3 @@
-import { FUNCTION, UNIFORM } from './utils';
-
-export const render_shader = /*wgsl*/ `
 struct VertexOutput {
     @builtin(position) position: vec4<f32>,
     @location(0) texCoord: vec2<f32>,
@@ -25,8 +22,8 @@ fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> VertexOutput {
     return output;
 }
 
-${UNIFORM.res}
-${UNIFORM.binding}
+#include "./common/uniforms_res.wgsl"
+#include "./common/binding.wgsl"
 @group(0) @binding(1) var<storage, read> smoke_r: array<f32>;
 @group(0) @binding(2) var<storage, read> smoke_g: array<f32>;
 @group(0) @binding(3) var<storage, read> smoke_b: array<f32>;
@@ -36,7 +33,7 @@ ${UNIFORM.binding}
 @group(0) @binding(7) var<storage, read> divergence: array<f32>;
 @group(0) @binding(8) var<storage, read> pressure: array<f32>;
 
-${FUNCTION.idx}
+#include "./common/idx.wgsl"
 
 @fragment
 fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
@@ -68,4 +65,3 @@ fn fragmentMain(@location(0) texCoord: vec2<f32>) -> @location(0) vec4<f32> {
 
     return vec4<f32>(smoke_color * sqrt(s), 1.0);
 }
-`;

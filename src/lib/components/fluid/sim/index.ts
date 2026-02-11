@@ -1,9 +1,20 @@
 /// <reference types="@webgpu/types" />
 
 import { Uniform, ComputeProgram, Buffer } from './primitives';
-import { PROGRAM } from './shaders/compute';
-import { render_shader } from './shaders/render';
-// import isOutdated from "@/utils/version";
+import updateSolids from './shaders/wgsl/updateSolids.wgsl';
+import updateSmoke from './shaders/wgsl/updateSmoke.wgsl';
+import updateVelocity from './shaders/wgsl/updateVelocity.wgsl';
+import advectVelocity from './shaders/wgsl/advectVelocity.wgsl';
+import velocityBoundary from './shaders/wgsl/velocityBoundary.wgsl';
+import calcDivergence from './shaders/wgsl/calcDivergence.wgsl';
+import calcRepeatBoundary from './shaders/wgsl/calcRepeatBoundary.wgsl';
+import pressureProgram from './shaders/wgsl/pressureProgram.wgsl';
+import subtractGradient from './shaders/wgsl/subtractGradient.wgsl';
+import clearPressure from './shaders/wgsl/clearPressure.wgsl';
+import calcVorticity from './shaders/wgsl/calcVorticity.wgsl';
+import vorticityConfinement from './shaders/wgsl/vorticityConfinement.wgsl';
+import advectSmoke from './shaders/wgsl/advectSmoke.wgsl';
+import render_shader from './shaders/wgsl/render.wgsl';
 
 export interface FluidRectObj {
 	x: number;
@@ -447,7 +458,7 @@ export class Simulator {
 	private initComputePrograms() {
 		this.updateSolids = new ComputeProgram(
 			this.device,
-			PROGRAM.updateSolids,
+			updateSolids,
 			[this.solidRects],
 			[this.solids],
 			[this.Ures_rect],
@@ -457,7 +468,7 @@ export class Simulator {
 		);
 		this.updateVelocity = new ComputeProgram(
 			this.device,
-			PROGRAM.updateVelocity,
+			updateVelocity,
 			[this.velocity],
 			[this.velocity0],
 			[this.Ures_mouse],
@@ -467,7 +478,7 @@ export class Simulator {
 		); //clear pressure, set wind tunnel
 		this.updateSmoke = new ComputeProgram(
 			this.device,
-			PROGRAM.updateSmoke,
+			updateSmoke,
 			[this.smoke, this.solids, this.colorRects],
 			[this.smoke0],
 			[this.Ures_dif],
@@ -477,7 +488,7 @@ export class Simulator {
 		);
 		this.advectVelocity = new ComputeProgram(
 			this.device,
-			PROGRAM.advectVelocity,
+			advectVelocity,
 			[this.velocity0],
 			[this.velocity],
 			[this.Ures_dt],
@@ -487,7 +498,7 @@ export class Simulator {
 		);
 		this.velocityBoundary = new ComputeProgram(
 			this.device,
-			PROGRAM.velocityBoundary,
+			velocityBoundary,
 			[this.velocity, this.solids],
 			[this.velocity0],
 			[this.Ures],
@@ -497,7 +508,7 @@ export class Simulator {
 		);
 		this.calcDivergence = new ComputeProgram(
 			this.device,
-			PROGRAM.calcDivergence,
+			calcDivergence,
 			[this.velocity0],
 			[this.divergence0],
 			[this.Ures_dt],
@@ -507,7 +518,7 @@ export class Simulator {
 		);
 		this.divergenceBoundary = new ComputeProgram(
 			this.device,
-			PROGRAM.calcRepeatBoundary,
+			calcRepeatBoundary,
 			[this.divergence0, this.solids],
 			[this.divergence],
 			[this.Ures],
@@ -517,7 +528,7 @@ export class Simulator {
 		);
 		this.pressureProgram = new ComputeProgram(
 			this.device,
-			PROGRAM.pressureProgram,
+			pressureProgram,
 			[this.pressure, this.divergence],
 			[this.pressure0],
 			[this.Ures_dt],
@@ -527,7 +538,7 @@ export class Simulator {
 		);
 		this.pressureBoundary = new ComputeProgram(
 			this.device,
-			PROGRAM.calcRepeatBoundary,
+			calcRepeatBoundary,
 			[this.pressure0, this.solids],
 			[this.pressure],
 			[this.Ures],
@@ -537,7 +548,7 @@ export class Simulator {
 		);
 		this.gradientSubtract = new ComputeProgram(
 			this.device,
-			PROGRAM.subtractGradient,
+			subtractGradient,
 			[this.pressure, this.velocity0],
 			[this.velocity],
 			[this.Ures_dt],
@@ -547,7 +558,7 @@ export class Simulator {
 		);
 		this.advectSmoke = new ComputeProgram(
 			this.device,
-			PROGRAM.advectSmoke,
+			advectSmoke,
 			[this.smoke0, this.velocity],
 			[this.smoke],
 			[this.Ures_dt],
@@ -556,7 +567,7 @@ export class Simulator {
 		);
 		this.clearPressure = new ComputeProgram(
 			this.device,
-			PROGRAM.clearPressure,
+			clearPressure,
 			[this.pressure],
 			[this.pressure0],
 			[this.Ures_visc],
@@ -566,7 +577,7 @@ export class Simulator {
 		);
 		this.calcVorticity = new ComputeProgram(
 			this.device,
-			PROGRAM.calcVorticity,
+			calcVorticity,
 			[this.velocity],
 			[this.vorticity],
 			[this.Ures_dt],
@@ -576,7 +587,7 @@ export class Simulator {
 		);
 		this.vorticityConfinement = new ComputeProgram(
 			this.device,
-			PROGRAM.vorticityConfinement,
+			vorticityConfinement,
 			[this.velocity, this.vorticity],
 			[this.velocity0],
 			[this.Ures_dt_vort],
