@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { registerSolid } from '$lib/actions/solid.svelte';
 	import InternalLink from '$lib/components/internal-link.svelte';
-	import { NoGpuStore } from '$lib/context/nogpu-store';
+	import { NoGpuStore } from '$lib/context/no-gpu-store';
 
 	let GPU = $state(false);
 

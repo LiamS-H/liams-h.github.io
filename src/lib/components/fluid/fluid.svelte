@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Simulator } from './sim';
 	import { setFluidContext } from '$lib/context/fluid.svelte';
-	import { NoGpuStore } from '$lib/context/nogpu-store';
+	import { NoGpuStore } from '$lib/context/no-gpu-store';
 
 	let { children } = $props();
 

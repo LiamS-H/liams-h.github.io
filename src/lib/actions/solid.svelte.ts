@@ -1,5 +1,5 @@
 import { useFluidContext } from '$lib/context/fluid.svelte';
-import { NoGpuStore } from '$lib/context/nogpu-store';
+import { NoGpuStore } from '$lib/context/no-gpu-store';
 import { constrainRects as constrainRect } from '$lib/utils/constraint';
 import type { Action } from 'svelte/action';
 
