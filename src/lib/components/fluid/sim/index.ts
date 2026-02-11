@@ -843,13 +843,13 @@ export class Simulator {
 		return this.broken;
 	}
 	public async resize() {
-		this.initialized = false;
 		const tW = this.width;
 		const tH = this.height;
 		this.initSizes();
 		if (this.width == tW && this.height == tH) {
 			return;
 		}
+		this.initialized = false;
 		this.prevText = undefined;
 		this.solidBoxes = [];
 		this.colorBoxes = [];
