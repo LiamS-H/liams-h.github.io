@@ -64,23 +64,23 @@
 
 <div
 	bind:this={parent}
-	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] text-white pt-14 md:px-14 px-4 overflow-y-auto
-                    mask-[linear-gradient(to_top,transparent,black_10%,black_90%,transparent)]
-                    [webkit-mask:linear-gradient(to_top,transparent,black_10%,black_90%,transparent)]
+	class="h-[calc(100%-150px)] overflow-y-auto mask-[linear-gradient(to_top,transparent,black_10%,black_90%,transparent)] px-4 pt-14 text-white [webkit-mask:linear-gradient(to_top,transparent,black_10%,black_90%,transparent)] md:h-[calc(100%-90px)]
+                    md:px-14
+                    lg:h-[calc(100%-130px)]
             "
 	style={activeImage ? 'overflow:hidden; scrollbar-gutter:stable;' : undefined}
 >
-	<div class="max-w-4xl mx-auto">
-		<div class="w-full flex flex-wrap items-center">
-			<div use:registerSolid={{ id: `${title}-title` }} class="p-4 w-fit">
+	<div class="mx-auto max-w-4xl">
+		<div class="flex w-full flex-wrap items-center">
+			<div use:registerSolid={{ id: `${title}-title` }} class="w-fit p-4">
 				<h1
-					class={`font-bold bg-clip-text text-transparent ${gradients[colorNum]} animate-gradient-swirl text-4xl`}
+					class={`bg-clip-text font-bold text-transparent ${gradients[colorNum]} animate-gradient-swirl text-4xl`}
 				>
 					{title}
 				</h1>
 			</div>
 			<div class="flex grow flex-wrap justify-between">
-				<div class="flex felx-wrap gap-4">
+				<div class="felx-wrap flex gap-4">
 					{#if githubLink}
 						<TransparentLink href={githubLink}>Github</TransparentLink>
 					{/if}
@@ -100,7 +100,7 @@
 			</div>
 		</div>
 
-		<div class="p-2 flex flex-wrap gap-x-4 gap-y-2">
+		<div class="flex flex-wrap gap-x-4 gap-y-2 p-2">
 			{#each languages as language (language)}
 				<Language lang={language} />
 			{/each}
@@ -113,30 +113,38 @@
 		{#each intro.description as line, index (`${id}-${index}`)}
 			<div
 				use:registerSolid={{ id: `${title}-description-${index}`, parent }}
-				class="p-4 w-fit"
+				class="w-fit p-4"
 				id={`${title}-intro`}
 			>
 				{line}
 			</div>
 		{/each}
 
-		<div class="mt-10 sm:mt-4 flex flex-col md:flex-row gap-10 sm:gap-4">
+		<div class="mt-10 flex flex-col gap-10 sm:mt-4 sm:gap-4 md:flex-row">
 			<div class="flex flex-col gap-10 sm:gap-4">
 				{#each paragraphs as paragraph, index (`${id}-${index}`)}
-					<div use:registerSolid={{ id: `${title}-paragraph-${index}`, parent }} class="p-4 w-fit">
+					<div use:registerSolid={{ id: `${title}-paragraph-${index}`, parent }} class="w-fit p-4">
 						{paragraph}
 					</div>
 				{/each}
 			</div>
-			<div class="flex grow flex-col gap-10 sm:gap-4 w-full md:max-w-70">
+			<div class="flex w-full grow flex-col gap-10 sm:gap-4 md:max-w-70">
 				{#each images as image, index (image.src)}
 					<button
 						aria-label={`enlarge-img-${image.alt}`}
 						onclick={() => (activeImage = image)}
 						use:registerSolid={{ id: `${title}-img-${index}`, parent }}
-						class="w-full"
+						class="group relative w-full"
 					>
-						<enhanced:img src={image.src} alt={image.alt} />
+						<enhanced:img
+							class="transition-opacity hover:opacity-20"
+							src={image.src}
+							alt={image.alt}
+						/>
+						<span
+							class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 drop-shadow-md transition-opacity group-hover:block"
+							>View</span
+						>
 					</button>
 				{/each}
 			</div>
@@ -147,14 +155,14 @@
 
 {#if activeImage}
 	<dialog
-		class="fixed inset-0 w-full h-full px-4 md:px-8 lg:px-20 flex justify-center items-center backdrop-blur-md bg-transparent z-10"
+		class="fixed inset-0 z-10 flex h-full w-full items-center justify-center bg-transparent px-4 backdrop-blur-md md:px-8 lg:px-20"
 		onclick={() => (activeImage = null)}
 	>
 		<div class="relative flex max-h-full max-w-full rounded-md">
 			<img src={activeImage.src} alt={activeImage.alt} />
 			<button
 				use:autoFocus
-				class="absolute -right-2 -top-2 bg-color-0 h-6 w-6 rounded-full"
+				class="bg-color-0 absolute -top-2 -right-2 h-6 w-6 rounded-full"
 				onclick={() => (activeImage = null)}
 			>
 				<span class="white">X</span>
