@@ -28,24 +28,24 @@
 </svelte:head>
 
 <div
-	class="h-[calc(100%-150px)] md:h-[calc(100%-90px)] lg:h-[calc(100%-130px)] md:flex md:flex-col md:pt-30 px-4 md:px-0 overflow-y-auto
-                    mask-[linear-gradient(to_top,transparent,black_5%,black_90%,transparent)]
-                    [webkit-mask:linear-gradient(to_right,transparent,black_5%,black_90%,transparent)]"
+	class="h-[calc(100%-150px)] overflow-y-auto mask-[linear-gradient(to_top,transparent,black_5%,black_90%,transparent)] px-4 [webkit-mask:linear-gradient(to_right,transparent,black_5%,black_90%,transparent)] md:flex md:h-[calc(100%-90px)] md:flex-col md:px-0
+                    md:pt-30
+                    lg:h-[calc(100%-130px)]"
 	bind:this={parent}
 >
-	<div class="max-w-4xl mx-auto pt-10 sm:p-4">
+	<div class="mx-auto max-w-4xl pt-10 sm:p-4">
 		<div
-			class="flex flex-col p-4 m-1 text-white"
+			class="m-1 flex flex-col p-4 text-white"
 			use:registerSolid={{ id: 'about-header', parent }}
 		>
-			<p class="text-lg relative leading-relaxed">
-				<span class="absolute top-0 right-0 bg-white px-3 rounded-sm text-black">
+			<p class="relative text-lg leading-relaxed">
+				<span class="absolute top-0 right-0 rounded-sm bg-white px-3 text-black">
 					Sacramento, CA
 				</span>
 				<span class="text-4xl">
 					Hi, I'm
 					<span
-						class="block md:inline text-4xl bg-linear-to-r from-blue-500 to-green-500 bg-clip-text text-transparent font-bold -mr-2"
+						class="-mr-2 block bg-linear-to-r from-blue-500 to-green-500 bg-clip-text text-4xl font-bold text-transparent md:inline"
 					>
 						Liam Stelly-Hawkes
 						<br />
@@ -53,13 +53,13 @@
 				</span>
 				I have a
 				<span
-					class="bg-linear-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent font-bold"
+					class="bg-linear-to-r from-pink-500 to-orange-500 bg-clip-text font-bold text-transparent"
 				>
 					Software Engineering Degree
 				</span>
 				and all the tools you need so I can
 				<span
-					class="bg-linear-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent font-bold"
+					class="bg-linear-to-r from-purple-500 to-pink-500 bg-clip-text font-bold text-transparent"
 				>
 					hit the ground running.
 				</span>
@@ -77,8 +77,8 @@
                         {bioOpen ? "Read Less" : "Read More"}
                     </button> -->
 		</div>
-		<div class="flex flex-col-reverse md:flex-row justify-between items-center">
-			<div class="flex flex-wrap gap-x-1 -mx-4 mb-4 sm:mb-0">
+		<div class="flex flex-col-reverse items-center justify-between md:flex-row">
+			<div class="-mx-4 mb-4 flex flex-wrap gap-x-1 sm:mb-0">
 				<TransparentLink href="https://github.com/LiamS-H">Github</TransparentLink>
 				<TransparentLink href="https://www.linkedin.com/in/lstelly-hawkes/"
 					>LinkedIn</TransparentLink
@@ -89,9 +89,9 @@
 		</div>
 	</div>
 	{#if infoOpen}
-		<div class="max-w-4xl lg:w-4xl md:w-3xl mx-auto px-4 md:px-10 flex flex-col text-white gap-4">
+		<div class="mx-auto flex max-w-4xl flex-col gap-4 px-4 text-white md:w-3xl md:px-10 lg:w-4xl">
 			<div
-				class="max-w-xl mr-auto py-3 px-4 text-justify"
+				class="mr-auto max-w-xl px-4 py-3 text-justify"
 				use:registerSolid={{ id: 'about-1', parent, inner: 4, color: 3 }}
 			>
 				I specialize in Typescript, Rust, and Python, but the last 3 years I've also been chasing my
@@ -101,7 +101,7 @@
 			</div>
 
 			<div
-				class="max-w-xl ml-auto py-3 px-4 text-justify"
+				class="ml-auto max-w-xl px-4 py-3 text-justify"
 				use:registerSolid={{ id: 'about-2', parent, inner: 4, color: 3 }}
 			>
 				My personal projects over the last few years have all followed a similar suit, being mostly
@@ -121,9 +121,9 @@
 			</div>
 		</div>
 	{:else}
-		<div class="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 cursor-default">
+		<div class="mx-auto flex max-w-4xl cursor-default flex-col gap-12 md:flex-row">
 			<div class="min-w-56">
-				<h2 class="text-2xl mb-4 text-white font-bold flex items-center">Languages</h2>
+				<h2 class="mb-4 flex items-center text-2xl font-bold text-white">Languages</h2>
 
 				<ul>
 					<!-- eslint-disable-next-line svelte/require-each-key -->
@@ -132,8 +132,8 @@
 					{/each}
 				</ul>
 			</div>
-			<div class="w-full min-h-100">
-				<h2 class="text-2xl mb-4 text-white font-bold flex items-center">Technologies</h2>
+			<div class="min-h-100 w-full">
+				<h2 class="mb-4 flex items-center text-2xl font-bold text-white">Technologies</h2>
 
 				<ul class="mt-5 flex flex-wrap gap-2">
 					<!-- eslint-disable-next-line svelte/require-each-key -->

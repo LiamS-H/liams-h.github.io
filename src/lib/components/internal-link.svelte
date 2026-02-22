@@ -6,7 +6,7 @@
 
 <a
 	{href}
-	class="bg-size-[200%_200%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-pink-500 to-purple-600"
+	class="bg-linear-to-r from-pink-500 to-purple-600 bg-size-[200%_200%] bg-clip-text bg-left text-transparent transition-all duration-300 hover:bg-right"
 >
 	{@render children()}
 </a>

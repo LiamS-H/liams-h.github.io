@@ -96,9 +96,9 @@
 	<title>Projects - LiamS-H</title>
 </svelte:head>
 
-<div class="relative h-full flex flex-col justify-center px-10 md:px-32">
+<div class="relative flex h-full flex-col justify-center px-10 md:px-32">
 	<button
-		class="absolute left-4 top-1/2 lg:top-2/3 lg:-translate-x-14 lg:left-1/2 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white disabled:text-white/10"
+		class="absolute top-1/2 left-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white disabled:text-white/10 lg:top-2/3 lg:left-1/2 lg:-translate-x-14"
 		onclick={() => scroll(-1)}
 		aria-label="Scroll left"
 	>
@@ -113,7 +113,7 @@
 			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
 		</svg>
 	</button>
-	<div class="absolute bottom-2/3 left-1/2 -translate-x-1/2 flex flex-col gap-2">
+	<div class="absolute bottom-2/3 left-1/2 flex -translate-x-1/2 flex-col gap-2">
 		<!-- <ul class="flex flex-wrap justify-center">
 			{#each activeProject.technologies as tech (tech)}
 				<Technology {tech} />
@@ -125,31 +125,31 @@
 			{/each}
 		</ul> -->
 	</div>
-	<div class="absolute flex md:hidden top-2/3 left-1/2 -translate-y-1/2 -translate-x-1/2">
+	<div class="absolute top-2/3 left-1/2 flex -translate-x-1/2 -translate-y-1/2 md:hidden">
 		{#each project_ids as id, i (id)}
 			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
-				<div class={`w-4 h-4 rounded-full ${activeIndex == i ? 'bg-white' : 'bg-white/50'}`}></div>
+				<div class={`h-4 w-4 rounded-full ${activeIndex == i ? 'bg-white' : 'bg-white/50'}`}></div>
 			</button>
 		{/each}
 	</div>
 	<div class="flex flex-col-reverse justify-center">
 		<ul
 			bind:this={carouselEl}
-			class="h-fit gap-8 md:gap-24 flex flex-row items-center overflow-x-auto snap-x snap-mandatory md:snap-normal
-                    mask-[linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]
-                    [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]"
+			class="flex h-fit snap-x snap-mandatory flex-row items-center gap-8 overflow-x-auto mask-[linear-gradient(to_right,transparent,black_20%,black_80%,transparent)] [webkit-mask:linear-gradient(to_right,transparent,black_20%,black_80%,transparent)]
+                    md:snap-normal
+                    md:gap-24"
 			style="scrollbar-width: none;"
 		>
-			<div class="min-w-[40%] h-full"></div>
+			<div class="h-full min-w-[40%]"></div>
 			<!-- eslint-disable-next-line svelte/require-each-key -->
 			{#each project_ids as id, i (id)}
 				<ProjectCard {id} active={activeIndex === i} {behavior} />
 			{/each}
-			<div class="min-w-[40%] h-full"></div>
+			<div class="h-full min-w-[40%]"></div>
 		</ul>
 	</div>
 	<button
-		class="absolute right-4 top-1/2 z-10 lg:top-2/3 lg:left-1/2 -translate-y-1/2 text-white/50 transition-colors hover:text-white"
+		class="absolute top-1/2 right-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white lg:top-2/3 lg:left-1/2"
 		onclick={() => scroll(1)}
 		aria-label="Scroll right"
 	>

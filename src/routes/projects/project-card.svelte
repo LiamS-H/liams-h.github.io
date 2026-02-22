@@ -28,7 +28,7 @@
 
 <li
 	bind:this={bind}
-	class="relative flex h-60 min-h-60 w-60 min-w-60 snap-center flex-col justify-between mx-4 select-none"
+	class="relative mx-4 flex h-60 min-h-60 w-60 min-w-60 snap-center flex-col justify-between select-none"
 	use:registerSolid={{
 		id: `project-card-${id}`,
 		color: project.colorNum,
@@ -46,23 +46,23 @@
 	></button>
 
 	<div
-		class={`pointer-events-none relative z-10 p-4 flex h-full flex-col justify-between animate-gradient-swirl bg-clip-text text-transparent ${gradients[project.colorNum]}`}
+		class={`animate-gradient-swirl pointer-events-none relative z-10 flex h-full flex-col justify-between bg-clip-text p-4 text-transparent ${gradients[project.colorNum]}`}
 	>
-		<h1 class="text-[2.15rem] pt-2 text-4xl">{project.title}</h1>
+		<h1 class="pt-2 text-4xl text-[2.15rem]">{project.title}</h1>
 		<p>{project.intro.summary}</p>
 		<i>{project.intro.hook}</i>
 
 		<div class="pointer-events-auto flex flex-row justify-center space-x-4 align-middle">
 			{#if project.liveLink}
 				<a
-					class="bg-size-[200%_200%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-pink-500 to-purple-600"
+					class="bg-linear-to-r from-pink-500 to-purple-600 bg-size-[200%_200%] bg-clip-text bg-left text-transparent transition-all duration-300 hover:bg-right"
 					href={project.liveLink}
 				>
 					Visit Site
 				</a>
 			{:else if project.githubLink}
 				<a
-					class="bg-size-[200%_200%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-1 to-color-4"
+					class="from-color-1 to-color-4 bg-linear-to-r bg-size-[200%_200%] bg-clip-text bg-left text-transparent transition-all duration-300 hover:bg-right"
 					href={project.githubLink}
 				>
 					Github
@@ -70,7 +70,7 @@
 			{/if}
 			{#if project.paragraphs.length > 0}
 				<a
-					class={`bg-size-[300%_100%] bg-left transition-all duration-300 hover:bg-right bg-clip-text text-transparent bg-linear-to-r from-color-3 to-color-${project.colorNum}`}
+					class={`from-color-3 bg-linear-to-r bg-size-[300%_100%] bg-clip-text bg-left text-transparent transition-all duration-300 hover:bg-right to-color-${project.colorNum}`}
 					href={`/projects/${project.id}`}
 					data-sveltekit-preload-data="hover"
 					onpointerenter={() => (preload = true)}

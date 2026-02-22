@@ -75,14 +75,14 @@
 <svelte:window on:resize={resize} on:mousemove={mouseMove} on:touchmove={touchMove} />
 {#if error}
 	<div
-		class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen bg-gradient-0 animate-gradient-swirl"
+		class="bg-gradient-0 animate-gradient-swirl absolute top-0 left-0 -z-10 h-full w-full max-w-screen overflow-hidden"
 	></div>
-	<a href="/gpu" class="top-4 left-4 absolute z-10 text-blue-500 hover:text-blue-600">
+	<a href="/gpu" class="absolute top-4 left-4 z-10 text-blue-500 hover:text-blue-600">
 		NO-GPU: Rendering Limited - Learn More
 	</a>
 {:else}
-	<div class="w-full h-full absolute top-0 left-0 -z-10 overflow-hidden max-w-screen">
-		<canvas bind:this={canvas} class="w-full h-full"></canvas>
+	<div class="absolute top-0 left-0 -z-10 h-full w-full max-w-screen overflow-hidden">
+		<canvas bind:this={canvas} class="h-full w-full"></canvas>
 	</div>
 {/if}
 {@render children()}
