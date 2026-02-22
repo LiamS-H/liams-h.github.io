@@ -64,22 +64,19 @@
 
 <div
 	bind:this={parent}
-	class="h-[calc(100%-150px)] overflow-y-auto mask-[linear-gradient(to_top,transparent,black_10%,black_90%,transparent)] px-4 pt-14 text-white [webkit-mask:linear-gradient(to_top,transparent,black_10%,black_90%,transparent)] md:h-[calc(100%-90px)]
-                    md:px-14
-                    lg:h-[calc(100%-130px)]
-            "
+	class="h-[calc(100%-150px)] overflow-y-auto mask-[linear-gradient(to_top,transparent,black_10%,black_90%,transparent)] px-4 pt-14 text-white [webkit-mask:linear-gradient(to_top,transparent,black_10%,black_90%,transparent)] md:h-[calc(100%-90px)] md:px-14 lg:h-[calc(100%-130px)]"
 	style={activeImage ? 'overflow:hidden; scrollbar-gutter:stable;' : undefined}
 >
 	<div class="mx-auto max-w-4xl">
 		<div class="flex w-full flex-wrap items-center">
-			<div use:registerSolid={{ id: `${title}-title` }} class="w-fit p-4">
+			<div use:registerSolid={{ id: `${title}-title`, parent }} class="w-fit p-4">
 				<h1
 					class={`bg-clip-text font-bold text-transparent ${gradients[colorNum]} animate-gradient-swirl text-4xl`}
 				>
 					{title}
 				</h1>
 			</div>
-			<div class="flex grow flex-wrap justify-between">
+			<div class="mt-2 flex grow flex-wrap justify-between md:mt-0 md:ml-2">
 				<div class="felx-wrap flex gap-4">
 					{#if githubLink}
 						<TransparentLink href={githubLink}>Github</TransparentLink>

@@ -78,7 +78,7 @@
                     </button> -->
 		</div>
 		<div class="flex flex-col-reverse items-center justify-between md:flex-row">
-			<div class="-mx-4 mb-4 flex flex-wrap gap-x-1 sm:mb-0">
+			<div class="-mx-4 mt-2 mb-4 flex flex-wrap gap-x-1 sm:mb-0">
 				<TransparentLink href="https://github.com/LiamS-H">Github</TransparentLink>
 				<TransparentLink href="https://www.linkedin.com/in/lstelly-hawkes/"
 					>LinkedIn</TransparentLink
