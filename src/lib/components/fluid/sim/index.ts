@@ -873,8 +873,7 @@ export class Simulator {
 		const now = Date.now();
 		const elapsed = now - this.time;
 
-		if (this.buffered_frames > 1) {
-			console.log('Skipped rendering another buffered frame');
+		if (this.buffered_frames > 0) {
 			return; // fps cap
 		}
 		this.buffered_frames += 1;
