@@ -35,6 +35,7 @@ const ignore_alias: string[] = ['h', 'i', 'l', 't'] as const;
 export class Simulator {
 	private time: number = 0;
 	private initialized: boolean = false;
+	private buffered_frames: number = 0;
 	private broken: boolean = false;
 	// Initial values & constants
 
@@ -124,7 +125,6 @@ export class Simulator {
 	private calcVorticity!: ComputeProgram;
 	private vorticityConfinement!: ComputeProgram;
 	private advectSmoke!: ComputeProgram;
-	private isRendering: boolean = false;
 
 	public constructor() {}
 	public static async create(canvas: HTMLCanvasElement): Promise<Simulator | null> {
@@ -873,11 +873,11 @@ export class Simulator {
 		const now = Date.now();
 		const elapsed = now - this.time;
 
-		// if (elapsed < 16) return; // fps cap
-		if (this.isRendering) {
-			return;
+		if (this.buffered_frames > 1) {
+			console.log('Skipped rendering another buffered frame');
+			return; // fps cap
 		}
-		this.isRendering = true;
+		this.buffered_frames += 1;
 		// this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
 		const dt = (elapsed * this.dt_mult) / 1000;
@@ -908,7 +908,6 @@ export class Simulator {
 		this.updateUniforms();
 		await this.simulate();
 		this.render();
-
-		this.isRendering = false;
+		this.buffered_frames -= 1;
 	}
 }
