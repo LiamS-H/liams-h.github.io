@@ -98,7 +98,7 @@
 
 <div class="relative flex h-full flex-col justify-center px-10 md:px-32">
 	<button
-		class="absolute top-1/2 left-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white disabled:text-white/10 lg:top-2/3 lg:left-1/2 lg:-translate-x-14"
+		class="absolute top-[calc(50%+140px)] left-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white disabled:text-white/10 lg:left-1/2 lg:-translate-x-14"
 		onclick={() => scroll(-1)}
 		aria-label="Scroll left"
 	>
@@ -149,7 +149,7 @@
 		</ul>
 	</div>
 	<button
-		class="absolute top-1/2 right-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white lg:top-2/3 lg:left-1/2"
+		class="absolute top-[calc(50%+140px)] right-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white lg:left-1/2"
 		onclick={() => scroll(1)}
 		aria-label="Scroll right"
 	>
