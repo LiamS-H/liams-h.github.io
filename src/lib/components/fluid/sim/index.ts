@@ -178,6 +178,8 @@ export class Simulator {
 			maxComputeWorkgroupStorageSize: 8_000 // 8 KB
 		};
 
+		let min_pressure_iterations = 3;
+
 		if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				TOP_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
@@ -186,6 +188,7 @@ export class Simulator {
 			Math.max(vw, vh) > 1900
 		) {
 			this.grid_size = 1024; // Top-end
+			let min_pressure_iterations = 10;
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				HIGH_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
@@ -194,6 +197,7 @@ export class Simulator {
 			Math.max(vw, vh) > 1900
 		) {
 			this.grid_size = 768; // High-end
+			let min_pressure_iterations = 10;
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				MID_RANGE_LIMITS.maxComputeInvocationsPerWorkgroup &&
@@ -202,6 +206,7 @@ export class Simulator {
 			Math.max(vw, vh) > 1200
 		) {
 			this.grid_size = 512; // Mid-range
+			let min_pressure_iterations = 5;
 		} else {
 			this.grid_size = 384; // Low-end - smallest size that still looks good
 		}
@@ -257,7 +262,7 @@ export class Simulator {
 		this.viewWidth = this.width - 2 * this.horizontal_view_buffer;
 		this.viewHeight = this.height - 2 * this.vertical_view_buffer;
 
-		this.pressureIterations = Math.floor(this.width / 300);
+		this.pressureIterations = Math.max(Math.floor(this.width / 300), min_pressure_iterations);
 
 		this.rdx = this.grid_size * 4;
 		this.dx = 1 / this.rdx;
