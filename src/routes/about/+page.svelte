@@ -29,7 +29,7 @@
 
 <div
 	class="h-[calc(100%-150px)] overflow-y-auto mask-[linear-gradient(to_top,transparent,black_5%,black_90%,transparent)] px-4 [webkit-mask:linear-gradient(to_right,transparent,black_5%,black_90%,transparent)] md:flex md:h-[calc(100%-90px)] md:flex-col md:px-0
-                    md:pt-30
+                    md:pt-14
                     lg:h-[calc(100%-130px)]"
 	bind:this={parent}
 >
@@ -132,7 +132,7 @@
 					{/each}
 				</ul>
 			</div>
-			<div class="min-h-100 w-full">
+			<div class="w-full">
 				<h2 class="mb-4 flex items-center text-2xl font-bold text-white">Technologies</h2>
 
 				<ul class="mt-5 flex flex-wrap gap-2">
