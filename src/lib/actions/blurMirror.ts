@@ -10,7 +10,7 @@ export function blurMirror(node: HTMLElement) {
 
 	const glass = document.createElement('div');
 	glass.className =
-		'absolute -inset-4 backdrop-blur-xl [mask-image:radial-gradient(closest-side,transparent_0%,black_80%,black_100%)]';
+		'absolute -inset-4 backdrop-blur-3xl [mask-image:radial-gradient(closest-side,transparent_40%,black_75%)]';
 	// 'absolute -inset-4 mask-image:radial-gradient(closest-side,transparent_40%,black_100%)';
 
 	mirror.appendChild(glass);

@@ -5,6 +5,7 @@
 	import { project_ids } from '$lib/data/projects';
 	import ProjectCard from './project-card.svelte';
 	import { afterNavigate } from '$app/navigation';
+	import { blurMirror } from '$lib/actions/blurMirror';
 
 	const fluid = useFluidContext();
 
@@ -97,22 +98,6 @@
 </svelte:head>
 
 <div class="relative flex h-full flex-col justify-center px-10 md:px-32">
-	<button
-		class="absolute top-[calc(50%+140px)] left-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white disabled:text-white/10 lg:left-1/2 lg:-translate-x-14"
-		onclick={() => scroll(-1)}
-		aria-label="Scroll left"
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			class="h-12 w-12"
-			fill="none"
-			viewBox="0 0 24 24"
-			stroke="currentColor"
-			stroke-width="1.5"
-		>
-			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-		</svg>
-	</button>
 	<div class="absolute bottom-2/3 left-1/2 flex -translate-x-1/2 flex-col gap-2">
 		<!-- <ul class="flex flex-wrap justify-center">
 			{#each activeProject.technologies as tech (tech)}
@@ -125,13 +110,7 @@
 			{/each}
 		</ul> -->
 	</div>
-	<div class="absolute top-2/3 left-1/2 flex -translate-x-1/2 -translate-y-1/2 md:hidden">
-		{#each project_ids as id, i (id)}
-			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
-				<div class={`h-4 w-4 rounded-full ${activeIndex == i ? 'bg-white' : 'bg-white/50'}`}></div>
-			</button>
-		{/each}
-	</div>
+
 	<div class="flex flex-col-reverse justify-center">
 		<ul
 			bind:this={carouselEl}
@@ -148,10 +127,41 @@
 			<div class="h-full min-w-[40%]"></div>
 		</ul>
 	</div>
+</div>
+<div
+	class="absolute top-[calc(50%+154px)] z-10 flex w-full justify-around md:justify-center md:gap-20"
+>
 	<button
-		class="absolute top-[calc(50%+140px)] right-4 z-10 -translate-y-1/2 text-white/50 transition-colors hover:text-white lg:left-1/2"
+		class="rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
+		onclick={() => scroll(-1)}
+		aria-label="Scroll left"
+		use:blurMirror
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="h-12 w-12"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			stroke-width="1.5"
+		>
+			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+		</svg>
+	</button>
+	<div class="flex md:hidden">
+		{#each project_ids as id, i (id)}
+			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
+				<div
+					class={`h-4 w-4 rounded-full ${activeIndex == i ? 'bg-white/80' : 'bg-white/30'}`}
+				></div>
+			</button>
+		{/each}
+	</div>
+	<button
+		class="rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
 		onclick={() => scroll(1)}
 		aria-label="Scroll right"
+		use:blurMirror
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
