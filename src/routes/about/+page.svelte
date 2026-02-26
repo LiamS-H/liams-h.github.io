@@ -121,7 +121,7 @@
 			</div>
 		</div>
 	{:else}
-		<div class="mx-auto flex max-w-4xl cursor-default flex-col gap-12 md:flex-row">
+		<div class="mx-auto flex max-w-4xl cursor-default flex-col gap-12 sm:flex-row">
 			<div class="min-w-56">
 				<h2 class="mb-4 flex items-center text-2xl font-bold text-white">Languages</h2>
 
