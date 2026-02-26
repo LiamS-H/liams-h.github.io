@@ -5,7 +5,7 @@
 	import { project_ids } from '$lib/data/projects';
 	import ProjectCard from './project-card.svelte';
 	import { afterNavigate } from '$app/navigation';
-	import { blurMirror } from '$lib/actions/blurMirror';
+	import { blurMirrorStatic } from '$lib/actions/blurMirror';
 
 	const fluid = useFluidContext();
 
@@ -132,16 +132,15 @@
 	class="absolute top-[calc(50%+154px)] z-10 flex w-full justify-around md:justify-center md:gap-20"
 >
 	<button
-		class="rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
+		class="flex h-16 w-16 justify-center rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
 		onclick={() => scroll(-1)}
 		aria-label="Scroll left"
-		use:blurMirror
+		use:blurMirrorStatic
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			class="h-12 w-12"
 			fill="none"
-			viewBox="0 0 24 24"
+			viewBox="6 0 16 24"
 			stroke="currentColor"
 			stroke-width="1.5"
 		>
@@ -158,16 +157,15 @@
 		{/each}
 	</div>
 	<button
-		class="rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
+		class="flex h-16 w-16 justify-center rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
 		onclick={() => scroll(1)}
 		aria-label="Scroll right"
-		use:blurMirror
+		use:blurMirrorStatic
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			class="h-12 w-12"
 			fill="none"
-			viewBox="0 0 24 24"
+			viewBox="2 0 16 24"
 			stroke="currentColor"
 			stroke-width="1.5"
 		>
