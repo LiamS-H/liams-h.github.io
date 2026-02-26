@@ -5,7 +5,7 @@ import type { Action } from 'svelte/action';
 
 export const registerSolid: Action<
 	HTMLElement,
-	{ id: string; color?: number; inner?: number; parent?: HTMLElement }
+	{ id: string; color?: number; inner?: number; parent?: HTMLElement; radius?: number }
 > = (node, params) => {
 	let current_params = params;
 	const fluid = useFluidContext();
@@ -13,6 +13,9 @@ export const registerSolid: Action<
 	NoGpuStore.subscribe((noGpu) => {
 		if (!noGpu) return;
 		node.style.backgroundColor = 'black';
+		if (params.radius) {
+			node.style.borderRadius = `${params.radius}px`;
+		}
 		if (params.color) {
 			node.style.outline = `${params.inner}px solid var(--color-color-${params.color})`;
 			node.style.outlineOffset = `-${params.inner}px`;
@@ -22,7 +25,7 @@ export const registerSolid: Action<
 	});
 
 	const update = (new_params: typeof params) => {
-		const { id, color, inner, parent } = new_params;
+		const { id, color, inner, parent, radius = 8 } = new_params;
 
 		if (current_params.id !== id) {
 			fluid.registerBound(null, current_params.id);
@@ -33,7 +36,7 @@ export const registerSolid: Action<
 		const rect = node.getBoundingClientRect();
 		const pRect = (parent || node.parentElement)?.getBoundingClientRect();
 		if (pRect) constrainRect(rect, pRect);
-		fluid.registerBound(rect, id, color);
+		fluid.registerBound(rect, id, color, radius);
 		if (!inner) return;
 		const iRect = {
 			x: rect.x + inner,
@@ -42,7 +45,7 @@ export const registerSolid: Action<
 			width: rect.width - 2 * inner
 		};
 		if (pRect) constrainRect(iRect, pRect);
-		fluid.registerBound(iRect, id + '-inner');
+		fluid.registerBound(iRect, id + '-inner', undefined, Math.max(0, radius - inner));
 	};
 
 	const observer = new ResizeObserver(() => update(current_params));

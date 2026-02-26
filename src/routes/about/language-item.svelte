@@ -17,7 +17,7 @@
 >
 	<div
 		class="mt-1 mr-2 h-4 w-4"
-		use:registerSolid={{ id: name, color: lang.colorNum, inner: 2, parent }}
+		use:registerSolid={{ id: name, color: lang.colorNum, inner: 2, parent, radius: 6 }}
 	></div>
 	<span class="font-medium">{name}</span>
 	<span class="ml-auto text-sm text-gray-300">{lang.years} years</span>

@@ -21,10 +21,11 @@ export interface FluidRectObj {
 	y: number;
 	w: number;
 	h: number;
+	radius?: number;
 	color?: number;
 }
 
-export type FluidRect = [number, number, number, number, number];
+export type FluidRect = [number, number, number, number, number, number];
 
 export type FluidRectList = FluidRect[];
 
@@ -188,7 +189,7 @@ export class Simulator {
 			Math.max(vw, vh) > 1900
 		) {
 			this.grid_size = 1024; // Top-end
-			let min_pressure_iterations = 10;
+			min_pressure_iterations = 10;
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				HIGH_END_LIMITS.maxComputeInvocationsPerWorkgroup &&
@@ -197,7 +198,7 @@ export class Simulator {
 			Math.max(vw, vh) > 1900
 		) {
 			this.grid_size = 768; // High-end
-			let min_pressure_iterations = 10;
+			min_pressure_iterations = 10;
 		} else if (
 			limits.maxComputeInvocationsPerWorkgroup >=
 				MID_RANGE_LIMITS.maxComputeInvocationsPerWorkgroup &&
@@ -206,7 +207,7 @@ export class Simulator {
 			Math.max(vw, vh) > 1200
 		) {
 			this.grid_size = 512; // Mid-range
-			let min_pressure_iterations = 5;
+			min_pressure_iterations = 5;
 		} else {
 			this.grid_size = 384; // Low-end - smallest size that still looks good
 		}
@@ -759,10 +760,11 @@ export class Simulator {
 
 		for (const [, rect] of this.rectMap) {
 			if (!rect) continue;
+			const radius = rect.radius ?? 0;
 			if (rect.color === undefined || rect.color < 0) {
-				new_solids.push([rect.x, rect.y, rect.w, rect.h, -1]);
+				new_solids.push([rect.x, rect.y, rect.w, rect.h, -1, radius]);
 			} else {
-				new_colors.push([rect.x, rect.y, rect.w, rect.h, rect.color]);
+				new_colors.push([rect.x, rect.y, rect.w, rect.h, rect.color, radius]);
 			}
 		}
 
@@ -786,24 +788,26 @@ export class Simulator {
 		]);
 
 		const solidData = new Float32Array(this.maxRects * 8);
-		this.solidBoxes.forEach(([x, y, w, h, c], i) => {
+		this.solidBoxes.forEach(([x, y, w, h, c, r], i) => {
 			const x_sim = (this.horizontal_view_buffer + (x / vw) * this.viewWidth) / this.width;
 			const y_sim =
 				(this.vertical_view_buffer + ((vh - h - y) / vh) * this.viewHeight) / this.height;
 			const w_sim = ((w / vw) * this.viewWidth) / this.width;
 			const h_sim = ((h / vh) * this.viewHeight) / this.height;
-			solidData.set([x_sim, y_sim, w_sim, h_sim, c, 0, 0, 0], i * 8);
+			const r_sim = ((r / vw) * this.viewWidth) / this.width;
+			solidData.set([x_sim, y_sim, w_sim, h_sim, c, r_sim, 0, 0], i * 8);
 		});
 		this.solidRects.write(solidData);
 
 		const colorData = new Float32Array(this.maxRects * 8);
-		this.colorBoxes.forEach(([x, y, w, h, c], i) => {
+		this.colorBoxes.forEach(([x, y, w, h, c, r], i) => {
 			const x_sim = (this.horizontal_view_buffer + (x / vw) * this.viewWidth) / this.width;
 			const y_sim =
 				(this.vertical_view_buffer + ((vh - h - y) / vh) * this.viewHeight) / this.height;
 			const w_sim = ((w / vw) * this.viewWidth) / this.width;
 			const h_sim = ((h / vh) * this.viewHeight) / this.height;
-			colorData.set([x_sim, y_sim, w_sim, h_sim, c, 0, 0, 0], i * 8);
+			const r_sim = ((r / vw) * this.viewWidth) / this.width;
+			colorData.set([x_sim, y_sim, w_sim, h_sim, c, r_sim, 0, 0], i * 8);
 		});
 		this.colorRects.write(colorData);
 

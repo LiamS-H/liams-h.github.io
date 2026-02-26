@@ -36,7 +36,7 @@
 	<div class="mx-auto max-w-4xl pt-10 sm:p-4">
 		<div
 			class="m-1 flex flex-col p-4 text-white"
-			use:registerSolid={{ id: 'about-header', parent }}
+			use:registerSolid={{ id: 'about-header', parent, radius: 20 }}
 		>
 			<p class="relative text-lg leading-relaxed">
 				<span class="absolute top-0 right-0 rounded-sm bg-white px-3 text-black">
@@ -92,7 +92,7 @@
 		<div class="mx-auto flex max-w-4xl flex-col gap-4 px-4 text-white md:w-3xl md:px-10 lg:w-4xl">
 			<div
 				class="mr-auto max-w-xl px-4 py-3 text-justify"
-				use:registerSolid={{ id: 'about-1', parent, inner: 4, color: 3 }}
+				use:registerSolid={{ id: 'about-1', parent, inner: 4, color: 3, radius: 12 }}
 			>
 				I specialize in Typescript, Rust, and Python, but the last 3 years I've also been chasing my
 				other passion working as a whitewater rafting and outdoor guide. A river is a special place
@@ -102,7 +102,7 @@
 
 			<div
 				class="ml-auto max-w-xl px-4 py-3 text-justify"
-				use:registerSolid={{ id: 'about-2', parent, inner: 4, color: 3 }}
+				use:registerSolid={{ id: 'about-2', parent, inner: 4, color: 3, radius: 12 }}
 			>
 				My personal projects over the last few years have all followed a similar suit, being mostly
 				practical and related to things Im interested in at the time. My recent fixation has been a
@@ -113,7 +113,7 @@
 
 			<div
 				class="max-w-fit p-4 px-4"
-				use:registerSolid={{ id: 'about-3', parent, inner: 4, color: 3 }}
+				use:registerSolid={{ id: 'about-3', parent, inner: 4, color: 3, radius: 12 }}
 			>
 				While I currently live near Sacramento, CA, I'm happy to relocate. <strong
 					>Looking at SF</strong

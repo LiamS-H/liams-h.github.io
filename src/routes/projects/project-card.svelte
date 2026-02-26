@@ -32,7 +32,8 @@
 	use:registerSolid={{
 		id: `project-card-${id}`,
 		color: project.colorNum,
-		inner: 4
+		inner: 4,
+		radius: 20
 	}}
 	{id}
 >

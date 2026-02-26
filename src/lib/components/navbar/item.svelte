@@ -23,7 +23,8 @@
 		use:registerSolid={{
 			id: `nav-${path}`,
 			color: isHovered ? color : undefined,
-			inner: isHovered ? 4 : undefined
+			inner: isHovered ? 4 : undefined,
+			radius: 12
 		}}
 	>
 		<span>

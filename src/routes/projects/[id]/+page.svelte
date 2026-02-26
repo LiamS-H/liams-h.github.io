@@ -69,7 +69,7 @@
 >
 	<div class="mx-auto max-w-4xl">
 		<div class="flex w-full flex-wrap items-center">
-			<div use:registerSolid={{ id: `${title}-title`, parent }} class="w-fit p-4">
+			<div use:registerSolid={{ id: `${title}-title`, parent, radius: 20 }} class="w-fit p-4">
 				<h1
 					class={`bg-clip-text font-bold text-transparent ${gradients[colorNum]} animate-gradient-swirl text-4xl`}
 				>
@@ -109,7 +109,7 @@
 
 		{#each intro.description as line, index (`${id}-${index}`)}
 			<div
-				use:registerSolid={{ id: `${title}-description-${index}`, parent }}
+				use:registerSolid={{ id: `${title}-description-${index}`, parent, radius: 8 }}
 				class="w-fit p-4"
 				id={`${title}-intro`}
 			>
@@ -120,7 +120,10 @@
 		<div class="mt-10 flex flex-col gap-10 sm:mt-4 sm:gap-4 md:flex-row">
 			<div class="flex flex-col gap-10 sm:gap-4">
 				{#each paragraphs as paragraph, index (`${id}-${index}`)}
-					<div use:registerSolid={{ id: `${title}-paragraph-${index}`, parent }} class="w-fit p-4">
+					<div
+						use:registerSolid={{ id: `${title}-paragraph-${index}`, parent, radius: 8 }}
+						class="w-fit p-4"
+					>
 						{paragraph}
 					</div>
 				{/each}
@@ -130,11 +133,11 @@
 					<button
 						aria-label={`enlarge-img-${image.alt}`}
 						onclick={() => (activeImage = image)}
-						use:registerSolid={{ id: `${title}-img-${index}`, parent }}
+						use:registerSolid={{ id: `${title}-img-${index}`, parent, radius: 8 }}
 						class="group relative w-full"
 					>
 						<enhanced:img
-							class="transition-opacity hover:opacity-20"
+							class="rounded-xl transition-opacity hover:opacity-20"
 							src={image.src}
 							alt={image.alt}
 						/>

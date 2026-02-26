@@ -15,7 +15,8 @@ class FluidState {
 	registerBound<T extends { x: number; y: number; width: number; height: number }>(
 		bounds: T | null,
 		id: string,
-		color?: number
+		color?: number,
+		borderRadius?: number
 	) {
 		const rect = bounds
 			? {
@@ -23,7 +24,8 @@ class FluidState {
 					y: bounds.y,
 					w: bounds.width,
 					h: bounds.height,
-					color
+					color,
+					radius: borderRadius
 				}
 			: null;
 		this.sim().registerRectangle(rect, id);

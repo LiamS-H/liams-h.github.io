@@ -23,7 +23,8 @@ struct Uniforms {
 
 struct SmokeBound {
     color: i32,
-    y_ratio: f32
+    y_ratio: f32,
+    coverage: f32
 }
 
 fn checkSmokeBounds(pos: vec2<f32>) -> SmokeBound {
@@ -31,14 +32,15 @@ fn checkSmokeBounds(pos: vec2<f32>) -> SmokeBound {
     for (var i = 0u; i < numRects; i = i + 1u) {
         let r = rectangles[i];
         if (r.w == 0) {break;}
-        if (checkBoundsRect(pos, r)) {
+        let coverage = checkBoundsRect(pos, r);
+        if (coverage > 0.0) {
             if (r.h > 0.2) {
-                return SmokeBound(i32(r.color),(pos.y-(r.y * U.res.y))/(r.h * U.res.y));
+                return SmokeBound(i32(r.color), (pos.y-(r.y * U.res.y))/(r.h * U.res.y), coverage);
             }
-            return SmokeBound(i32(r.color),0.0);
+            return SmokeBound(i32(r.color), 0.0, coverage);
         }
     }
-    return SmokeBound(-1,0.0);
+    return SmokeBound(-1, 0.0, 0.0);
 }
 
 @compute @workgroup_size(8, 8)
@@ -57,10 +59,10 @@ fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
 
     let smoke = checkSmokeBounds(pos);
     if (smoke.color >= 0) {
-        let smoke = smokeColor(smoke.color, smoke.y_ratio);
-        smoke_write_r[index] = smoke.x;
-        smoke_write_g[index] = smoke.y;
-        smoke_write_b[index] = smoke.z;
+        let sc = smokeColor(smoke.color, smoke.y_ratio);
+        smoke_write_r[index] = mix(smoke_read_r[index], sc.x, smoke.coverage);
+        smoke_write_g[index] = mix(smoke_read_g[index], sc.y, smoke.coverage);
+        smoke_write_b[index] = mix(smoke_read_b[index], sc.z, smoke.coverage);
         return;
     }
 
