@@ -27,7 +27,7 @@
 
 	const index = $derived(project_ids.indexOf(id));
 	const next = $derived.by(() => {
-		let next_index = index + 1;
+		let next_index = (index + 1) % project_ids.length;
 		while (projects[project_ids[next_index]].paragraphs.length === 0) {
 			next_index = (next_index + 1) % project_ids.length;
 		}

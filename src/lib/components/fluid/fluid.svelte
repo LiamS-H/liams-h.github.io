@@ -87,6 +87,9 @@
 {:else}
 	<div class="absolute top-0 left-0 -z-10 h-full w-full max-w-screen overflow-hidden">
 		<canvas bind:this={canvas} class="h-full w-full"></canvas>
-	</div>
-{/if}
+		<!-- Force font activation -->
+		<span style="font-family: 'Megrim'; opacity: 0; position: absolute; pointer-events: none;">
+			loading font
+		</span>
+	</div>{/if}
 {@render children()}

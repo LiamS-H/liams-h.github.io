@@ -30,7 +30,6 @@ export class Simulator {
 	private broken: boolean = false;
 	// Initial values & constants
 
-	private megrimLoading: boolean = false;
 	private prevText?: string;
 	private solidBoxes: FluidRectList = [];
 	private colorBoxes: FluidRectList = [];
@@ -627,25 +626,20 @@ export class Simulator {
 		return solidSame && colorSame;
 	}
 
+	private megrimLoading = false;
 	public async updateTextMatte() {
 		if (!this.initialized) return;
 		if (this.prevText == this.fluidState.text) return;
 
 		const fontSize = Math.floor(Math.floor(this.viewWidth / 4) / 2) * 2;
 
-		if (!document.fonts.check(`bold ${fontSize}px Megrim`)) {
-			if (this.megrimLoading) return;
-			this.megrimLoading = true;
-			if (!document.getElementById('google-fonts-megrim')) {
-				const link = document.createElement('link');
-				link.id = 'google-fonts-megrim';
-				link.rel = 'stylesheet';
-				link.href = 'https://fonts.googleapis.com/css2?family=Megrim&display=swap';
-				document.head.appendChild(link);
+		if (!document.fonts.check(`${fontSize}px Megrim`)) {
+			if (!this.megrimLoading) {
+				this.megrimLoading = true;
+				document.fonts.load(`${fontSize}px Megrim`).finally(() => {
+					this.megrimLoading = false;
+				});
 			}
-			document.fonts.load(`bold ${fontSize}px Megrim`).finally(() => {
-				this.megrimLoading = false;
-			});
 			return;
 		}
 
@@ -869,7 +863,9 @@ export class Simulator {
 	}
 
 	public async step() {
+		// console.log('stepping');
 		if (this.initialized == false) return;
+		// console.log('actually stepping');
 		const now = Date.now();
 		const elapsed = now - this.time;
 
