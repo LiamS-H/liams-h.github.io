@@ -5,7 +5,7 @@
 	import { project_ids } from '$lib/data/projects';
 	import ProjectCard from './project-card.svelte';
 	import { afterNavigate } from '$app/navigation';
-	import { blurMirrorStatic } from '$lib/actions/blurMirror';
+	import GlassBlur from '$lib/components/glass-blur.svelte';
 
 	const fluid = useFluidContext();
 
@@ -131,22 +131,23 @@
 <div
 	class="absolute top-[calc(50%+154px)] z-10 flex w-full justify-around md:justify-center md:gap-20"
 >
-	<button
-		class="flex h-16 w-16 justify-center rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
-		onclick={() => scroll(-1)}
-		aria-label="Scroll left"
-		use:blurMirrorStatic
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="6 0 16 24"
-			stroke="currentColor"
-			stroke-width="1.5"
+	<GlassBlur>
+		<button
+			class="flex h-16 w-16 justify-center rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
+			onclick={() => scroll(-1)}
+			aria-label="Scroll left"
 		>
-			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-		</svg>
-	</button>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="6 0 16 24"
+				stroke="currentColor"
+				stroke-width="1.5"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+			</svg>
+		</button>
+	</GlassBlur>
 	<div class="flex md:hidden">
 		{#each project_ids as id, i (id)}
 			<button class="p-3" aria-label={`Scroll to project ${id}`} onclick={() => scrollTo(i)}>
@@ -156,20 +157,21 @@
 			</button>
 		{/each}
 	</div>
-	<button
-		class="flex h-16 w-16 justify-center rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
-		onclick={() => scroll(1)}
-		aria-label="Scroll right"
-		use:blurMirrorStatic
-	>
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="2 0 16 24"
-			stroke="currentColor"
-			stroke-width="1.5"
+	<GlassBlur>
+		<button
+			class="flex h-16 w-16 justify-center rounded-full p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white active:bg-purple-700/20"
+			onclick={() => scroll(1)}
+			aria-label="Scroll right"
 		>
-			<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-		</svg>
-	</button>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="2 0 16 24"
+				stroke="currentColor"
+				stroke-width="1.5"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+			</svg>
+		</button>
+	</GlassBlur>
 </div>
