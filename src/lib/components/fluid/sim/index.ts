@@ -1,7 +1,7 @@
 /// <reference types="@webgpu/types" />
 
 import { Uniform, ComputeProgram, Buffer } from './primitives';
-import type { FluidRectObj, FluidRects, FluidState } from '$lib/context/fluid.svelte';
+import type { FluidState } from '$lib/context/fluid.svelte';
 import updateSolids from './shaders/wgsl/updateSolids.wgsl';
 import updateSmoke from './shaders/wgsl/updateSmoke.wgsl';
 import updateVelocity from './shaders/wgsl/updateVelocity.wgsl';

@@ -14,11 +14,11 @@ export const handle: Handle = async ({ event, resolve }) => {
     font-display: swap;
 }`;
 			const styleTag = `<style>${css}\n${fontFace}</style>`;
-			
+
 			// Inject at the very beginning of %sveltekit.head% (effectively)
 			// Svelte 5 is very picky about head hydration.
 			const inlined = html.replace('<head>', `<head>${styleTag}`);
-			
+
 			// Try a more surgical removal that might be safer for Svelte
 			return inlined.replace(/<link [^>]*rel=["']stylesheet["'][^>]*>/g, '');
 		}
