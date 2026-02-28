@@ -863,16 +863,13 @@ export class Simulator {
 	}
 
 	public async step() {
-		// console.log('stepping');
 		if (this.initialized == false) return;
-		// console.log('actually stepping');
 		const now = Date.now();
 		const elapsed = now - this.time;
 
 		if (this.buffered_frames > 0) {
 			return; // fps cap
 		}
-		this.buffered_frames += 1;
 		// this.dt_mult = 2.0 + Math.sin((Date.now() / 1000) % 180) * 0.5;
 
 		const dt = (elapsed * this.dt_mult) / 1000;
@@ -900,6 +897,7 @@ export class Simulator {
 		this.updateTextMatte();
 		this.updateColor();
 
+		this.buffered_frames += 1;
 		this.updateUniforms();
 		await this.simulate();
 		this.render();
