@@ -1,6 +1,7 @@
 /// <reference types="@webgpu/types" />
 
 import { Uniform, ComputeProgram, Buffer } from './primitives';
+import type { FluidRectObj, FluidRects, FluidState } from '$lib/context/fluid.svelte';
 import updateSolids from './shaders/wgsl/updateSolids.wgsl';
 import updateSmoke from './shaders/wgsl/updateSmoke.wgsl';
 import updateVelocity from './shaders/wgsl/updateVelocity.wgsl';
@@ -16,20 +17,9 @@ import vorticityConfinement from './shaders/wgsl/vorticityConfinement.wgsl';
 import advectSmoke from './shaders/wgsl/advectSmoke.wgsl';
 import render_shader from './shaders/wgsl/render.wgsl';
 
-export interface FluidRectObj {
-	x: number;
-	y: number;
-	w: number;
-	h: number;
-	radius?: number;
-	color?: number;
-}
-
 export type FluidRect = [number, number, number, number, number, number];
 
 export type FluidRectList = FluidRect[];
-
-export type FluidRects = Map<string, FluidRectObj | null>;
 
 const ignore_alias: string[] = ['h', 'i', 'l', 't'] as const;
 
@@ -40,15 +30,13 @@ export class Simulator {
 	private broken: boolean = false;
 	// Initial values & constants
 
-	private text?: string;
+	private megrimLoading: boolean = false;
 	private prevText?: string;
-	private rectMap: FluidRects = new Map();
 	private solidBoxes: FluidRectList = [];
 	private colorBoxes: FluidRectList = [];
 	//              x,      y,      w,      h,      c,      p,      p,      p
 
 	private maxRects: number = 1000;
-	private smoke_color: number = 0;
 	private prev_smoke_color?: number;
 
 	private horizontal_view_buffer: number = 10;
@@ -127,9 +115,12 @@ export class Simulator {
 	private vorticityConfinement!: ComputeProgram;
 	private advectSmoke!: ComputeProgram;
 
-	public constructor() {}
-	public static async create(canvas: HTMLCanvasElement): Promise<Simulator | null> {
-		const instance = new Simulator();
+	public constructor(private fluidState: FluidState) {}
+	public static async create(
+		canvas: HTMLCanvasElement,
+		fluidState: FluidState
+	): Promise<Simulator | null> {
+		const instance = new Simulator(fluidState);
 		// if (isOutdated()) return null;
 		await instance.init(canvas);
 		return instance;
@@ -324,7 +315,7 @@ export class Simulator {
 			this.width,
 			this.height,
 			this.diffusion,
-			this.smoke_color,
+			this.fluidState.smokeColor,
 			this.colorBoxes.length,
 			0
 		]);
@@ -390,7 +381,7 @@ export class Simulator {
 			this.width,
 			this.height,
 			this.diffusion,
-			this.smoke_color,
+			this.fluidState.smokeColor,
 			this.colorBoxes.length,
 			0
 		]);
@@ -636,19 +627,31 @@ export class Simulator {
 		return solidSame && colorSame;
 	}
 
-	public async updateText(text: string) {
-		this.text = text;
-	}
-
-	private async updateTextMatte() {
+	public async updateTextMatte() {
 		if (!this.initialized) return;
-		if (this.prevText == this.text) return;
-		this.prevText = this.text;
-		const text = this.text?.toLowerCase() ?? '';
+		if (this.prevText == this.fluidState.text) return;
+
 		const fontSize = Math.floor(Math.floor(this.viewWidth / 4) / 2) * 2;
+
+		if (!document.fonts.check(`bold ${fontSize}px Megrim`)) {
+			if (this.megrimLoading) return;
+			this.megrimLoading = true;
+			if (!document.getElementById('google-fonts-megrim')) {
+				const link = document.createElement('link');
+				link.id = 'google-fonts-megrim';
+				link.rel = 'stylesheet';
+				link.href = 'https://fonts.googleapis.com/css2?family=Megrim&display=swap';
+				document.head.appendChild(link);
+			}
+			document.fonts.load(`bold ${fontSize}px Megrim`).finally(() => {
+				this.megrimLoading = false;
+			});
+			return;
+		}
+
+		this.prevText = this.fluidState.text;
+		const text = this.fluidState.text?.toLowerCase() ?? '';
 		const letterSpacing = 50;
-		await document.fonts.ready;
-		await document.fonts.load(`bold ${fontSize}px Megrim`);
 		const canvas = document.createElement('canvas');
 		canvas.width = this.width;
 		canvas.height = this.height;
@@ -723,42 +726,30 @@ export class Simulator {
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
-	public async changeColor(color: number) {
-		this.smoke_color = color;
-	}
-
-	private async updateColor() {
+	public async updateColor() {
 		if (!this.initialized) return;
-		if (this.prev_smoke_color == this.smoke_color) return;
-		this.prev_smoke_color = this.smoke_color;
+		if (this.prev_smoke_color == this.fluidState.smokeColor) return;
+		this.prev_smoke_color = this.fluidState.smokeColor;
 		this.Ures_dif.update([
 			this.width,
 			this.height,
 			this.diffusion,
-			this.smoke_color,
+			this.fluidState.smokeColor,
 			this.colorBoxes.length,
 			0
 		]);
 		return this.device.queue.onSubmittedWorkDone();
 	}
 
-	public async registerRectangle(rect: FluidRectObj | null, id: string) {
-		if (!rect) {
-			this.rectMap.delete(id);
-			return;
-		}
-		this.rectMap.set(id, rect);
-	}
-
-	private async updateRectangles() {
+	public async updateRectangles() {
 		if (!this.initialized) return;
 		const new_solids: FluidRectList = [];
 		const new_colors: FluidRectList = [];
-		if (!this.rectMap) {
+		if (!this.fluidState.rectMap) {
 			return;
 		}
 
-		for (const [, rect] of this.rectMap) {
+		for (const [, rect] of this.fluidState.rectMap) {
 			if (!rect) continue;
 			const radius = rect.radius ?? 0;
 			if (rect.color === undefined || rect.color < 0) {
@@ -782,7 +773,7 @@ export class Simulator {
 			this.width,
 			this.height,
 			this.diffusion,
-			this.smoke_color,
+			this.fluidState.smokeColor,
 			this.colorBoxes.length,
 			0
 		]);

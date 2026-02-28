@@ -1,15 +1,28 @@
 import { setContext, getContext } from 'svelte';
-import type { Simulator } from '$lib/components/fluid/sim';
+import { SvelteMap } from 'svelte/reactivity';
 
-class FluidState {
-	constructor(private sim: () => Simulator) {}
+export interface FluidRectObj {
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	radius?: number;
+	color?: number;
+}
+
+export type FluidRects = Map<string, FluidRectObj | null>;
+
+export class FluidState {
+	text = $state('');
+	smokeColor = $state(0);
+	rectMap = $state<FluidRects>(new SvelteMap());
 
 	registerText(new_text: string) {
-		this.sim().updateText(new_text);
+		this.text = new_text;
 	}
 
 	changeColor(new_color: number) {
-		this.sim().changeColor(new_color);
+		this.smokeColor = new_color;
 	}
 
 	registerBound<T extends { x: number; y: number; width: number; height: number }>(
@@ -18,24 +31,26 @@ class FluidState {
 		color?: number,
 		borderRadius?: number
 	) {
-		const rect = bounds
-			? {
-					x: bounds.x,
-					y: bounds.y,
-					w: bounds.width,
-					h: bounds.height,
-					color,
-					radius: borderRadius
-				}
-			: null;
-		this.sim().registerRectangle(rect, id);
+		if (!bounds) {
+			this.rectMap.delete(id);
+			return;
+		}
+		const rect = {
+			x: bounds.x,
+			y: bounds.y,
+			w: bounds.width,
+			h: bounds.height,
+			color,
+			radius: borderRadius
+		};
+		this.rectMap.set(id, rect);
 	}
 }
 
 const CONTEXT_KEY = Symbol('fluid-context');
 
-export function setFluidContext(sim: () => Simulator) {
-	const state = new FluidState(sim);
+export function setFluidContext() {
+	const state = new FluidState();
 	return setContext(CONTEXT_KEY, state);
 }
 

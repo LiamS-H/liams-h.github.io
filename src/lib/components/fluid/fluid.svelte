@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Simulator } from './sim';
+	import type { Simulator } from './sim';
 	import { setFluidContext } from '$lib/context/fluid.svelte';
 	import { NoGpuStore } from '$lib/context/no-gpu-store';
 
@@ -10,12 +10,14 @@
 	let canvas: HTMLCanvasElement;
 	let frame: number;
 	let error = $state(false);
-	let sim = new Simulator();
-	setFluidContext(() => sim);
+	const fluidState = setFluidContext();
+	let sim: Simulator | null = null;
 
 	let isFocused = true;
 
 	async function init() {
+		const { Simulator } = await import('./sim');
+		sim = new Simulator(fluidState);
 		if (!(await sim.init(canvas))) {
 			error = true;
 			NoGpuStore.set(true);
@@ -52,6 +54,7 @@
 	}
 
 	function mouseMove(e: MouseEvent) {
+		if (!sim) return;
 		sim.updateMouse(e.clientX, e.clientY);
 		// sim.registerRectangle({
 		//     x:e.clientX-5,
@@ -62,6 +65,7 @@
 	}
 
 	function touchMove(e: TouchEvent) {
+		if (!sim) return;
 		const touch = e.touches[0];
 		sim.updateMouse(touch.clientX, touch.clientY, true);
 	}
