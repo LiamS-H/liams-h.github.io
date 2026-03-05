@@ -77,3 +77,110 @@
 	animation: gradient-swirl 10s linear infinite;
 	background-size: 400% 400%;
 }
+
+/* Disable default root transition to prevent background flickering */
+:root {
+	view-transition-name: none;
+}
+
+main {
+	view-transition-name: page-content;
+}
+
+::view-transition-old(page-content) {
+	animation: fade-out 0.05s ease-out both;
+}
+
+::view-transition-new(page-content) {
+	animation-duration: 0.3s;
+	animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Cross Dissolve - Clean and instant replacement */
+.vt-fade::view-transition-new(page-content) {
+	animation-name: fade-in;
+}
+
+/* Slide - New content slides in over static background */
+.vt-slide::view-transition-new(page-content) {
+	animation-name: fade-in, slide-from-right;
+}
+
+/* Float - New content rises into place */
+.vt-float::view-transition-new(page-content) {
+	animation-name: fade-in, float-up;
+}
+
+/* Zoom - New content expands from center */
+.vt-zoom::view-transition-new(page-content) {
+	animation-name: fade-in, zoom-in;
+}
+
+/* --- NEW CREATIVE TRANSITIONS --- */
+
+/* Blur & Fade - Soft appearance */
+.vt-blur::view-transition-new(page-content) {
+	animation-name: fade-in, blur-in;
+}
+
+/* Iris - Growing circle from center */
+.vt-iris::view-transition-new(page-content) {
+	animation-name: fade-in, iris-out;
+}
+
+/* Swing - 3D reveal */
+.vt-swing::view-transition-new(page-content) {
+	animation-name: fade-in, swing-in;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+@keyframes fade-out {
+	to {
+		opacity: 0;
+	}
+}
+@keyframes slide-from-right {
+	from {
+		transform: translateX(30px);
+	}
+}
+@keyframes float-up {
+	from {
+		transform: translateY(20px);
+	}
+}
+@keyframes zoom-in {
+	from {
+		transform: scale(0.96);
+	}
+}
+
+/* Blur Keyframes */
+@keyframes blur-in {
+	from {
+		filter: blur(12px);
+		transform: scale(0.98);
+	}
+}
+
+/* Iris Keyframes */
+@keyframes iris-out {
+	from {
+		clip-path: circle(0%);
+	}
+	to {
+		clip-path: circle(100%);
+	}
+}
+
+/* Swing Keyframes */
+@keyframes swing-in {
+	from {
+		transform: perspective(1000px) rotateX(-15deg) translateY(20px);
+		transform-origin: top;
+	}
+}
