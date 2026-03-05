@@ -9,6 +9,7 @@
 	import { project_ids, projects } from '$lib/data/projects';
 	import { afterNavigate } from '$app/navigation';
 	import { autoFocus } from '$lib/actions/autofocus';
+	import SmartImage from '$lib/components/smart-image.svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -49,7 +50,7 @@
 <svelte:head>
 	<title>{title} - LiamS-H</title>
 	{#each images as image (image.src)}
-		<link rel="preload" href={image.src} as="image" />
+		<link rel="prefetch" href={image.src} as="image" />
 	{/each}
 </svelte:head>
 
@@ -136,11 +137,7 @@
 						use:registerSolid={{ id: `${title}-img-${index}`, parent, radius: 8 }}
 						class="group relative w-full"
 					>
-						<enhanced:img
-							class="rounded-xl transition-opacity hover:opacity-20"
-							src={image.src}
-							alt={image.alt}
-						/>
+						<SmartImage class="rounded-xl hover:opacity-20" src={image.src} alt={image.alt} />
 						<span
 							class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 drop-shadow-md transition-opacity group-hover:opacity-100"
 							>View</span
