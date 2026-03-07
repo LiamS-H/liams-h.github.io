@@ -41,6 +41,10 @@
 	const fluid = useFluidContext();
 	let parent: HTMLDivElement | undefined = $state();
 
+	$effect(() => {
+		sessionStorage.setItem('carousel_index', index.toString());
+	});
+
 	afterNavigate(() => {
 		fluid.registerText('');
 		fluid.changeColor(colorNum);
