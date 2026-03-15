@@ -7,7 +7,7 @@
 </script>
 
 <button
-	class="bg-gradient-0 hover:bg-gradient-3 mt-2 h-9 w-fit bg-clip-text px-3 pt-1 pb-1.5 text-transparent md:mr-9"
+	class="bg-gradient-0 hover:bg-gradient-3 mt-2 h-9 w-fit bg-clip-text px-3 pt-1 pb-1.5 text-transparent"
 	onclick={toggleInfo}
 	use:registerSolid={{
 		id: 'about-button',

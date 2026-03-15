@@ -5,17 +5,28 @@
 	import { routes } from '$lib/data/routes';
 	import { onMount } from 'svelte';
 	import LanguageItem from './language-item.svelte';
-	import { technology_list } from '$lib/data/technologies';
+	import { technology_list, technologies, type TechType } from '$lib/data/technologies';
 	import Technology from '$lib/components/technology.svelte';
 	import TransparentLink from '$lib/components/transparent-link.svelte';
 	import InternalLink from '$lib/components/internal-link.svelte';
 	import { project_ids } from '$lib/data/projects';
 	import ReadMore from './read-more.svelte';
+	import Dropdown from '$lib/components/dropdown.svelte';
 
 	const fluid = useFluidContext();
 
 	let parent: HTMLElement | undefined = $state();
 	let infoOpen = $state(false);
+
+	const techTypes: (TechType | 'All')[] = ['All', 'Framework', 'Library', 'Database', 'CICD'];
+	let techFilter = $state<TechType | 'All'>('All');
+	const filteredTechnologies = $derived(
+		techFilter === 'All'
+			? technology_list
+			: technology_list.filter((tech) =>
+					(technologies[tech].type as readonly string[]).includes(techFilter)
+				)
+	);
 
 	onMount(() => {
 		fluid.registerText('');
@@ -85,7 +96,7 @@
 				>
 				<TransparentLink href="mailto:liamsh@gmail.com">liamsh@gmail.com</TransparentLink>
 			</div>
-			<ReadMore {infoOpen} toggleInfo={() => (infoOpen = !infoOpen)} />
+			<!-- <ReadMore {infoOpen} toggleInfo={() => (infoOpen = !infoOpen)} /> -->
 		</div>
 	</div>
 	{#if infoOpen}
@@ -132,12 +143,16 @@
 					{/each}
 				</ul>
 			</div>
-			<div class="w-full">
-				<h2 class="mb-4 flex items-center text-2xl font-bold text-white">Technologies</h2>
+			<div class="w-full sm:w-xl">
+				<div class="mb-4 flex flex-row items-center justify-between gap-4 sm:items-start">
+					<h2 class="text-2xl font-bold text-white">Technologies</h2>
+					<Dropdown bind:value={techFilter} options={techTypes} />
+				</div>
 
-				<ul class="mt-5 flex flex-wrap gap-2">
+				<ul class="mt-5 flex min-h-100 flex-wrap content-start justify-between gap-2">
+					<!-- <ul class={`mt-5 flex min-h-100 flex-wrap content-start gap-2 ${filteredTechnologies.length > 20 ? 'justify-between' : 'justify-start'}`}> -->
 					<!-- eslint-disable-next-line svelte/require-each-key -->
-					{#each technology_list as tech}
+					{#each filteredTechnologies as tech (`${tech}${techFilter}`)}
 						<Technology {tech} {parent} />
 					{/each}
 				</ul>
