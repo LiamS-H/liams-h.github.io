@@ -96,7 +96,7 @@
 				>
 				<TransparentLink href="mailto:liamsh@gmail.com">liamsh@gmail.com</TransparentLink>
 			</div>
-			<!-- <ReadMore {infoOpen} toggleInfo={() => (infoOpen = !infoOpen)} /> -->
+			<ReadMore {infoOpen} toggleInfo={() => (infoOpen = !infoOpen)} />
 		</div>
 	</div>
 	{#if infoOpen}
@@ -108,12 +108,21 @@
 				I specialize in Typescript, Rust, and Python, but the last 3 years I've also been chasing my
 				other passion working as a whitewater rafting and outdoor guide. A river is a special place
 				and it brings me great joy to see eddies and vortices wrap around the elements on this page.
-				Hydrodynamics is not usually a concern when working on a site layout, but here we are!
 			</div>
 
 			<div
 				class="ml-auto max-w-xl px-4 py-3 text-justify"
 				use:registerSolid={{ id: 'about-2', parent, inner: 4, color: 3, radius: 12 }}
+			>
+				I started programming young, quickly moving from visual programming to python. In may 2024,
+				I graduated after only 3 years. I'm a fast learner who can handle a high workload, but my
+				software fundamentals come before ai could automate my coursework. Here for the love of the
+				game.
+			</div>
+
+			<div
+				class="max-w-fit p-4 px-4"
+				use:registerSolid={{ id: 'about-3', parent, inner: 4, color: 3, radius: 12 }}
 			>
 				My personal projects over the last few years have all followed a similar suit, being mostly
 				practical and related to things Im interested in at the time. My recent fixation has been a
@@ -121,14 +130,11 @@
 				<InternalLink href={`/projects/${project_ids[0]}`}>table-top simulator</InternalLink>
 				that I constantly improve, and use to play Magic with my friends a few nights a week.
 			</div>
-
 			<div
-				class="max-w-fit p-4 px-4"
-				use:registerSolid={{ id: 'about-3', parent, inner: 4, color: 3, radius: 12 }}
+				class="ml-auto max-w-xl px-4 py-3 text-justify"
+				use:registerSolid={{ id: 'about-4', parent, inner: 4, color: 3, radius: 12 }}
 			>
-				While I currently live near Sacramento, CA, I'm happy to relocate. <strong
-					>Looking at SF</strong
-				>.
+				Living near Sacramento, CA, but <strong>looking to relocate to SF</strong>.
 			</div>
 		</div>
 	{:else}
